@@ -273,10 +273,6 @@ static bool Quaternionr__eq__(const Quaternionr& q1, const Quaternionr& q2){ ret
 static bool Quaternionr__neq__(const Quaternionr& q1, const Quaternionr& q2){ return q1!=q2; }
 
 template<typename VT> VT Vector_Unit(int ax){ IDX_CHECK(ax,VT::RowsAtCompileTime); return VT::Unit(ax); }
-//static Vector3r Vector3r_Unit(int ax){ IDX_CHECK(ax,3); Vector3r ret=Vector3r::Zero(); ret[ax]=1; return ret; }
-static Vector3i Vector3i_Unit(int ax){ IDX_CHECK(ax,3); Vector3i ret=Vector3i::Zero(); ret[ax]=1; return ret; }
-static Vector2r Vector2r_Unit(int ax){ IDX_CHECK(ax,2); Vector2r ret=Vector2r::Zero(); ret[ax]=1; return ret; }
-static Vector2i Vector2i_Unit(int ax){ IDX_CHECK(ax,2); Vector2i ret=Vector2i::Zero(); ret[ax]=1; return ret; }
 
 template<typename VT> Eigen::Matrix<typename VT::Scalar,VT::RowsAtCompileTime,VT::RowsAtCompileTime>
 Vector_asDiagonal(const VT& self){ return self.asDiagonal(); }
