@@ -1,4 +1,5 @@
 // 2009-2012 © Václav Šmilauer <eu@doxos.eu>
+// licensed under the Lesser General Public License version 3 (LGPLv3)
 
 /* change to float for single-precision */
 typedef double Real;
