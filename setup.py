@@ -6,7 +6,8 @@ setup(name='minieigen',
 	ext_modules=[Extension('miniEigen',
 		sources=['src/miniEigen.cpp'],
 		libraries=['boost_python'],
-		include_dirs=['/usr/include/eigen3','/usr/include/eigen2'],
+		include_dirs=['/usr/include/eigen3'],
+		define_macros=[('EIGEN_DONT_ALIGN',None)]
 	)],
 	install_requires=['distribute']
 )
