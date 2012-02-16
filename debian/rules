@@ -5,3 +5,5 @@
 
 %:
 	dh $@ 
+	make -C doc html
+	cp -r doc/build/html debian/python-minieigen/usr/share/doc/python-minieigen
