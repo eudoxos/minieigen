@@ -19,8 +19,7 @@ import sys, os, re, glob
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 #sys.path.insert(0, os.path.abspath('../../src'))
-sys.path.insert(0,glob.glob(os.path.abspath('../../debian/python-minieigen/usr/lib/pyshared/python*'))[0])
-
+sys.path.insert(0,glob.glob(os.path.abspath('../../build/lib.linux-*'))[0])
 print sys.path
 
 

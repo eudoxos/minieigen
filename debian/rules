@@ -5,5 +5,9 @@
 
 %:
 	dh $@ 
+
+override_dh_installdocs:
+	dh_installdocs # run the default
 	make -C doc html
+	#dh_sphinxdoc doc/build/html
 	cp -r doc/build/html debian/python-minieigen/usr/share/doc/python-minieigen
