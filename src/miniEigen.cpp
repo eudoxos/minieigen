@@ -24,6 +24,7 @@ typedef Eigen::Matrix<Real,Eigen::Dynamic,1> VectorXr;
 
 typedef Eigen::Quaternion<Real> Quaternionr;
 typedef Eigen::AngleAxis<Real> AngleAxisr;
+typedef Eigen::AlignedBox<Real,3> AlignedBox3r;
 
 
 #include<string>
@@ -84,7 +85,11 @@ void MatrixXr_set_row (MatrixXr & self, int idx, const VectorXr& row){ IDX_CHECK
 static void MatrixXr_resize(Matrix3r& m, int rows, int cols){ m.resize(rows,cols); }
 static void VectorXr_resize(VectorXr& v, int n){ v.resize(n); }
 
-
+// aligned box 
+Real AlignedBox3r_get_item(AlignedBox3r & self, py::tuple _idx){ int idx[2]; long mx[2]={2,3}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
+void AlignedBox3r_set_item(AlignedBox3r & self, py::tuple _idx, Real value){ int idx[2]; int mx[2]={2,3}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
+Vector3r AlignedBox3r_get_minmax(const AlignedBox3r & self, int idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
+void AlignedBox3r_set_minmax(AlignedBox3r & self, int idx, const Vector3r& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
 
 /*** I/O including pickling ***/
 std::string Vector6r_str(const Vector6r & self){ return std::string("Vector6(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+","+boost::lexical_cast<std::string>(self[2])+", "+boost::lexical_cast<std::string>(self[3])+","+boost::lexical_cast<std::string>(self[4])+","+boost::lexical_cast<std::string>(self[5])+")";}
@@ -96,6 +101,7 @@ std::string Vector2r_str(const Vector2r & self){ return std::string("Vector2(")+
 std::string Vector2i_str(const Vector2i & self){ return std::string("Vector2i(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+")";}
 std::string Quaternionr_str(const Quaternionr & self){ AngleAxisr aa(self); return std::string("Quaternion((")+boost::lexical_cast<std::string>(aa.axis()[0])+","+boost::lexical_cast<std::string>(aa.axis()[1])+","+boost::lexical_cast<std::string>(aa.axis()[2])+"),"+boost::lexical_cast<std::string>(aa.angle())+")";}
 std::string Matrix3r_str(const Matrix3r & self){ std::ostringstream oss; oss<<"Matrix3("; for(int i=0; i<3; i++) for(int j=0; j<3; j++) oss<<self(i,j)<<((i==2 && j==2)?")":",")<<((i<2 && j==2)?" ":""); return oss.str(); }
+std::string AlignedBox3r_str(const AlignedBox3r & self){ return std::string("AlignedBox3("+Vector3r_str(self.min())+","+Vector3r_str(self.max())+")"); }
 //std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++) for(int j=0; j<6; j++) oss<<((j==0)?"\t":"")<<self(i,j)<<((i==5 && j==5)?")":",")<<((i<5 && j==5)?" ":""); return oss.str(); }
 std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++){ oss<<"\t("; for(int j=0; j<6; j++) oss<<std::setw(7)<<self(i,j)<<(j==2?", ":(j==5?"),\n":",")); } oss<<")"; return oss.str(); }
 std::string MatrixXr_str(const MatrixXr & self){ std::ostringstream oss; oss<<"MatrixX(\n"; for(int i=0; i<self.rows(); i++){ oss<<"\t("; for(int j=0; j<self.cols(); j++) oss<<std::setw(7)<<self(i,j)<<((((j+1)%3)==0 && j!=self.cols()-1)?", ":(j==(self.cols()-1)?"),\n":",")); } oss<<")"; return oss.str(); }
@@ -110,6 +116,7 @@ int Vector2i_len(){return 2;}
 int Quaternionr_len(){return 4;}
 int Matrix3r_len(){return 3;} // rows
 int Matrix6r_len(){return 6;} // rows
+int AlignedBox3r_len(){return 2;} // min, max
 
 static int MatrixXr_len(const MatrixXr& self){return self.rows();} // rows
 static int VectorXr_len(const VectorXr& self){return self.size();}
@@ -117,6 +124,7 @@ static int VectorXr_len(const VectorXr& self){return self.size();}
 // pickling support
 struct Matrix3r_pickle: py::pickle_suite{static py::tuple getinitargs(const Matrix3r& x){ return py::make_tuple(x(0,0),x(0,1),x(0,2),x(1,0),x(1,1),x(1,2),x(2,0),x(2,1),x(2,2));} };
 struct Matrix6r_pickle: py::pickle_suite{static py::tuple getinitargs(const Matrix6r& x){ return py::make_tuple(x.row(0),x.row(1),x.row(2),x.row(3),x.row(4),x.row(5));} };
+struct AlignedBox3r_pickle: py::pickle_suite{static py::tuple getinitargs(const AlignedBox3r& x){ return py::make_tuple(x.min(),x.max()); } };
 struct Quaternionr_pickle: py::pickle_suite{static py::tuple getinitargs(const Quaternionr& x){ return py::make_tuple(x.w(),x.x(),x.y(),x.z());} };
 struct Vector6r_pickle: py::pickle_suite{static py::tuple getinitargs(const Vector6r& x){ return py::make_tuple(x[0],x[1],x[2],x[3],x[4],x[5]);} };
 struct Vector6i_pickle: py::pickle_suite{static py::tuple getinitargs(const Vector6i& x){ return py::make_tuple(x[0],x[1],x[2],x[3],x[4],x[5]);} };
@@ -147,6 +155,25 @@ struct custom_VectorAnyAny_from_sequence{
 		data->convertible=storage;
 	}
 };
+
+// create AlignedBox3r from tuple of 2 Vector3r's
+struct custom_alignedBox3r_from_seq{
+	custom_alignedBox3r_from_seq(){
+		py::converter::registry::push_back(&convertible,&construct,py::type_id<AlignedBox3r>());
+	}
+	static void* convertible(PyObject* obj_ptr){
+		 if(!PySequence_Check(obj_ptr)) return 0;
+		 if(PySequence_Size(obj_ptr)!=2) return 0;
+		 if(!py::extract<Vector3r>(PySequence_GetItem(obj_ptr,0)).check() || !py::extract<Vector3r>(PySequence_GetItem(obj_ptr,1)).check()) return 0;
+		 return obj_ptr;
+	}
+	static void construct(PyObject* obj_ptr, py::converter::rvalue_from_python_stage1_data* data){
+		void* storage=((py::converter::rvalue_from_python_storage<AlignedBox3r>*)(data))->storage.bytes;
+		new (storage) AlignedBox3r(py::extract<Vector3r>(PySequence_GetItem(obj_ptr,0))(),py::extract<Vector3r>(PySequence_GetItem(obj_ptr,1))());
+		data->convertible=storage;
+	}
+};
+
 
 static Matrix3r* Matrix3r_fromElements(Real m00, Real m01, Real m02, Real m10, Real m11, Real m12, Real m20, Real m21, Real m22){ Matrix3r* m(new Matrix3r); (*m)<<m00,m01,m02,m10,m11,m12,m20,m21,m22; return m; }
 static Matrix3r* Matrix3r_fromRows(const Vector3r& l0, const Vector3r& l1, const Vector3r& l2, bool cols=false){ Matrix3r* m(new Matrix3r); if(cols){m->col(0)=l0; m->col(1)=l1; m->col(2)=l2; } else {m->row(0)=l0; m->row(1)=l1; m->row(2)=l2;} return m; }
@@ -203,6 +230,10 @@ static Vector2r Vector3r_xz(const Vector3r& v){ return Vector2r(v[0],v[2]); }
 static Vector2r Vector3r_zx(const Vector3r& v){ return Vector2r(v[2],v[0]); }
 static Vector2r Vector3r_yz(const Vector3r& v){ return Vector2r(v[1],v[2]); }
 static Vector2r Vector3r_zy(const Vector3r& v){ return Vector2r(v[2],v[1]); }
+
+static Vector3r AlignedBox3r_min(const AlignedBox3r& self){ return self.min(); }
+static Vector3r AlignedBox3r_max(const AlignedBox3r& self){ return self.max(); }
+
 
 /*** operations not defined in eigen ***/
 
@@ -271,6 +302,8 @@ static Vector3i Vector6i_head(const Vector6i& self){ return self.head<3>(); }
 static Vector3i Vector6i_tail(const Vector6i& self){ return self.tail<3>(); }
 static bool Quaternionr__eq__(const Quaternionr& q1, const Quaternionr& q2){ return q1==q2; }
 static bool Quaternionr__neq__(const Quaternionr& q1, const Quaternionr& q2){ return q1!=q2; }
+
+static bool AlignedBox3r_containsPt(const AlignedBox3r& self, const Vector3r& v){ return self.contains(v); }
 
 template<typename VT> VT Vector_Unit(int ax){ IDX_CHECK(ax,VT::RowsAtCompileTime); return VT::Unit(ax); }
 
@@ -410,6 +443,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 	custom_VectorAnyAny_from_sequence<Vector3i>();
 	custom_VectorAnyAny_from_sequence<Vector2r>();
 	custom_VectorAnyAny_from_sequence<Vector2i>();
+	custom_alignedBox3r_from_seq();
 
 	py::class_<Matrix3r>("Matrix3","3x3 float matrix.\n\nSupported operations (``m`` is a Matrix3, ``f`` if a float/int, ``v`` is a Vector3): ``-m``, ``m+m``, ``m+=m``, ``m-m``, ``m-=m``, ``m*f``, ``f*m``, ``m*=f``, ``m/f``, ``m/=f``, ``m*m``, ``m*=m``, ``m*v``, ``v*m``, ``m==m``, ``m!=m``.\n\nStatic attributes: ``Zero``, ``Ones``, ``Identity``.",py::init<>())
 		.def(py::init<Matrix3r const &>((py::arg("m"))))
@@ -794,6 +828,22 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("__str__",&::Vector2i_str).def("__repr__",&::Vector2i_str)
 	;	
 	
+
+	py::class_<AlignedBox3r>("AlignedBox3","Axis-aligned box object, defined by its minimum and maximum corners",py::init<>())
+		.def(py::init<AlignedBox3r>((py::arg("other"))))
+		.def(py::init<Vector3r,Vector3r>((py::arg("min"),py::arg("max"))))
+		.def_pickle(AlignedBox3r_pickle())
+		.def("volume",&AlignedBox3r::volume)
+		.def("intersection",&AlignedBox3r::intersection)
+		.def("contains",&::AlignedBox3r_containsPt)
+		// those return internal references, which is what we want
+		.add_property("min",&::AlignedBox3r_min) 
+		.add_property("max",&::AlignedBox3r_max)
+		.def("__len__",&::AlignedBox3r_len).staticmethod("__len__")
+		.def("__setitem__",&::AlignedBox3r_set_item).def("__getitem__",&::AlignedBox3r_get_item)
+		.def("__setitem__",&::AlignedBox3r_set_minmax).def("__getitem__",&::AlignedBox3r_get_minmax)
+		.def("__str__",&::AlignedBox3r_str).def("__repr__",&::AlignedBox3r_str)
+	;
 };
 
 
