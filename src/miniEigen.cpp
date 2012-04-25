@@ -463,6 +463,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("col",&Matrix3r_col)
 		.def("pruned",&Matrix_pruned<Matrix3r>,py::arg("absTol")=1e-6)
 		.def("maxAbsCoeff",&Matrix_maxAbsCoeff<Matrix3r>)
+		.def("sum",&Matrix_sum<Matrix3r>)
 
 		//
 		.def("__neg__",&Matrix3r__neg__)
@@ -505,6 +506,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("transpose",&Matrix6r_transpose)
 		//.def("polarDecomposition",&Matrix6r_polarDecomposition)
 		.def("diagonal",&Matrix6r_diagonal)
+		.def("sum",&Matrix_sum<Matrix6r>)
 		.def("row",&Matrix6r_row)
 		.def("col",&Matrix6r_col)
 		.def("ul",&Matrix6r_ul)
@@ -598,6 +600,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("resize",&MatrixXr_resize)
 		.def("pruned",&Matrix_pruned<MatrixXr>,py::arg("absTol")=1e-6)
 		.def("maxAbsCoeff",&Matrix_maxAbsCoeff<MatrixXr>)
+		.def("sum",&Matrix_sum<MatrixXr>)
 
 		//
 		.def("__neg__",&MatrixXr__neg__)
@@ -706,6 +709,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		//.def("dot",&Vector6i_dot).def("cross",&Vector6i_cross)
 		//.def("norm",&Vector6i::norm).def("squaredNorm",&Vector6i::squaredNorm).def("normalize",&Vector6i::normalize).def("normalized",&Vector6i::normalized)
 		.def("head",&Vector6i_head).def("tail",&Vector6i_tail)
+		.def("sum",&Matrix_sum<Vector6i>)
 		// operators
 		.def("__neg__",&Vector6i__neg__) // -v
 		.def("__add__",&Vector6i__add__Vector6i).def("__iadd__",&Vector6i__iadd__Vector6i) // +, +=
@@ -763,6 +767,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.add_static_property("UnitX",&Vector3i_UnitX).add_static_property("UnitY",&Vector3i_UnitY).add_static_property("UnitZ",&Vector3i_UnitZ)
 		// methods
 		.def("dot",&Vector3i_dot).def("cross",&Vector3i_cross)
+		.def("sum",&Matrix_sum<Vector3i>)
 		//.def("norm",&Vector3i::norm).def("squaredNorm",&Vector3i::squaredNorm)
 		.def("Unit",&Vector_Unit<Vector3i>).staticmethod("Unit")
 		// operators
@@ -788,6 +793,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("Random",&Vector2r_Random).staticmethod("Random")
 		.def("dot",&Vector2r_dot)
 		.def("norm",&Vector2r::norm).def("squaredNorm",&Vector2r::squaredNorm).def("normalize",&Vector2r::normalize).def("normalized",&Vector2r::normalized)
+		.def("sum",&Matrix_sum<Vector2r>)
 		.def("Unit",&Vector_Unit<Vector2r>).staticmethod("Unit")
 		// operators
 		.def("__neg__",&Vector2r__neg__) // -v
@@ -813,6 +819,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.add_static_property("UnitX",&Vector2i_UnitX).add_static_property("UnitY",&Vector2i_UnitY)
 		// methods
 		.def("dot",&Vector2i_dot)
+		.def("sum",&Matrix_sum<Vector2i>)
 		//.def("norm",&Vector2i::norm).def("squaredNorm",&Vector2i::squaredNorm).def("normalize",&Vector2i::normalize)
 		.def("Unit",&Vector_Unit<Vector2i>).staticmethod("Unit")
 		// operators
