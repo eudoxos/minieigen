@@ -49,7 +49,7 @@ using boost::lexical_cast;
 // vector getters
 Real VectorXr_get_item(const VectorXr & self, int idx){ IDX_CHECK(idx,self.size()); return self[idx]; }
 Real Vector6r_get_item(const Vector6r & self, int idx){ IDX_CHECK(idx,6); return self[idx]; }
-int  Vector6i_get_item(const Vector6r & self, int idx){ IDX_CHECK(idx,6); return self[idx]; }
+int  Vector6i_get_item(const Vector6i & self, int idx){ IDX_CHECK(idx,6); return self[idx]; }
 Real Vector3r_get_item(const Vector3r & self, int idx){ IDX_CHECK(idx,3); return self[idx]; }
 int  Vector3i_get_item(const Vector3i & self, int idx){ IDX_CHECK(idx,3); return self[idx]; }
 Real Vector2r_get_item(const Vector2r & self, int idx){ IDX_CHECK(idx,2); return self[idx]; }
