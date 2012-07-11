@@ -1,3 +1,9 @@
+minieigen (0.2-1) unstable; urgency=low
+
+  * Copy and use double-conversion (grisu algo) for the shortest double representation
+
+ -- Václav Šmilauer <eu@doxos.eu>  Wed, 11 Jul 2012 20:38:26 +0200
+
 minieigen (0.1-1) unstable; urgency=low
 
   * Initial package

@@ -39,6 +39,34 @@ namespace py=boost::python;
 #include<boost/lexical_cast.hpp>
 using boost::lexical_cast;
 
+/**** double-conversion helpers *****/
+#include"double-conversion/double-conversion.h"
+
+double_conversion::DoubleToStringConverter doubleToString(
+	double_conversion::DoubleToStringConverter::NO_FLAGS,
+	"inf", /* infinity symbol */
+	"nan", /* NaN symbol */
+	'e', /*exponent symbol*/
+	-5, /* decimal_in_shortest_low: 0.0001, but 0.00001->1e-5 */
+	7, /* decimal_in_shortest_high */
+	/* the following are irrelevant for the shortest representation */
+	6, /* max_leading_padding_zeroes_in_precision_mode */
+	6 /* max_trailing_padding_zeroes_in_precision_mode */
+);
+
+/* optionally pad from the left */
+std::string doubleToShortest(double d, int pad=0){
+	/* 32 is perhaps wasteful */
+	/* it would be better to write to the string's buffer itself, not sure how to do that */
+	char buf[32];
+	double_conversion::StringBuilder sb(buf,32);
+	doubleToString.ToShortest(d,&sb);
+	std::string ret(sb.Finalize());
+	if(pad==0 || (int)ret.size()>=pad) return ret;
+	return std::string(pad-ret.size(),' ')+ret; // left-padded if shorter
+} 
+
+
 
 /*** getters and setters with bound guards ***/
 #define IDX_CHECK(i,MAX){ if(i<0 || i>=MAX) { PyErr_SetString(PyExc_IndexError,("Index out of range 0.." + boost::lexical_cast<std::string>(MAX-1)).c_str()); py::throw_error_already_set(); } }
@@ -97,20 +125,20 @@ Vector2r AlignedBox2r_get_minmax(const AlignedBox2r & self, int idx){ IDX_CHECK(
 void AlignedBox2r_set_minmax(AlignedBox2r & self, int idx, const Vector2r& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
 
 /*** I/O including pickling ***/
-std::string Vector6r_str(const Vector6r & self){ return std::string("Vector6(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+","+boost::lexical_cast<std::string>(self[2])+", "+boost::lexical_cast<std::string>(self[3])+","+boost::lexical_cast<std::string>(self[4])+","+boost::lexical_cast<std::string>(self[5])+")";}
-std::string VectorXr_str(const VectorXr & self){ std::ostringstream oss; oss<<"VectorX(["; for(int i=0; i<self.size(); i++) oss<<(i==0?"":((i%3)?",":", "))<<boost::lexical_cast<std::string>(self[i]); oss<<"])"; return oss.str(); }
+std::string Vector6r_str(const Vector6r & self){ return std::string("Vector6(")+doubleToShortest(self[0])+","+doubleToShortest(self[1])+","+doubleToShortest(self[2])+", "+doubleToShortest(self[3])+","+doubleToShortest(self[4])+","+doubleToShortest(self[5])+")";}
+std::string VectorXr_str(const VectorXr & self){ std::ostringstream oss; oss<<"VectorX(["; for(int i=0; i<self.size(); i++) oss<<(i==0?"":((i%3)?",":", "))<<doubleToShortest(self[i]); oss<<"])"; return oss.str(); }
 std::string Vector6i_str(const Vector6i & self){ return std::string("Vector6i(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+","+boost::lexical_cast<std::string>(self[2])+", "+boost::lexical_cast<std::string>(self[3])+","+boost::lexical_cast<std::string>(self[4])+","+boost::lexical_cast<std::string>(self[5])+")";}
-std::string Vector3r_str(const Vector3r & self){ return std::string("Vector3(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+","+boost::lexical_cast<std::string>(self[2])+")";}
+std::string Vector3r_str(const Vector3r & self){ return std::string("Vector3(")+doubleToShortest(self[0])+","+doubleToShortest(self[1])+","+doubleToShortest(self[2])+")";}
 std::string Vector3i_str(const Vector3i & self){ return std::string("Vector3i(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+","+boost::lexical_cast<std::string>(self[2])+")";}
-std::string Vector2r_str(const Vector2r & self){ return std::string("Vector2(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+")";}
+std::string Vector2r_str(const Vector2r & self){ return std::string("Vector2(")+doubleToShortest(self[0])+","+doubleToShortest(self[1])+")";}
 std::string Vector2i_str(const Vector2i & self){ return std::string("Vector2i(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+")";}
-std::string Quaternionr_str(const Quaternionr & self){ AngleAxisr aa(self); return std::string("Quaternion((")+boost::lexical_cast<std::string>(aa.axis()[0])+","+boost::lexical_cast<std::string>(aa.axis()[1])+","+boost::lexical_cast<std::string>(aa.axis()[2])+"),"+boost::lexical_cast<std::string>(aa.angle())+")";}
-std::string Matrix3r_str(const Matrix3r & self){ std::ostringstream oss; oss<<"Matrix3("; for(int i=0; i<3; i++) for(int j=0; j<3; j++) oss<<self(i,j)<<((i==2 && j==2)?")":",")<<((i<2 && j==2)?" ":""); return oss.str(); }
+std::string Quaternionr_str(const Quaternionr & self){ AngleAxisr aa(self); return std::string("Quaternion((")+doubleToShortest(aa.axis()[0])+","+doubleToShortest(aa.axis()[1])+","+doubleToShortest(aa.axis()[2])+"),"+doubleToShortest(aa.angle())+")";}
+std::string Matrix3r_str(const Matrix3r & self){ std::ostringstream oss; oss<<"Matrix3("; for(int i=0; i<3; i++) for(int j=0; j<3; j++) oss<<doubleToShortest(self(i,j))<<((i==2 && j==2)?")":",")<<((i<2 && j==2)?" ":""); return oss.str(); }
 std::string AlignedBox3r_str(const AlignedBox3r & self){ return std::string("AlignedBox3("+Vector3r_str(self.min())+","+Vector3r_str(self.max())+")"); }
 std::string AlignedBox2r_str(const AlignedBox2r & self){ return std::string("AlignedBox2("+Vector2r_str(self.min())+","+Vector2r_str(self.max())+")"); }
 //std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++) for(int j=0; j<6; j++) oss<<((j==0)?"\t":"")<<self(i,j)<<((i==5 && j==5)?")":",")<<((i<5 && j==5)?" ":""); return oss.str(); }
-std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++){ oss<<"\t("; for(int j=0; j<6; j++) oss<<std::setw(7)<<self(i,j)<<(j==2?", ":(j==5?"),\n":",")); } oss<<")"; return oss.str(); }
-std::string MatrixXr_str(const MatrixXr & self){ std::ostringstream oss; oss<<"MatrixX(\n"; for(int i=0; i<self.rows(); i++){ oss<<"\t("; for(int j=0; j<self.cols(); j++) oss<<std::setw(7)<<self(i,j)<<((((j+1)%3)==0 && j!=self.cols()-1)?", ":(j==(self.cols()-1)?"),\n":",")); } oss<<")"; return oss.str(); }
+std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++){ oss<<"\t("; for(int j=0; j<6; j++) oss<<doubleToShortest(self(i,j),/*pad*/7)<<(j==2?", ":(j==5?"),\n":",")); } oss<<")"; return oss.str(); }
+std::string MatrixXr_str(const MatrixXr & self){ std::ostringstream oss; oss<<"MatrixX(\n"; for(int i=0; i<self.rows(); i++){ oss<<"\t("; for(int j=0; j<self.cols(); j++) oss<<doubleToShortest(self(i,j),/*pad*/7)<<((((j+1)%3)==0 && j!=self.cols()-1)?", ":(j==(self.cols()-1)?"),\n":",")); } oss<<")"; return oss.str(); }
 
 //template<typename VT> int Vector_len(){ return VT::RowsAtCompileTime; }
 int Vector6r_len(){return 6;}
