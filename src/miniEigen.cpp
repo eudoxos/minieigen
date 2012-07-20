@@ -345,6 +345,7 @@ static bool Quaternionr__eq__(const Quaternionr& q1, const Quaternionr& q2){ ret
 static bool Quaternionr__neq__(const Quaternionr& q1, const Quaternionr& q2){ return q1!=q2; }
 
 static bool AlignedBox3r_containsPt(const AlignedBox3r& self, const Vector3r& v){ return self.contains(v); }
+static void AlignedBox3r_extend(AlignedBox3r& self, const Vector3r& v){ self.extend(v); }
 static bool AlignedBox2r_containsPt(const AlignedBox2r& self, const Vector2r& v){ return self.contains(v); }
 
 template<typename VT> VT Vector_Unit(int ax){ IDX_CHECK(ax,VT::RowsAtCompileTime); return VT::Unit(ax); }
@@ -886,6 +887,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("volume",&AlignedBox3r::volume)
 		.def("intersection",&AlignedBox3r::intersection)
 		.def("contains",&::AlignedBox3r_containsPt)
+		.def("extend",&::AlignedBox3r_extend)
 		// those return internal references, which is what we want
 		.add_property("min",&::AlignedBox3r_min) 
 		.add_property("max",&::AlignedBox3r_max)
