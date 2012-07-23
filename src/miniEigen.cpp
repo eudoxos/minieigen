@@ -887,6 +887,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("volume",&AlignedBox3r::volume)
 		.def("intersection",&AlignedBox3r::intersection)
 		.def("contains",&::AlignedBox3r_containsPt)
+		.def("__contains__",&::AlignedBox3r_containsPt) // for the "in" operator
 		.def("extend",&::AlignedBox3r_extend)
 		// those return internal references, which is what we want
 		.add_property("min",&::AlignedBox3r_min) 
@@ -904,6 +905,7 @@ BOOST_PYTHON_MODULE(miniEigen){
 		.def("area",&AlignedBox2r::volume)
 		.def("intersection",&AlignedBox2r::intersection)
 		.def("contains",&::AlignedBox2r_containsPt)
+		.def("__contains__",&::AlignedBox2r_containsPt) // for the "in" operator
 		// those return internal references, which is what we want
 		.add_property("min",&::AlignedBox2r_min) 
 		.add_property("max",&::AlignedBox2r_max)
