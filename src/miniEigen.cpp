@@ -38,6 +38,7 @@ typedef Eigen::AlignedBox<Real,2> AlignedBox2r;
 namespace py=boost::python;
 #include<boost/lexical_cast.hpp>
 using boost::lexical_cast;
+#include<boost/static_assert.hpp>
 
 /**** double-conversion helpers *****/
 #include"double-conversion/double-conversion.h"
@@ -192,6 +193,73 @@ struct custom_VectorAnyAny_from_sequence{
 	}
 };
 
+template<class MT>
+struct custom_MatrixAnyAny_from_sequence{
+	custom_MatrixAnyAny_from_sequence(){ py::converter::registry::push_back(&convertible,&construct,py::type_id<MT>()); }
+	static void* convertible(PyObject* obj_ptr){
+		if(!PySequence_Check(obj_ptr)) return 0;
+		bool isFlat=!PySequence_Check(PySequence_GetItem(obj_ptr,0));
+		// mixed static/dytnamic not handled (also not needed)
+		BOOST_STATIC_ASSERT(
+			(MT::RowsAtCompileTime!=Eigen::Dynamic && MT::ColsAtCompileTime!=Eigen::Dynamic)
+			||
+			(MT::RowsAtCompileTime==Eigen::Dynamic && MT::ColsAtCompileTime==Eigen::Dynamic)
+		);
+		int sz=PySequence_Size(obj_ptr);
+		if(MT::RowsAtCompileTime!=Eigen::Dynamic){
+			if(isFlat){
+				// flat sequence (first item not sub-sequence), must contain exactly all items
+				if(sz!=MT::RowsAtCompileTime*MT::ColsAtCompileTime) return 0;
+			} else {
+				// contains nested sequences, one per row
+				if(sz!=MT::RowsAtCompileTime) return 0;
+			}
+		};
+		return obj_ptr;
+		// other checks done in the construct function
+	}
+	static void construct(PyObject* obj_ptr, py::converter::rvalue_from_python_stage1_data* data){
+		void* storage=((py::converter::rvalue_from_python_storage<MT>*)(data))->storage.bytes;
+		new (storage) MT;
+		MT &mx=*(MT*)storage;
+		int sz=PySequence_Size(obj_ptr);
+		bool isFlat=!PySequence_Check(PySequence_GetItem(obj_ptr,0));
+		if(MT::RowsAtCompileTime!=Eigen::Dynamic){
+			// do nothing
+		} else {
+			// find the right size
+			if(isFlat) mx.resize(sz,1); // row vector, if flat
+			else{ // find maximum size of items
+				int rows=sz; int cols=0;
+				for(int i=0; i<rows; i++){
+					if(!PySequence_Check(PySequence_GetItem(obj_ptr,i))) throw std::runtime_error("Some elements of the array given are not sequences");
+					int cols2=PySequence_Size(PySequence_GetItem(obj_ptr,i));
+					if(cols==0) cols=cols2;
+					if(cols!=cols2) throw std::runtime_error("Not all sub-sequences have the same length when assigning dynamic-sized matrix.");
+				}
+				mx.resize(rows,cols);
+			}
+		}
+		if(isFlat){
+			if(sz!=mx.rows()*mx.cols()) throw std::runtime_error("Assigning matrix "+lexical_cast<std::string>(mx.rows())+"x"+lexical_cast<std::string>(mx.cols())+" from flat vector of size "+lexical_cast<std::string>(sz));
+			for(int i=0; i<sz; i++){
+				mx(i/mx.rows(),i%mx.cols())=py::extract<typename MT::Scalar>(PySequence_GetItem(obj_ptr,i));
+			}
+		} else {
+			for(int row=0; row<mx.rows(); row++){
+				if(row>=PySequence_Size(obj_ptr)) throw std::runtime_error("Sequence rows of size "+lexical_cast<std::string>(sz)+" too short for assigning matrix with "+lexical_cast<std::string>(mx.rows())+" rows.");
+				PyObject* rowSeq=PySequence_GetItem(obj_ptr,row);
+				if(!PySequence_Check(rowSeq)) throw std::runtime_error("Element of row sequence not a sequence.");
+				if(mx.cols()!=PySequence_Size(rowSeq)) throw std::runtime_error("Row "+lexical_cast<std::string>(row)+": should specify exactly "+lexical_cast<std::string>(mx.cols())+" numbers, has "+lexical_cast<std::string>(PySequence_Size(rowSeq)));
+				for(int col=0; col<mx.cols(); col++){
+					mx(row,col)=py::extract<typename MT::Scalar>(PySequence_GetItem(rowSeq,col));
+				}
+			}
+		}
+		data->convertible=storage;
+	}
+};
+
 // create AlignedBoxNr from tuple of 2 Vector3r's
 template<int dim>
 struct custom_alignedBoxNr_from_seq{
@@ -212,6 +280,28 @@ struct custom_alignedBoxNr_from_seq{
 		data->convertible=storage;
 	}
 };
+
+struct custom_Quaternionr_from_axisAngle_or_angleAxis{
+	custom_Quaternionr_from_axisAngle_or_angleAxis(){
+		py::converter::registry::push_back(&convertible,&construct,py::type_id<Quaternionr>());
+	}
+	static void* convertible(PyObject* obj_ptr){
+		if(!PySequence_Check(obj_ptr)) return 0;
+		if(PySequence_Size(obj_ptr)!=2) return 0;
+		PyObject *a(PySequence_GetItem(obj_ptr,0)), *b(PySequence_GetItem(obj_ptr,1));
+		// axis-angle or angle-axis
+		if((py::extract<Vector3r>(a).check() && py::extract<Real>(b).check()) || (py::extract<Real>(a).check() && py::extract<Vector3r>(b).check())) return obj_ptr;
+		return 0;
+	}
+	static void construct(PyObject* obj_ptr, py::converter::rvalue_from_python_stage1_data* data){
+		void* storage=((py::converter::rvalue_from_python_storage<Quaternionr>*)(data))->storage.bytes;
+		PyObject *a(PySequence_GetItem(obj_ptr,0)), *b(PySequence_GetItem(obj_ptr,1));
+		if(py::extract<Vector3r>(a).check()) new (storage) Quaternionr(AngleAxisr(py::extract<Real>(b)(),py::extract<Vector3r>(a)()));
+		else new (storage) Quaternionr(AngleAxisr(py::extract<Real>(a)(),py::extract<Vector3r>(b)()));
+		data->convertible=storage;
+	}
+};
+
 
 
 static Matrix3r* Matrix3r_fromElements(Real m00, Real m01, Real m02, Real m10, Real m11, Real m12, Real m20, Real m21, Real m22){ Matrix3r* m(new Matrix3r); (*m)<<m00,m01,m02,m10,m11,m12,m20,m21,m22; return m; }
@@ -488,6 +578,11 @@ BOOST_PYTHON_MODULE(miniEigen){
 	custom_VectorAnyAny_from_sequence<Vector2i>();
 	custom_alignedBoxNr_from_seq<2>();
 	custom_alignedBoxNr_from_seq<3>();
+	custom_Quaternionr_from_axisAngle_or_angleAxis();
+
+	custom_MatrixAnyAny_from_sequence<Matrix3r>();
+	custom_MatrixAnyAny_from_sequence<Matrix6r>();
+	custom_MatrixAnyAny_from_sequence<MatrixXr>();
 
 	py::class_<Matrix3r>("Matrix3","3x3 float matrix.\n\nSupported operations (``m`` is a Matrix3, ``f`` if a float/int, ``v`` is a Vector3): ``-m``, ``m+m``, ``m+=m``, ``m-m``, ``m-=m``, ``m*f``, ``f*m``, ``m*=f``, ``m/f``, ``m/=f``, ``m*m``, ``m*=m``, ``m*v``, ``v*m``, ``m==m``, ``m!=m``.\n\nStatic attributes: ``Zero``, ``Ones``, ``Identity``.",py::init<>())
 		.def(py::init<Matrix3r const &>((py::arg("m"))))
