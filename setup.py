@@ -1,23 +1,38 @@
-#from setuptools import setup,Extension
+# encoding: utf-8
 from distutils.core import setup,Extension
 setup(name='minieigen',
 	version='0.2',
-	description='',
-	ext_modules=[Extension('miniEigen',
-		sources=['src/miniEigen.cpp',
-			'src/double-conversion/bignum.cc',
-			'src/double-conversion/bignum-dtoa.cc',
-			'src/double-conversion/cached-powers.cc',
-			'src/double-conversion/diy-fp.cc',
-			'src/double-conversion/double-conversion.cc',
-			'src/double-conversion/fast-dtoa.cc',
-			'src/double-conversion/fixed-dtoa.cc',
-			'src/double-conversion/strtod.cc'
+	author='Václav Šmilauer',
+	author_email='eu@doxos.eu',
+	url='http://www.launchpad.net/minieigen',
+	description='Wrap parts of Eigen3, c++ library for basic math and geometry.',
+	long_description='''
+A small wrapper for core parts of EIgen, c++ library for linear algebra. It is mainly useful for inspecting c++ code which already uses eigen and boost::python. Supported types are Vectors (2,3,6 and dynamic-sized with integer and floating-point values), Matrices (3x3, 6x6 and dynamic-sized with floating-point values), Quaternions and 2d and 3d AlignedBox's. Numerous methods are wrapped and the original API of Eigen is followed. The code compiles with a c++99 compiler.
+''',
+	classifiers=[
+		'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
+		'Programming Language :: Python',
+		'Programming Language :: Python :: 3',
+		'Operating System :: OS Independent',
+		'Topic :: Scientific/Engineering :: Mathematics',
+		'Intended Audience :: Science/Research',
+		'Development Status :: 4 - Beta'
+	],
+	ext_modules=[Extension('minieigen',
+		sources=['minieigen/minieigen.cpp',
+			'minieigen/double-conversion/bignum.cc',
+			'minieigen/double-conversion/bignum-dtoa.cc',
+			'minieigen/double-conversion/cached-powers.cc',
+			'minieigen/double-conversion/diy-fp.cc',
+			'minieigen/double-conversion/double-conversion.cc',
+			'minieigen/double-conversion/fast-dtoa.cc',
+			'minieigen/double-conversion/fixed-dtoa.cc',
+			'minieigen/double-conversion/strtod.cc'
 		],
 		libraries=['boost_python'],
 		include_dirs=['/usr/include/eigen3'],
 		define_macros=[('EIGEN_DONT_ALIGN',None)]
 	)],
-	install_requires=['distribute']
+	#install_requires=['distribute'],
 )
 
