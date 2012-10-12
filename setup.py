@@ -2,7 +2,7 @@
 from distutils.core import setup,Extension
 import glob
 setup(name='minieigen',
-	version='0.2-2',
+	version='0.3-1',
 	author='Václav Šmilauer',
 	author_email='eu@doxos.eu',
 	url='http://www.launchpad.net/minieigen',
