@@ -1,10 +1,10 @@
 
-miniEigen documentation
+minieigen documentation
 ========================
 
 * :ref:`genindex`
 * :ref:`search`
 
-.. automodule:: miniEigen
+.. automodule:: minieigen
   :members:
   :undoc-members:
