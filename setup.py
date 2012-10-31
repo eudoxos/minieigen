@@ -1,8 +1,17 @@
 # encoding: utf-8
 from distutils.core import setup,Extension
-import glob
+import sys, glob
+if sys.platform=='win32':
+	libraries=['boost_python-mgw47-mt-1_51']
+	library_dirs=[r'c:\src\boost_1_51_0\stage\lib']
+	include_dirs=[r'c:\src\boost_1_51_0',r'c:\src\eigen-3.1.1']
+else:
+	libraries=['boost_python']
+	library_dirs=[]
+	include_dirs=['/usr/include/eigen3','minieigen']
+
 setup(name='minieigen',
-	version='0.3-2',
+	version='0.3-4',
 	author='Václav Šmilauer',
 	author_email='eu@doxos.eu',
 	url='http://www.launchpad.net/minieigen',
@@ -30,11 +39,12 @@ A small wrapper for core parts of EIgen, c++ library for linear algebra. It is m
 			'minieigen/double-conversion/fixed-dtoa.cc',
 			'minieigen/double-conversion/strtod.cc'
 		],
-		libraries=['boost_python'],
-		include_dirs=['/usr/include/eigen3','minieigen'],
+		libraries=libraries,
+		library_dirs=library_dirs,
+		include_dirs=include_dirs+['minieigen'],
 		define_macros=[('EIGEN_DONT_ALIGN',None)]
 	)],
-	data_files=[('headers',glob.glob('minieigen/double-conversion/*.h'))],
+	#data_files=[('headers',glob.glob('minieigen/double-conversion/*.h'))],
 	#install_requires=['distribute'],
 )
 
