@@ -4,6 +4,15 @@
 /* change to float for single-precision */
 typedef double Real;
 
+// BEGIN workaround for
+// * http://eigen.tuxfamily.org/bz/show_bug.cgi?id=528
+// * https://sourceforge.net/tracker/index.php?func=detail&aid=3584127&group_id=202880&atid=983354
+// (only needed with gcc <= 4.7)
+#include<stdlib.h>
+#include<sys/stat.h>
+// END workaround
+
+
 #include<Eigen/Core>
 #include<Eigen/Geometry>
 #include<Eigen/Eigenvalues>
