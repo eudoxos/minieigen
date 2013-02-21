@@ -18,7 +18,7 @@ else:
 	include_dirs=['/usr/include/eigen3','minieigen']
 
 setup(name='minieigen',
-	version='0.3-5',
+	version='0.3-6',
 	author='Václav Šmilauer',
 	author_email='eu@doxos.eu',
 	url='http://www.launchpad.net/minieigen',
