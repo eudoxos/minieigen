@@ -444,8 +444,17 @@ static bool Quaternionr__eq__(const Quaternionr& q1, const Quaternionr& q2){ ret
 static bool Quaternionr__neq__(const Quaternionr& q1, const Quaternionr& q2){ return q1!=q2; }
 
 static bool AlignedBox3r_containsPt(const AlignedBox3r& self, const Vector3r& v){ return self.contains(v); }
-static void AlignedBox3r_extend(AlignedBox3r& self, const Vector3r& v){ self.extend(v); }
+static bool AlignedBox3r_containsBox(const AlignedBox3r& self, const AlignedBox3r& b){ return self.contains(b); }
+static void AlignedBox3r_extendPt(AlignedBox3r& self, const Vector3r& v){ self.extend(v); }
+static void AlignedBox3r_extendBox(AlignedBox3r& self, const AlignedBox3r& b){ self.extend(b); }
+static void AlignedBox3r_clamp(AlignedBox3r& self, const AlignedBox3r& b){ self.clamp(b); }
+
 static bool AlignedBox2r_containsPt(const AlignedBox2r& self, const Vector2r& v){ return self.contains(v); }
+static bool AlignedBox2r_containsBox(const AlignedBox2r& self, const AlignedBox2r& b){ return self.contains(b); }
+static void AlignedBox2r_extendPt(AlignedBox2r& self, const Vector2r& v){ self.extend(v); }
+static void AlignedBox2r_extendBox(AlignedBox2r& self, const AlignedBox2r& b){ self.extend(b); }
+static void AlignedBox2r_clamp(AlignedBox2r& self, const AlignedBox2r& b){ self.clamp(b); }
+
 
 template<typename VT> VT Vector_Unit(int ax){ IDX_CHECK(ax,VT::RowsAtCompileTime); return VT::Unit(ax); }
 
@@ -989,10 +998,18 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def(py::init<Vector3r,Vector3r>((py::arg("min"),py::arg("max"))))
 		.def_pickle(AlignedBox3r_pickle())
 		.def("volume",&AlignedBox3r::volume)
-		.def("intersection",&AlignedBox3r::intersection)
+		.def("empty",&::AlignedBox3r::isEmpty)
 		.def("contains",&::AlignedBox3r_containsPt)
-		.def("__contains__",&::AlignedBox3r_containsPt) // for the "in" operator
-		.def("extend",&::AlignedBox3r_extend)
+		.def("contains",&::AlignedBox3r_containsBox)
+		// for the "in" operator
+		.def("__contains__",&::AlignedBox3r_containsPt) 
+		.def("__contains__",&::AlignedBox3r_containsBox)
+		.def("extend",&::AlignedBox3r_extendPt)
+		.def("extend",&::AlignedBox3r_extendBox)
+		.def("clamp",&::AlignedBox3r_clamp)
+		// return new objects
+		.def("intersection",&AlignedBox3r::intersection)
+		.def("merged",&AlignedBox3r::merged)
 		// those return internal references, which is what we want
 		.add_property("min",&::AlignedBox3r_min) 
 		.add_property("max",&::AlignedBox3r_max)
@@ -1006,10 +1023,18 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def(py::init<Vector2r,Vector2r>((py::arg("min"),py::arg("max"))))
 		.def_pickle(AlignedBox2r_pickle())
 		.def("volume",&AlignedBox2r::volume)
+		.def("empty",&::AlignedBox2r::isEmpty)
 		.def("area",&AlignedBox2r::volume)
-		.def("intersection",&AlignedBox2r::intersection)
 		.def("contains",&::AlignedBox2r_containsPt)
-		.def("__contains__",&::AlignedBox2r_containsPt) // for the "in" operator
+		.def("contains",&::AlignedBox2r_containsBox)
+		.def("extend",&::AlignedBox2r_extendPt)
+		.def("extend",&::AlignedBox2r_extendBox)
+		.def("clamp",&::AlignedBox2r_clamp)
+		// for the "in" operator
+		.def("__contains__",&::AlignedBox2r_containsPt) 
+		.def("__contains__",&::AlignedBox2r_containsBox)
+		.def("intersection",&AlignedBox2r::intersection)
+		.def("merged",&AlignedBox2r::merged)
 		// those return internal references, which is what we want
 		.add_property("min",&::AlignedBox2r_min) 
 		.add_property("max",&::AlignedBox2r_max)
