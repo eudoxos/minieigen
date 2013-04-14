@@ -100,7 +100,7 @@ Real     Matrix6r_get_item(Matrix6r & self, py::tuple _idx){ int idx[2]; int mx[
 Real     MatrixXr_get_item(MatrixXr & self, py::tuple _idx){ int idx[2]; long mx[2]={self.rows(),self.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); return self(idx[0],idx[1]); }
 Vector3r Matrix3r_get_row (Matrix3r & self, int idx){ IDX_CHECK(idx,3); return self.row(idx); }
 Vector6r Matrix6r_get_row (Matrix6r & self, int idx){ IDX_CHECK(idx,6); return self.row(idx); }
-Vector6r MatrixXr_get_row (MatrixXr & self, int idx){ IDX_CHECK(idx,self.rows()); return self.row(idx); }
+VectorXr MatrixXr_get_row (MatrixXr & self, int idx){ IDX_CHECK(idx,self.rows()); return self.row(idx); }
 
 // vector setters
 void VectorXr_set_item(VectorXr & self, int idx, Real value){ IDX_CHECK(idx,self.size()); self[idx]=value; }
@@ -121,7 +121,7 @@ void Matrix6r_set_row (Matrix6r & self, int idx, const Vector6r& row){ IDX_CHECK
 void MatrixXr_set_row (MatrixXr & self, int idx, const VectorXr& row){ IDX_CHECK(idx,self.rows()); self.row(idx)=row; }
 
 // resizers for dynamic matrices/vectors
-static void MatrixXr_resize(Matrix3r& m, int rows, int cols){ m.resize(rows,cols); }
+static void MatrixXr_resize(MatrixXr& m, int rows, int cols){ m.resize(rows,cols); }
 static void VectorXr_resize(VectorXr& v, int n){ v.resize(n); }
 
 // aligned boxes
@@ -693,7 +693,7 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def("Random",&Matrix6r_Random).staticmethod("Random")
 	;
 
-	py::class_<VectorXr>("VectorX","Dynamic-sized float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a VectorX): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list,tuple, …) of X floats.",py::init<>())
+	py::class_<VectorXr>("VectorX","Dynamic-sized float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a VectorX): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of X floats.",py::init<>())
 		.def(py::init<VectorXr>((py::arg("other"))))
 		.def("__init__",py::make_constructor(&VectorXr_fromList,py::default_call_policies(),(py::arg("vv"))))
 		.def_pickle(VectorXr_pickle())
@@ -785,7 +785,7 @@ BOOST_PYTHON_MODULE(minieigen){
 	py::class_<Quaternionr>("Quaternion","Quaternion representing rotation.\n\nSupported operations (``q`` is a Quaternion, ``v`` is a Vector3): ``q*q`` (rotation composition), ``q*=q``, ``q*v`` (rotating ``v`` by ``q``), ``q==q``, ``q!=q``.\n\nStatic attributes: ``Identity``.",py::init<>())
 		.def("__init__",py::make_constructor(&Quaternionr_fromAxisAngle,py::default_call_policies(),(py::arg("axis"),py::arg("angle"))))
 		.def("__init__",py::make_constructor(&Quaternionr_fromAngleAxis,py::default_call_policies(),(py::arg("angle"),py::arg("axis"))))
-		.def(py::init<Real,Real,Real,Real>((py::arg("w"),py::arg("x"),py::arg("y"),py::arg("z")),"Initialize from coefficients.\n\n.. note:: The order of coefficients is *w*, *x*, *y*, *z*. The [] operator numbers them differently, 0…4 for *x* *y* *z* *w*!"))
+		.def(py::init<Real,Real,Real,Real>((py::arg("w"),py::arg("x"),py::arg("y"),py::arg("z")),"Initialize from coefficients.\n\n.. note:: The order of coefficients is *w*, *x*, *y*, *z*. The [] operator numbers them differently, 0...4 for *x* *y* *z* *w*!"))
 		.def(py::init<Matrix3r>((py::arg("rotMatrix")))) //,"Initialize from given rotation matrix.")
 		.def(py::init<Quaternionr>((py::arg("other"))))
 		.def_pickle(Quaternionr_pickle())
@@ -820,7 +820,7 @@ BOOST_PYTHON_MODULE(minieigen){
 
 
 
-	py::class_<Vector6r>("Vector6","6-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector6): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list,tuple, …) of 6 floats.\n\nStatic attributes: ``Zero``, ``Ones``.",py::init<>())
+	py::class_<Vector6r>("Vector6","6-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector6): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 6 floats.\n\nStatic attributes: ``Zero``, ``Ones``.",py::init<>())
 		.def(py::init<Vector6r>((py::arg("other"))))
 		.def("__init__",py::make_constructor(&Vector6r_fromElements,py::default_call_policies(),(py::arg("v0"),py::arg("v1"),py::arg("v2"),py::arg("v3"),py::arg("v4"),py::arg("v5"))))
 		.def("__init__",py::make_constructor(&Vector6r_fromHeadTail,py::default_call_policies(),(py::arg("head"),py::arg("tail"))))
@@ -855,7 +855,7 @@ BOOST_PYTHON_MODULE(minieigen){
 		#endif
 	;
 
-	py::class_<Vector6i>("Vector6i","6-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector6): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list,tuple, …) of 6 floats.\n\nStatic attributes: ``Zero``, ``Ones``.",py::init<>())
+	py::class_<Vector6i>("Vector6i","6-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector6): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 6 floats.\n\nStatic attributes: ``Zero``, ``Ones``.",py::init<>())
 		.def(py::init<Vector6i>((py::arg("other"))))
 		.def("__init__",py::make_constructor(&Vector6i_fromElements,py::default_call_policies(),(py::arg("v0"),py::arg("v1"),py::arg("v2"),py::arg("v3"),py::arg("v4"),py::arg("v5"))))
 		.def_pickle(Vector6i_pickle())
@@ -881,7 +881,7 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def("__str__",&::Vector6i_str).def("__repr__",&::Vector6i_str)
 	;
 
-	py::class_<Vector3r>("Vector3","3-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``, plus operations with ``Matrix3`` and ``Quaternion``.\n\nImplicit conversion from sequence (list,tuple, …) of 3 floats.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``, ``UnitZ``.",py::init<>())
+	py::class_<Vector3r>("Vector3","3-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``, plus operations with ``Matrix3`` and ``Quaternion``.\n\nImplicit conversion from sequence (list, tuple, ...) of 3 floats.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``, ``UnitZ``.",py::init<>())
 		.def(py::init<Vector3r>((py::arg("other"))))
 		.def(py::init<Real,Real,Real>((py::arg("x"),py::arg("y"),py::arg("z"))))
 		.def_pickle(Vector3r_pickle())
@@ -915,7 +915,7 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def("__setitem__",&::Vector3r_set_item).def("__getitem__",&::Vector3r_get_item)
 		.def("__str__",&::Vector3r_str).def("__repr__",&::Vector3r_str)
 	;	
-	py::class_<Vector3i>("Vector3i","3-dimensional integer vector.\n\nSupported operations (``i`` if an int, ``v`` is a Vector3i): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*i``, ``i*v``, ``v*=i``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence  (list,tuple, …) of 3 integers.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``, ``UnitZ``.",py::init<>())
+	py::class_<Vector3i>("Vector3i","3-dimensional integer vector.\n\nSupported operations (``i`` if an int, ``v`` is a Vector3i): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*i``, ``i*v``, ``v*=i``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence  (list, tuple, ...) of 3 integers.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``, ``UnitZ``.",py::init<>())
 		.def(py::init<Vector3i>((py::arg("other"))))
 		.def(py::init<int,int,int>((py::arg("x"),py::arg("y"),py::arg("z"))))
 		.def_pickle(Vector3i_pickle())
@@ -939,7 +939,7 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def("__setitem__",&::Vector3i_set_item).def("__getitem__",&::Vector3i_get_item)
 		.def("__str__",&::Vector3i_str).def("__repr__",&::Vector3i_str)
 	;	
-	py::class_<Vector2r>("Vector2","3-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list,tuple, …) of 2 floats.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``.",py::init<>())
+	py::class_<Vector2r>("Vector2","3-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 2 floats.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``.",py::init<>())
 		.def(py::init<Vector2r>((py::arg("other"))))
 		.def(py::init<Real,Real>((py::arg("x"),py::arg("y"))))
 		.def_pickle(Vector2r_pickle())
@@ -967,7 +967,7 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def("__setitem__",&::Vector2r_set_item).def("__getitem__",&::Vector2r_get_item)
 		.def("__str__",&::Vector2r_str).def("__repr__",&::Vector2r_str)
 	;	
-	py::class_<Vector2i>("Vector2i","2-dimensional integer vector.\n\nSupported operations (``i`` if an int, ``v`` is a Vector2i): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*i``, ``i*v``, ``v*=i``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list,tuple, …) of 2 integers.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``.",py::init<>())
+	py::class_<Vector2i>("Vector2i","2-dimensional integer vector.\n\nSupported operations (``i`` if an int, ``v`` is a Vector2i): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*i``, ``i*v``, ``v*=i``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 2 integers.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``.",py::init<>())
 		.def(py::init<Vector2i>((py::arg("other"))))
 		.def(py::init<int,int>((py::arg("x"),py::arg("y"))))
 		.def_pickle(Vector2i_pickle())
