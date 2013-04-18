@@ -148,7 +148,7 @@ std::string AlignedBox3r_str(const AlignedBox3r & self){ return std::string("Ali
 std::string AlignedBox2r_str(const AlignedBox2r & self){ return std::string("AlignedBox2("+Vector2r_str(self.min())+","+Vector2r_str(self.max())+")"); }
 //std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++) for(int j=0; j<6; j++) oss<<((j==0)?"\t":"")<<self(i,j)<<((i==5 && j==5)?")":",")<<((i<5 && j==5)?" ":""); return oss.str(); }
 std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++){ oss<<"\t("; for(int j=0; j<6; j++) oss<<doubleToShortest(self(i,j),/*pad*/7)<<(j==2?", ":(j==5?"),\n":",")); } oss<<")"; return oss.str(); }
-std::string MatrixXr_str(const MatrixXr & self){ std::ostringstream oss; oss<<"MatrixX(\n"; for(int i=0; i<self.rows(); i++){ oss<<"\t("; for(int j=0; j<self.cols(); j++) oss<<doubleToShortest(self(i,j),/*pad*/7)<<((((j+1)%3)==0 && j!=self.cols()-1)?", ":(j==(self.cols()-1)?"),\n":",")); } oss<<")"; return oss.str(); }
+std::string MatrixXr_str(const MatrixXr & self){ std::ostringstream oss; bool wrap=self.rows()>1; oss<<"MatrixX("<<(wrap?"\n":""); for(int i=0; i<self.rows(); i++){ oss<<"\t("; for(int j=0; j<self.cols(); j++) oss<<doubleToShortest(self(i,j),/*pad*/7)<<((((j+1)%3)==0 && j!=self.cols()-1)?", ":(j==(self.cols()-1)?(wrap?"),\n":"),"):",")); } oss<<")"; return oss.str(); }
 
 //template<typename VT> int Vector_len(){ return VT::RowsAtCompileTime; }
 int Vector6r_len(){return 6;}
@@ -371,8 +371,13 @@ static Vector2r Vector3r_zy(const Vector3r& v){ return Vector2r(v[2],v[1]); }
 
 static Vector3r AlignedBox3r_min(const AlignedBox3r& self){ return self.min(); }
 static Vector3r AlignedBox3r_max(const AlignedBox3r& self){ return self.max(); }
+static Vector3r AlignedBox3r_center(const AlignedBox3r& self){ return self.center(); }
+static Vector3r AlignedBox3r_size(const AlignedBox3r& self){ return self.sizes(); }
+
 static Vector2r AlignedBox2r_min(const AlignedBox2r& self){ return self.min(); }
 static Vector2r AlignedBox2r_max(const AlignedBox2r& self){ return self.max(); }
+static Vector2r AlignedBox2r_center(const AlignedBox2r& self){ return self.center(); }
+static Vector2r AlignedBox2r_size(const AlignedBox2r& self){ return self.sizes(); }
 
 
 /*** operations not defined in eigen ***/
@@ -999,6 +1004,8 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def_pickle(AlignedBox3r_pickle())
 		.def("volume",&AlignedBox3r::volume)
 		.def("empty",&::AlignedBox3r::isEmpty)
+		.def("center",&::AlignedBox3r_center)
+		.def("sizes",&::AlignedBox3r_size)
 		.def("contains",&::AlignedBox3r_containsPt)
 		.def("contains",&::AlignedBox3r_containsBox)
 		// for the "in" operator
@@ -1024,6 +1031,8 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def_pickle(AlignedBox2r_pickle())
 		.def("volume",&AlignedBox2r::volume)
 		.def("empty",&::AlignedBox2r::isEmpty)
+		.def("center",&::AlignedBox2r_center)
+		.def("sizes",&::AlignedBox2r_size)
 		.def("area",&AlignedBox2r::volume)
 		.def("contains",&::AlignedBox2r_containsPt)
 		.def("contains",&::AlignedBox2r_containsBox)
