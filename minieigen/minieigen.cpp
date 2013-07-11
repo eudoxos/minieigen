@@ -426,6 +426,7 @@ static VectorXr Quaternionr__sub__Quaternionr(const Quaternionr& a, const Quater
 	static Vector3r Matrix3r_leviCivita(const Matrix3r& self){ return leviCivita(self); }
 #endif
 
+
 /*** wrapping methods which are defined by eigen, but return expression template, which does not work with python ***/
 static Vector3r Quaternionr_Rotate(Quaternionr& q, const Vector3r& u){ return q*u; }
 // supposed to return raw pointer (or auto_ptr), boost::python takes care of the lifetime management
@@ -465,6 +466,57 @@ template<typename VT> VT Vector_Unit(int ax){ IDX_CHECK(ax,VT::RowsAtCompileTime
 
 template<typename VT> Eigen::Matrix<typename VT::Scalar,VT::RowsAtCompileTime,VT::RowsAtCompileTime>
 Vector_asDiagonal(const VT& self){ return self.asDiagonal(); }
+
+
+/****** matrix decompositions ******/
+// svd decomposition
+template<typename MatrixInType, typename MatrixUType, typename MatrixSType, typename MatrixVType>
+py::tuple Matrix_jacobiSVD(const MatrixInType& in) {
+	MatrixUType u;
+	MatrixVType v;
+	MatrixSType s;
+	Eigen::JacobiSVD<MatrixInType> svd(in, Eigen::ComputeThinU | Eigen::ComputeThinV);
+	u = svd.matrixU();
+	v = svd.matrixV();
+	s = svd.singularValues().asDiagonal();
+	return py::make_tuple(u,s,v);
+}
+static py::tuple Matrix3r_jacobiSVD(const Matrix3r& in) { return Matrix_jacobiSVD<Matrix3r,Matrix3r,Matrix3r,Matrix3r>(in); }
+static py::tuple Matrix6r_jacobiSVD(const Matrix6r& in) { return Matrix_jacobiSVD<Matrix6r,Matrix6r,Matrix6r,Matrix6r>(in); }
+static py::tuple MatrixXr_jacobiSVD(const MatrixXr& in) { return Matrix_jacobiSVD<MatrixXr,MatrixXr,MatrixXr,MatrixXr>(in); }
+
+// polar decomposition
+template<typename MatrixType>
+py::tuple Matrix_computeUnitaryPositive(const MatrixType& in) {
+	assert(in.rows()==in.cols());
+	MatrixType u, s, v, retU, retP;
+	Eigen::JacobiSVD<MatrixType> svd(in, Eigen::ComputeThinU | Eigen::ComputeThinV);
+	u = svd.matrixU();
+	v = svd.matrixV();
+	s = svd.singularValues().asDiagonal();
+	retU = u*v.transpose();
+	retP = v*s*v.transpose();
+	return py::make_tuple(retU,retP);
+}
+static py::tuple Matrix3r_computeUnitaryPositive(const Matrix3r& in) { return Matrix_computeUnitaryPositive<Matrix3r>(in); }
+static py::tuple Matrix6r_computeUnitaryPositive(const Matrix6r& in) { return Matrix_computeUnitaryPositive<Matrix6r>(in); }
+static py::tuple MatrixXr_computeUnitaryPositive(const MatrixXr& in) { return Matrix_computeUnitaryPositive<MatrixXr>(in); }
+	
+// eigen decomposition
+template<typename MatrixType, typename VectorType>
+py::tuple Matrix_selfAdjointEigenDecomposition(const MatrixType& in) {
+	MatrixType eigVecs;
+	VectorType eigVals;
+	Eigen::SelfAdjointEigenSolver<MatrixType> a(in); eigVecs=a.eigenvectors(); eigVals=a.eigenvalues();
+	return py::make_tuple(eigVecs,eigVals);
+}
+static py::tuple Matrix3r_selfAdjointEigenDecomposition(const Matrix3r& in) { return Matrix_selfAdjointEigenDecomposition<Matrix3r,Vector3r>(in); }
+static py::tuple Matrix6r_selfAdjointEigenDecomposition(const Matrix6r& in) { return Matrix_selfAdjointEigenDecomposition<Matrix6r,Vector6r>(in); }
+static py::tuple MatrixXr_selfAdjointEigenDecomposition(const MatrixXr& in) { return Matrix_selfAdjointEigenDecomposition<MatrixXr,VectorXr>(in); }
+	
+
+
+
 
 #undef IDX_CHECK
 
@@ -647,6 +699,12 @@ BOOST_PYTHON_MODULE(minieigen){
 		.add_static_property("Zero",&Matrix3r_Zero)
 		.add_static_property("Ones",&Matrix3r_Ones)
 		.def("Random",&Matrix3r_Random).staticmethod("Random")
+		.def("jacobiSVD",&Matrix3r_jacobiSVD,"Compute SVD decomposition of matrix, retuns (U,S,V) such that self=U*S*V.transpose()")
+		.def("svd",&Matrix3r_jacobiSVD,"Shortcut for jacobiSVD")
+		.def("computeUnitaryPositive",&Matrix3r_computeUnitaryPositive,"Compute polar decomposition (unitary matrix U and positive semi-definite symmetric matrix P such that self=U*P")
+		.def("polarDecomposition",&Matrix3r_computeUnitaryPositive,"Shortcut for computeUnitaryPositive")
+		.def("selfAdjointEigenDecomposition",&Matrix3r_selfAdjointEigenDecomposition,"Compute eigen (spectral) decomposition of symmetric matrix, returns (eigVecs,eigVals). eigVecs is orthogonal Matrix3 with columns ar normalized eigenvectors, eigVals is Vector3 with corresponding eigenvalues. self=eigVecs*diag(eigVals)*eigVecs.transpose()")
+		.def("spectralDecomposition",&Matrix3r_selfAdjointEigenDecomposition,"Shortcut for selfAdjointEigenDecomposition")
 		#if 0
 			.def("polarDecomposition",&Matrix3r_polarDecomposition)
 			.def("symmEigen",&Matrix3r_symmEigen)
@@ -675,6 +733,13 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def("ur",&Matrix6r_ur)
 		.def("ll",&Matrix6r_ll)
 		.def("lr",&Matrix6r_lr)
+		//
+		.def("jacobiSVD",&Matrix6r_jacobiSVD,"Compute SVD decomposition of matrix, retuns (U,S,V) such that self=U*S*V.transpose()")
+		.def("svd",&Matrix6r_jacobiSVD,"Shortcut for jacobiSVD")
+		.def("computeUnitaryPositive",&Matrix6r_computeUnitaryPositive,"Compute polar decomposition (unitary matrix U and positive semi-definite symmetric matrix P such that self=U*P")
+		.def("polarDecomposition",&Matrix6r_computeUnitaryPositive,"Shortcut for computeUnitaryPositive")
+		.def("selfAdjointEigenDecomposition",&Matrix6r_selfAdjointEigenDecomposition,"Compute eigen (spectral) decomposition of symmetric matrix, returns (eigVecs,eigVals). eigVecs is orthogonal Matrix6 with columns ar normalized eigenvectors, eigVals is Vector6 with corresponding eigenvalues. self=eigVecs*diag(eigVals)*eigVecs.transpose()")
+		.def("spectralDecomposition",&Matrix6r_selfAdjointEigenDecomposition,"Shortcut for selfAdjointEigenDecomposition")
 
 		//
 		.def("__neg__",&Matrix6r__neg__)
@@ -763,6 +828,13 @@ BOOST_PYTHON_MODULE(minieigen){
 		.def("pruned",&Matrix_pruned<MatrixXr>,py::arg("absTol")=1e-6)
 		.def("maxAbsCoeff",&Matrix_maxAbsCoeff<MatrixXr>)
 		.def("sum",&Matrix_sum<MatrixXr>)
+		//
+		.def("jacobiSVD",&MatrixXr_jacobiSVD,"Compute SVD decomposition of matrix, retuns (U,S,V) such that self=U*S*V.transpose()")
+		.def("svd",&MatrixXr_jacobiSVD,"Shortcut for jacobiSVD")
+		.def("computeUnitaryPositive",&MatrixXr_computeUnitaryPositive,"Compute polar decomposition (unitary matrix U and positive semi-definite symmetric matrix P such that self=U*P")
+		.def("polarDecomposition",&MatrixXr_computeUnitaryPositive,"Shortcut for computeUnitaryPositive")
+		.def("selfAdjointEigenDecomposition",&MatrixXr_selfAdjointEigenDecomposition,"Compute eigen (spectral) decomposition of symmetric matrix, returns (eigVecs,eigVals). eigVecs is orthogonal MatrixX with columns ar normalized eigenvectors, eigVals is VectorX with corresponding eigenvalues. self=eigVecs*diag(eigVals)*eigVecs.transpose()")
+		.def("spectralDecomposition",&MatrixXr_selfAdjointEigenDecomposition,"Shortcut for selfAdjointEigenDecomposition")
 
 		//
 		.def("__neg__",&MatrixXr__neg__)
