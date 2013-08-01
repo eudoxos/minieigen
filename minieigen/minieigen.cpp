@@ -13,6 +13,10 @@ typedef double Real;
 // END workaround
 
 
+// if #defined, use new code (more compact) using visitors (so far only AlingedBox* are implemented)
+// #define _NEW_VISITORS
+
+
 #include<Eigen/Core>
 #include<Eigen/Geometry>
 #include<Eigen/Eigenvalues>
@@ -124,15 +128,17 @@ void MatrixXr_set_row (MatrixXr & self, int idx, const VectorXr& row){ IDX_CHECK
 static void MatrixXr_resize(MatrixXr& m, int rows, int cols){ m.resize(rows,cols); }
 static void VectorXr_resize(VectorXr& v, int n){ v.resize(n); }
 
-// aligned boxes
-Real AlignedBox3r_get_item(AlignedBox3r & self, py::tuple _idx){ int idx[2]; long mx[2]={2,3}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
-void AlignedBox3r_set_item(AlignedBox3r & self, py::tuple _idx, Real value){ int idx[2]; int mx[2]={2,3}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
-Vector3r AlignedBox3r_get_minmax(const AlignedBox3r & self, int idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
-void AlignedBox3r_set_minmax(AlignedBox3r & self, int idx, const Vector3r& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
-Real AlignedBox2r_get_item(AlignedBox2r & self, py::tuple _idx){ int idx[2]; long mx[2]={2,2}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
-void AlignedBox2r_set_item(AlignedBox2r & self, py::tuple _idx, Real value){ int idx[2]; int mx[2]={2,2}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
-Vector2r AlignedBox2r_get_minmax(const AlignedBox2r & self, int idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
-void AlignedBox2r_set_minmax(AlignedBox2r & self, int idx, const Vector2r& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
+#ifndef _NEW_VISITORS
+	// aligned boxes
+	Real AlignedBox3r_get_item(AlignedBox3r & self, py::tuple _idx){ int idx[2]; long mx[2]={2,3}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
+	void AlignedBox3r_set_item(AlignedBox3r & self, py::tuple _idx, Real value){ int idx[2]; int mx[2]={2,3}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
+	Vector3r AlignedBox3r_get_minmax(const AlignedBox3r & self, int idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
+	void AlignedBox3r_set_minmax(AlignedBox3r & self, int idx, const Vector3r& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
+	Real AlignedBox2r_get_item(AlignedBox2r & self, py::tuple _idx){ int idx[2]; long mx[2]={2,2}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
+	void AlignedBox2r_set_item(AlignedBox2r & self, py::tuple _idx, Real value){ int idx[2]; int mx[2]={2,2}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
+	Vector2r AlignedBox2r_get_minmax(const AlignedBox2r & self, int idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
+	void AlignedBox2r_set_minmax(AlignedBox2r & self, int idx, const Vector2r& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
+#endif
 
 /*** I/O including pickling ***/
 std::string Vector6r_str(const Vector6r & self){ return std::string("Vector6(")+doubleToShortest(self[0])+","+doubleToShortest(self[1])+","+doubleToShortest(self[2])+", "+doubleToShortest(self[3])+","+doubleToShortest(self[4])+","+doubleToShortest(self[5])+")";}
@@ -144,11 +150,13 @@ std::string Vector2r_str(const Vector2r & self){ return std::string("Vector2(")+
 std::string Vector2i_str(const Vector2i & self){ return std::string("Vector2i(")+boost::lexical_cast<std::string>(self[0])+","+boost::lexical_cast<std::string>(self[1])+")";}
 std::string Quaternionr_str(const Quaternionr & self){ AngleAxisr aa(self); return std::string("Quaternion((")+doubleToShortest(aa.axis()[0])+","+doubleToShortest(aa.axis()[1])+","+doubleToShortest(aa.axis()[2])+"),"+doubleToShortest(aa.angle())+")";}
 std::string Matrix3r_str(const Matrix3r & self){ std::ostringstream oss; oss<<"Matrix3("; for(int i=0; i<3; i++) for(int j=0; j<3; j++) oss<<doubleToShortest(self(i,j))<<((i==2 && j==2)?")":",")<<((i<2 && j==2)?" ":""); return oss.str(); }
-std::string AlignedBox3r_str(const AlignedBox3r & self){ return std::string("AlignedBox3("+Vector3r_str(self.min())+","+Vector3r_str(self.max())+")"); }
-std::string AlignedBox2r_str(const AlignedBox2r & self){ return std::string("AlignedBox2("+Vector2r_str(self.min())+","+Vector2r_str(self.max())+")"); }
 //std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++) for(int j=0; j<6; j++) oss<<((j==0)?"\t":"")<<self(i,j)<<((i==5 && j==5)?")":",")<<((i<5 && j==5)?" ":""); return oss.str(); }
 std::string Matrix6r_str(const Matrix6r & self){ std::ostringstream oss; oss<<"Matrix6(\n"; for(int i=0; i<6; i++){ oss<<"\t("; for(int j=0; j<6; j++) oss<<doubleToShortest(self(i,j),/*pad*/7)<<(j==2?", ":(j==5?"),\n":",")); } oss<<")"; return oss.str(); }
 std::string MatrixXr_str(const MatrixXr & self){ std::ostringstream oss; bool wrap=self.rows()>1; oss<<"MatrixX("<<(wrap?"\n":""); for(int i=0; i<self.rows(); i++){ oss<<"\t("; for(int j=0; j<self.cols(); j++) oss<<doubleToShortest(self(i,j),/*pad*/7)<<((((j+1)%3)==0 && j!=self.cols()-1)?", ":(j==(self.cols()-1)?(wrap?"),\n":"),"):",")); } oss<<")"; return oss.str(); }
+#ifndef _NEW_VISITORS
+	std::string AlignedBox3r_str(const AlignedBox3r & self){ return std::string("AlignedBox3("+Vector3r_str(self.min())+","+Vector3r_str(self.max())+")"); }
+	std::string AlignedBox2r_str(const AlignedBox2r & self){ return std::string("AlignedBox2("+Vector2r_str(self.min())+","+Vector2r_str(self.max())+")"); }
+#endif
 
 //template<typename VT> int Vector_len(){ return VT::RowsAtCompileTime; }
 int Vector6r_len(){return 6;}
@@ -160,8 +168,10 @@ int Vector2i_len(){return 2;}
 int Quaternionr_len(){return 4;}
 int Matrix3r_len(){return 3;} // rows
 int Matrix6r_len(){return 6;} // rows
-int AlignedBox3r_len(){return 2;} // min, max
-int AlignedBox2r_len(){return 2;} // min, max
+#ifndef _NEW_VISITORS
+	int AlignedBox3r_len(){return 2;} // min, max
+	int AlignedBox2r_len(){return 2;} // min, max
+#endif
 
 static int MatrixXr_len(const MatrixXr& self){return self.rows();} // rows
 static int VectorXr_len(const VectorXr& self){return self.size();}
@@ -169,8 +179,10 @@ static int VectorXr_len(const VectorXr& self){return self.size();}
 // pickling support
 struct Matrix3r_pickle: py::pickle_suite{static py::tuple getinitargs(const Matrix3r& x){ return py::make_tuple(x(0,0),x(0,1),x(0,2),x(1,0),x(1,1),x(1,2),x(2,0),x(2,1),x(2,2));} };
 struct Matrix6r_pickle: py::pickle_suite{static py::tuple getinitargs(const Matrix6r& x){ return py::make_tuple(x.row(0),x.row(1),x.row(2),x.row(3),x.row(4),x.row(5));} };
-struct AlignedBox3r_pickle: py::pickle_suite{static py::tuple getinitargs(const AlignedBox3r& x){ return py::make_tuple(x.min(),x.max()); } };
-struct AlignedBox2r_pickle: py::pickle_suite{static py::tuple getinitargs(const AlignedBox2r& x){ return py::make_tuple(x.min(),x.max()); } };
+#ifndef _NEW_VISITORS
+	struct AlignedBox3r_pickle: py::pickle_suite{static py::tuple getinitargs(const AlignedBox3r& x){ return py::make_tuple(x.min(),x.max()); } };
+	struct AlignedBox2r_pickle: py::pickle_suite{static py::tuple getinitargs(const AlignedBox2r& x){ return py::make_tuple(x.min(),x.max()); } };
+#endif
 struct Quaternionr_pickle: py::pickle_suite{static py::tuple getinitargs(const Quaternionr& x){ return py::make_tuple(x.w(),x.x(),x.y(),x.z());} };
 struct Vector6r_pickle: py::pickle_suite{static py::tuple getinitargs(const Vector6r& x){ return py::make_tuple(x[0],x[1],x[2],x[3],x[4],x[5]);} };
 struct Vector6i_pickle: py::pickle_suite{static py::tuple getinitargs(const Vector6i& x){ return py::make_tuple(x[0],x[1],x[2],x[3],x[4],x[5]);} };
@@ -434,18 +446,19 @@ static Vector3i Vector6i_tail(const Vector6i& self){ return self.tail<3>(); }
 static bool Quaternionr__eq__(const Quaternionr& q1, const Quaternionr& q2){ return q1==q2; }
 static bool Quaternionr__neq__(const Quaternionr& q1, const Quaternionr& q2){ return q1!=q2; }
 
-static bool AlignedBox3r_containsPt(const AlignedBox3r& self, const Vector3r& v){ return self.contains(v); }
-static bool AlignedBox3r_containsBox(const AlignedBox3r& self, const AlignedBox3r& b){ return self.contains(b); }
-static void AlignedBox3r_extendPt(AlignedBox3r& self, const Vector3r& v){ self.extend(v); }
-static void AlignedBox3r_extendBox(AlignedBox3r& self, const AlignedBox3r& b){ self.extend(b); }
-static void AlignedBox3r_clamp(AlignedBox3r& self, const AlignedBox3r& b){ self.clamp(b); }
+#ifndef _NEW_VISITORS
+	static bool AlignedBox3r_containsPt(const AlignedBox3r& self, const Vector3r& v){ return self.contains(v); }
+	static bool AlignedBox3r_containsBox(const AlignedBox3r& self, const AlignedBox3r& b){ return self.contains(b); }
+	static void AlignedBox3r_extendPt(AlignedBox3r& self, const Vector3r& v){ self.extend(v); }
+	static void AlignedBox3r_extendBox(AlignedBox3r& self, const AlignedBox3r& b){ self.extend(b); }
+	static void AlignedBox3r_clamp(AlignedBox3r& self, const AlignedBox3r& b){ self.clamp(b); }
 
-static bool AlignedBox2r_containsPt(const AlignedBox2r& self, const Vector2r& v){ return self.contains(v); }
-static bool AlignedBox2r_containsBox(const AlignedBox2r& self, const AlignedBox2r& b){ return self.contains(b); }
-static void AlignedBox2r_extendPt(AlignedBox2r& self, const Vector2r& v){ self.extend(v); }
-static void AlignedBox2r_extendBox(AlignedBox2r& self, const AlignedBox2r& b){ self.extend(b); }
-static void AlignedBox2r_clamp(AlignedBox2r& self, const AlignedBox2r& b){ self.clamp(b); }
-
+	static bool AlignedBox2r_containsPt(const AlignedBox2r& self, const Vector2r& v){ return self.contains(v); }
+	static bool AlignedBox2r_containsBox(const AlignedBox2r& self, const AlignedBox2r& b){ return self.contains(b); }
+	static void AlignedBox2r_extendPt(AlignedBox2r& self, const Vector2r& v){ self.extend(v); }
+	static void AlignedBox2r_extendBox(AlignedBox2r& self, const AlignedBox2r& b){ self.extend(b); }
+	static void AlignedBox2r_clamp(AlignedBox2r& self, const AlignedBox2r& b){ self.clamp(b); }
+#endif
 
 template<typename VT> VT Vector_Unit(int ax){ IDX_CHECK(ax,VT::RowsAtCompileTime); return VT::Unit(ax); }
 
@@ -482,7 +495,273 @@ py::tuple Matrix_selfAdjointEigenDecomposition(const MatrixType& in) {
 	return py::make_tuple(a.eigenvectors(),a.eigenvalues());
 }
 
+#ifdef _NEW_VISITORS
 
+
+// methods common for vectors and matrices
+template<typename MatrixBaseT>
+class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >{
+	typedef typename MatrixBaseT::Scalar Scalar;
+	public:
+	template<class PyClass>
+	void visit(PyClass& cl) const {
+		cl
+		.def(py::init<MatrixBaseT>(py::arg("other")))
+		.def("__neg__",&MatrixBaseVisitor::__neg__)
+		.def("__add__",&MatrixBaseVisitor::__add__).def("__iadd__",&MatrixBaseVisitor::__iadd__)
+		.def("__sub__",&MatrixBaseVisitor::__sub__).def("__isub__",&MatrixBaseVisitor::__isub__)
+		.def("__eq__",&MatrixBaseVisitor::__eq__).def("__neq__",&MatrixBaseVisitor::__neq__)
+		.def("__mul__",&MatrixBaseVisitor::__mul__scalar<int>)
+		.def("__imul__",&MatrixBaseVisitor::__imul__scalar<int>)
+		;
+		visit_if_float<Scalar,PyClass>(cl);
+		visit_fixed_or_dynamic<MatrixBaseT,PyClass>(cl);
+
+		// reductions
+		cl.def("sum",&MatrixBaseT::sum)
+		;
+	};
+	private:
+	// for dynamic matrices
+	template<typename MatrixBaseT2, class PyClass> static void visit_fixed_or_dynamic(PyClass& cl, typename boost::enable_if_c<MatrixBaseT2::RowsAtCompileTime==Eigen::Dynamic>::type* dummy = 0){
+		;
+	}
+	// for static matrices
+	template<typename MatrixBaseT2, class PyClass> static void visit_fixed_or_dynamic(PyClass& cl, typename boost::disable_if_c<MatrixBaseT2::RowsAtCompileTime==Eigen::Dynamic>::type* dummy = 0){
+		cl
+		.add_static_property("Ones",&MatrixBaseVisitor::Ones)
+		.add_static_property("Zero",&MatrixBaseVisitor::Zero)
+		.add_static_property("Random",&MatrixBaseVisitor::Random)
+		;
+	}
+	template<typename Scalar, class PyClass> static	void visit_if_float(PyClass& cl, typename boost::enable_if<boost::is_integral<Scalar> >::type* dummy = 0){ /* do nothing */ }
+	template<typename Scalar, class PyClass> static void visit_if_float(PyClass& cl, typename boost::disable_if<boost::is_integral<Scalar> >::type* dummy = 0){
+		// operations with other scalars
+		cl.def("__mul__",&MatrixBaseVisitor::__mul__scalar<Real>)
+		.def("__imul__",&MatrixBaseVisitor::__mul__scalar<Real>)
+		.def("__div__",&MatrixBaseVisitor::__mul__scalar<int>)
+		.def("__idiv__",&MatrixBaseVisitor::__mul__scalar<int>)
+		.def("__div__",&MatrixBaseVisitor::__mul__scalar<Real>)
+		.def("__idiv__",&MatrixBaseVisitor::__mul__scalar<Real>)
+		// operations only meaningful for float-valued matrices
+		.def("norm",&MatrixBaseT::norm)
+		.def("__abs__",&MatrixBaseT::norm)
+		.def("squaredNorm",&MatrixBaseT::squaredNorm)
+		.def("normalize",&MatrixBaseT::normalize)
+		.def("normalize",&MatrixBaseT::normalized)
+		.def("pruned",&MatrixBaseVisitor::pruned,py::arg("absTol")=1e-6)
+		;
+	}
+	// for fixed-size matrices/vectors only
+	static MatrixBaseT Ones(){ return MatrixBaseT::Ones(); }
+	static MatrixBaseT Zero(){ return MatrixBaseT::Zero(); }
+	static MatrixBaseT Random(){ return MatrixBaseT::Random(); }
+
+	static bool __eq__(const MatrixBaseT& a, const MatrixBaseT& b){
+		if(a.rows()!=b.rows() || a.cols()!=b.cols()) return false;
+		for(int c=0;c<a.cols();c++)for(int r=0;r<a.rows();r++)if(a(c,r)!=b(c,r)) return false;
+		return true;
+	}
+	static bool __neq__(const MatrixBaseT& a, const MatrixBaseT& b){ return !__eq__(a,b); }
+	static MatrixBaseT __neg__(const MatrixBaseT& a){ return -a; };
+	static MatrixBaseT __add__(const MatrixBaseT& a, const MatrixBaseT& b){ return a+b; }
+	static MatrixBaseT __sub__(const MatrixBaseT& a, const MatrixBaseT& b){ return a-b; }
+	static MatrixBaseT __iadd__(MatrixBaseT& a, const MatrixBaseT& b){ a+=b; return a; };
+	static MatrixBaseT __isub__(MatrixBaseT& a, const MatrixBaseT& b){ a-=b; return a; };
+
+	template<typename Scalar2> static MatrixBaseT __mul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
+	template<typename Scalar2> static MatrixBaseT __imul__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=scalar; return a; }
+	template<typename Scalar2> static MatrixBaseT __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
+	template<typename Scalar2> static MatrixBaseT __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=scalar; return a; }
+
+	static MatrixBaseT pruned(const MatrixBaseT& a, typename MatrixBaseT::Scalar absTol=1e-6){
+		MatrixBaseT ret(MatrixBaseT::Zero(a.rows(),a.cols()));
+		for(int c=0;c<a.cols();c++){
+			for(int r=0;r<a.rows();r++){ if(std::abs(a(c,r))>absTol && a(c,r)!=-0) ret(c,r)=a(c,r); }
+		}
+		return ret;
+	};
+};
+
+template<typename MatrixT>
+class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
+	friend class def_visitor_access;
+	typedef typename MatrixT::Scalar Scalar;
+	typedef typename Eigen::Matrix<Scalar,MatrixT::RowsAtCompileTime,1> CompatVectorT;
+	enum{Dim=MatrixT::RowsAtCompileTime};
+	public:
+	template<class PyClass>
+	void visit(PyClass& cl) const {
+		cl
+		.def("determinant",&MatrixT::determinant)
+		.def("trace",&MatrixT::trace)
+		.def("transpose",&MatrixVisitor::transpose)
+		.def("diagonal",&MatrixVisitor::diagonal)
+		.def("row",&MatrixVisitor::row)
+		.def("col",&MatrixVisitor::col)
+		// matrix-matrix product
+		.def("__mul__",&MatrixVisitor::__mul__).def("__imul__",&MatrixVisitor::__imul__)
+		;
+		visit_if_float<Scalar,PyClass>(cl);
+
+	}
+	private:
+	template<typename Scalar, class PyClass> static	void visit_if_float(PyClass& cl, typename boost::enable_if<boost::is_integral<Scalar> >::type* dummy = 0){ /* do nothing */ }
+	template<typename Scalar, class PyClass> static void visit_if_float(PyClass& cl, typename boost::disable_if<boost::is_integral<Scalar> >::type* dummy = 0){
+		cl
+		// matrix-matrix division?!
+		//.def("__div__",&MatrixBaseVisitor::__div__).def("__idiv__",&MatrixBaseVisitor::__idiv__)
+		.def("inverse",&MatrixT::inverse)
+		;
+	}
+	static MatrixT transpose(const MatrixT& m){ return m.transpose(); }
+	static CompatVectorT diagonal(const MatrixT& m){ return m.diagonal(); }
+	static MatrixT __imul__(MatrixT& a, const MatrixT& b){ a*=b; return a; };
+	static MatrixT __mul__(const MatrixT& a, const MatrixT& b){ return a*b; }
+	// float matrices only
+	static MatrixT inverse(const MatrixT& m){ return m.inverse(); }
+	static MatrixT __div__(const MatrixT& a, const MatrixT& b){ return a/b; }
+	static MatrixT __idiv__(MatrixT& a, const MatrixT& b){ a/=b; return a; };
+	static CompatVectorT row(const MatrixT& m, int ix){ IDX_CHECK(ix,m.rows()); return m.row(ix); }
+	static CompatVectorT col(const MatrixT& m, int ix){ IDX_CHECK(ix,m.cols()); return m.col(ix); }
+};
+
+
+template<typename VectorT>
+class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
+	friend class def_visitor_access;
+	typedef typename VectorT::Scalar Scalar;
+	typedef Eigen::Matrix<Scalar,VectorT::RowsAtCompileTime,VectorT::RowsAtCompileTime> CompatMatrixT;
+	enum{Dim=VectorT::RowsAtCompileTime};
+	public:
+	template<class PyClass>
+	void visit(PyClass& cl) const {
+		cl
+		.def_pickle(VectorPickle())
+		.def("__setitem__",&VectorVisitor::set_item)
+		.def("__getitem__",&VectorVisitor::get_item)
+		.def("__str__",&VectorVisitor::str).def("__repr__",&VectorVisitor::str)
+		.def("dot",&VectorVisitor::dot)
+		.def("outer",&VectorVisitor::outer)
+		.def("asDiagonal",&VectorVisitor::asDiagonal)
+		;
+
+		visit_fixed_or_dynamic<VectorT,PyClass>(cl);
+
+	};
+	private:
+	// for dynamic vectors
+	template<typename VectorT2, class PyClass> static void visit_fixed_or_dynamic(PyClass& cl, typename boost::enable_if_c<VectorT2::RowsAtCompileTime==Eigen::Dynamic>::type* dummy = 0){
+		cl.def("__len__",&VectorVisitor::len)
+		;
+	}
+	// for fixed-size vectors
+	template<typename VectorT2, class PyClass> static void visit_fixed_or_dynamic(PyClass& cl, typename boost::disable_if_c<VectorT2::RowsAtCompileTime==Eigen::Dynamic>::type* dummy = 0){
+		cl.def("__len__",&VectorVisitor::fixed_len).staticmethod("__len__")
+		.def("Unit",&VectorVisitor::Unit).staticmethod("Unit")
+		;
+	}
+	static bool dyn(){ return Dim==Eigen::Dynamic; }
+	static int fixed_len(){ assert(!dyn()); return Dim; }
+	static int len(const VectorT& self){ return self.size(); }
+	static Scalar dot(const VectorT& self, const VectorT& other){ return self.dot(other); }
+	static CompatMatrixT outer(const VectorT& self, const VectorT& other){ return self*other.transpose(); }
+	static CompatMatrixT asDiagonal(const VectorT& self){ return self.asDiagonal(); }
+	static VectorT Unit(int ix){ IDX_CHECK(ix,(int)Dim); return VectorT::Unit(ix); }
+	static Scalar get_item(const VectorT& self, int ix){ IDX_CHECK(ix,dyn()?self.size():Dim); return self[ix]; }
+	static void set_item(VectorT& self, int ix, Scalar value){ IDX_CHECK(ix,dyn()?self.size():Dim); self[ix]=value; }
+	struct VectorPickle: py::pickle_suite{
+		static py::tuple getinitargs(const VectorT& x){
+			BOOST_STATIC_ASSERT((Dim<=6 && Dim>=2)|| Dim==Eigen::Dynamic);
+			switch((int)Dim){
+				case 2: return py::make_tuple(x[0],x[1]);
+				case 3: return py::make_tuple(x[0],x[1],x[2]);
+				case 6: return py::make_tuple(x[0],x[1],x[2],x[3],x[4],x[5]);
+				default: return py::make_tuple(py::list(x));
+			}
+		};
+	};
+	template<typename VectorType>
+	static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, typename boost::disable_if<boost::is_integral<typename VectorType::Scalar> >::type* dummy = 0){
+		for(int i=0; i<self.size(); i++) oss<<(i==0?"":((i%3)?",":", "))<<doubleToShortest(self[i]);
+	}
+
+	template<typename VectorType>
+	static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, typename boost::enable_if<boost::is_integral<typename VectorType::Scalar> >::type* dummy = 0){
+		for(int i=0; i<self.size(); i++) oss<<(i==0?"":((i%3)?",":", "))<<boost::lexical_cast<std::string>(self[i]);
+	}
+	public:
+	static std::string str(const VectorT& self){
+		std::ostringstream oss;
+		bool dyn=(Dim==Eigen::Dynamic);
+		oss<<"Vector"<<(dyn?"X":boost::lexical_cast<std::string>((int)Dim))<<(Eigen::NumTraits<typename VectorT::Scalar>::IsInteger?"i":"")<<(dyn?"([":"(");
+		Vector_data_stream(self,oss);
+		oss<<(dyn?"])":")");
+		return oss.str();
+	};
+};
+
+template<typename Box>
+class AabbVisitor: public py::def_visitor<AabbVisitor<Box> >{
+	friend class def_visitor_access;
+	typedef typename Box::VectorType VectorType;
+	typedef typename Box::Scalar Scalar;
+	public:
+	template <class PyClass>
+	void visit(PyClass& cl) const {
+		cl
+		.def(py::init<Box>(py::arg("other")))
+		.def(py::init<VectorType,VectorType>((py::arg("min"),py::arg("max"))))
+		.def_pickle(BoxPickle())
+		.def("volume",&Box::volume)
+		.def("empty",&Box::isEmpty)
+		.def("center",&AabbVisitor::center)
+		.def("sizes",&AabbVisitor::sizes)
+		.def("contains",&AabbVisitor::containsPt)
+		.def("contains",&AabbVisitor::containsBox)
+		// for the "in" operator
+		.def("__contains__",&AabbVisitor::containsPt) 
+		.def("__contains__",&AabbVisitor::containsBox)
+		.def("extend",&AabbVisitor::extendPt)
+		.def("extend",&AabbVisitor::extendBox)
+		.def("clamp",&AabbVisitor::clamp)
+		// return new objects
+		.def("intersection",&Box::intersection)
+		.def("merged",&Box::merged)
+		// those return internal references, which is what we want (FIXME: this is not true, they return copies!!)
+		.add_property("min",&AabbVisitor::min) 
+		.add_property("max",&AabbVisitor::max)
+		.def("__len__",&AabbVisitor::len).staticmethod("__len__")
+		.def("__setitem__",&AabbVisitor::set_item).def("__getitem__",&AabbVisitor::get_item)
+		.def("__setitem__",&AabbVisitor::set_minmax).def("__getitem__",&AabbVisitor::get_minmax)
+		// FIXME: broken until std it defined (depends on templated str for vectors)
+		.def("__str__",&AabbVisitor::str).def("__repr__",&AabbVisitor::str)
+		;
+	};
+	private:
+	static bool containsPt(const Box& self, const VectorType& pt){ return self.contains(pt); }
+	static bool containsBox(const Box& self, const Box& other){ return self.contains(other); }
+	static void extendPt(Box& self, const VectorType& pt){ self.extend(pt); }
+	static void extendBox(Box& self, const Box& other){ self.extend(other); }
+	static void clamp(Box& self, const Box& other){ self.clamp(other); }
+	static VectorType min(const Box& self){ return self.min(); }
+	static VectorType max(const Box& self){ return self.max(); }
+	static VectorType center(const Box& self){ return self.center(); }
+	static VectorType sizes(const Box& self){ return self.sizes(); }
+	struct BoxPickle: py::pickle_suite{
+		static py::tuple getinitargs(const Box& x){ return py::make_tuple(x.min(),x.max()); }
+	};
+	static int len(){ return Box::AmbientDimAtCompileTime; }
+	// getters and setters 
+	static Scalar get_item(const Box& self, py::tuple _idx){ int idx[2]; long mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
+	static void set_item(Box& self, py::tuple _idx, Scalar value){ int idx[2]; int mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
+	static VectorType get_minmax(const Box& self, int idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
+	static void set_minmax(Box& self, int idx, const VectorType& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
+	static std::string name(){ return std::string("AlignedBox")+(Box::AmbientDimAtCompileTime==Eigen::Dynamic?"X":boost::lexical_cast<std::string>((int)Box::AmbientDimAtCompileTime))+(Eigen::NumTraits<Scalar>::IsInteger?"i":"");}
+	static std::string str(const Box& self){ return name()+"("+VectorVisitor<VectorType>::str(self.min())+","+VectorVisitor<VectorType>::str(self.max())+")"; }
+};
+
+#endif /* _NEW_VISITORS */
 
 #undef IDX_CHECK
 
@@ -626,57 +905,57 @@ BOOST_PYTHON_MODULE(minieigen){
 	custom_MatrixAnyAny_from_sequence<MatrixXr>();
 
 	py::class_<Matrix3r>("Matrix3","3x3 float matrix.\n\nSupported operations (``m`` is a Matrix3, ``f`` if a float/int, ``v`` is a Vector3): ``-m``, ``m+m``, ``m+=m``, ``m-m``, ``m-=m``, ``m*f``, ``f*m``, ``m*=f``, ``m/f``, ``m/=f``, ``m*m``, ``m*=m``, ``m*v``, ``v*m``, ``m==m``, ``m!=m``.\n\nStatic attributes: ``Zero``, ``Ones``, ``Identity``.",py::init<>())
-		.def(py::init<Matrix3r const &>((py::arg("m"))))
 		.def(py::init<Quaternionr const &>((py::arg("q"))))
 		.def("__init__",py::make_constructor(&Matrix3r_fromElements,py::default_call_policies(),(py::arg("m00"),py::arg("m01"),py::arg("m02"),py::arg("m10"),py::arg("m11"),py::arg("m12"),py::arg("m20"),py::arg("m21"),py::arg("m22"))))
 		.def("__init__",py::make_constructor(&Matrix3r_fromRows,py::default_call_policies(),(py::arg("r0"),py::arg("r1"),py::arg("r2"),py::arg("cols")=false)))
+		// those should move to the visitor
 		.def("__init__",py::make_constructor(&Matrix3r_fromDiagonal,py::default_call_policies(),(py::arg("diag"))))
-		.def_pickle(Matrix3r_pickle())
-		//
-		.def("determinant",&Matrix3r::determinant)
-		.def("trace",&Matrix3r::trace)
-		.def("norm",&Matrix3r::norm)
-		.def("inverse",&Matrix3r_inverse)
-		.def("transpose",&Matrix3r_transpose)
-		.def("diagonal",&Matrix3r_diagonal)
-		.def("row",&Matrix3r_row)
-		.def("col",&Matrix3r_col)
-		.def("pruned",&Matrix_pruned<Matrix3r>,py::arg("absTol")=1e-6)
-		.def("maxAbsCoeff",&Matrix_maxAbsCoeff<Matrix3r>)
-		.def("sum",&Matrix_sum<Matrix3r>)
-
-		//
-		.def("__neg__",&Matrix3r__neg__)
-		.def("__add__",&Matrix3r__add__Matrix3r).def("__iadd__",&Matrix3r__iadd__Matrix3r)
-		.def("__sub__",&Matrix3r__sub__Matrix3r).def("__isub__",&Matrix3r__isub__Matrix3r)
-		.def("__mul__",&Matrix3r__mul__Real).def("__rmul__",&Matrix3r__rmul__Real).def("__imul__",&Matrix3r__imul__Real)
-		.def("__mul__",&Matrix3r__mul__int).def("__rmul__",&Matrix3r__rmul__int).def("__imul__",&Matrix3r__imul__int)
 		.def("__mul__",&Matrix3r__mul__Vector3r).def("__rmul__",&Matrix3r__rmul__Vector3r)
-		.def("__mul__",&Matrix3r__mul__Matrix3r).def("__imul__",&Matrix3r__imul__Matrix3r)
-		.def("__div__",&Matrix3r__div__Real).def("__idiv__",&Matrix3r__idiv__Real)
-		.def("__div__",&Matrix3r__div__int).def("__idiv__",&Matrix3r__idiv__int)
-		.def(py::self == py::self)
-		.def(py::self != py::self)
-		//
- 		.def("__len__",&::Matrix3r_len).staticmethod("__len__").def("__setitem__",&::Matrix3r_set_item).def("__getitem__",&::Matrix3r_get_item).def("__str__",&::Matrix3r_str).def("__repr__",&::Matrix3r_str)
-		/* extras for matrices */
+		.def("__len__",&::Matrix3r_len).staticmethod("__len__").def("__setitem__",&::Matrix3r_set_item).def("__getitem__",&::Matrix3r_get_item).def("__str__",&::Matrix3r_str).def("__repr__",&::Matrix3r_str)
 		.def("__setitem__",&::Matrix3r_set_row).def("__getitem__",&::Matrix3r_get_row)
-		.add_static_property("Identity",&Matrix3r_Identity)
-		.add_static_property("Zero",&Matrix3r_Zero)
-		.add_static_property("Ones",&Matrix3r_Ones)
-		.def("Random",&Matrix3r_Random).staticmethod("Random")
+		.def("maxAbsCoeff",&Matrix_maxAbsCoeff<Matrix3r>)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<Matrix3r>())
+			.def(MatrixVisitor<Matrix3r>())
+		#else
+			.def(py::init<Matrix3r const &>((py::arg("m"))))
+			.def_pickle(Matrix3r_pickle())
+			//
+			.def("determinant",&Matrix3r::determinant)
+			.def("trace",&Matrix3r::trace)
+			.def("norm",&Matrix3r::norm)
+			.def("inverse",&Matrix3r_inverse)
+			.def("transpose",&Matrix3r_transpose)
+			.def("diagonal",&Matrix3r_diagonal)
+			.def("row",&Matrix3r_row)
+			.def("col",&Matrix3r_col)
+			.def("pruned",&Matrix_pruned<Matrix3r>,py::arg("absTol")=1e-6)
+			.def("sum",&Matrix_sum<Matrix3r>)
+
+			//
+			.def("__neg__",&Matrix3r__neg__)
+			.def("__add__",&Matrix3r__add__Matrix3r).def("__iadd__",&Matrix3r__iadd__Matrix3r)
+			.def("__sub__",&Matrix3r__sub__Matrix3r).def("__isub__",&Matrix3r__isub__Matrix3r)
+			.def("__mul__",&Matrix3r__mul__Real).def("__rmul__",&Matrix3r__rmul__Real).def("__imul__",&Matrix3r__imul__Real)
+			.def("__mul__",&Matrix3r__mul__int).def("__rmul__",&Matrix3r__rmul__int).def("__imul__",&Matrix3r__imul__int)
+			.def("__mul__",&Matrix3r__mul__Matrix3r).def("__imul__",&Matrix3r__imul__Matrix3r)
+			.def("__div__",&Matrix3r__div__Real).def("__idiv__",&Matrix3r__idiv__Real)
+			.def("__div__",&Matrix3r__div__int).def("__idiv__",&Matrix3r__idiv__int)
+			.def(py::self == py::self)
+			.def(py::self != py::self)
+			//
+			/* extras for matrices */
+			.add_static_property("Identity",&Matrix3r_Identity)
+			.add_static_property("Zero",&Matrix3r_Zero)
+			.add_static_property("Ones",&Matrix3r_Ones)
+			.def("Random",&Matrix3r_Random).staticmethod("Random")
+		#endif
 		.def("jacobiSVD",&Matrix_jacobiSVD<Matrix3r>,"Compute SVD decomposition of matrix, retuns (U,S,V) such that self=U*S*V.transpose()")
 		.def("svd",&Matrix_jacobiSVD<Matrix3r>,"Shortcut for :obj:`jacobiSVD`.")
 		.def("computeUnitaryPositive",&Matrix_computeUnitaryPositive<Matrix3r>,"Compute polar decomposition (unitary matrix U and positive semi-definite symmetric matrix P such that self=U*P.")
 		.def("polarDecomposition",&Matrix_computeUnitaryPositive<Matrix3r>,"Shortcut for :obj:`computeUnitaryPositive`.")
 		.def("selfAdjointEigenDecomposition",&Matrix_selfAdjointEigenDecomposition<Matrix3r>,"Compute eigen (spectral) decomposition of symmetric matrix, returns (eigVecs,eigVals). eigVecs is orthogonal Matrix3 with columns ar normalized eigenvectors, eigVals is Vector3 with corresponding eigenvalues. self=eigVecs*diag(eigVals)*eigVecs.transpose()")
 		.def("spectralDecomposition",&Matrix_selfAdjointEigenDecomposition<Matrix3r>,"Shortcut for selfAdjointEigenDecomposition")
-		#if 0
-			.def("polarDecomposition",&Matrix3r_polarDecomposition)
-			.def("symmEigen",&Matrix3r_symmEigen)
-			.def("leviCivita",&Matrix3r_leviCivita,"Compute dual vector, using the matrix as representation of 2nd order tensor in 3d cartesian coords (applies Levi-Civita symbol)")
-			.def("toVoigt",&Matrix3r_toVoigt,(py::arg("strain")=false),"Convert 2nd order tensor to 6-vector (Voigt notation), symmetrizing the tensor;	if *strain* is ``True``, multiply non-diagonal compoennts by 2.")
-		#endif
 	;
 
 	py::class_<Matrix6r>("Matrix6","6x6 float matrix. Constructed from 4 3x3 sub-matrices, from 6xVector6 (rows).\n\nSupported operations (``m`` is a Matrix6, ``f`` if a float/int, ``v`` is a Vector6): ``-m``, ``m+m``, ``m+=m``, ``m-m``, ``m-=m``, ``m*f``, ``f*m``, ``m*=f``, ``m/f``, ``m/=f``, ``m*m``, ``m*=m``, ``m*v``, ``v*m``, ``m==m``, ``m!=m``.\n\nStatic attributes: ``Zero``, ``Ones``, ``Identity``.",py::init<>())
@@ -730,32 +1009,38 @@ BOOST_PYTHON_MODULE(minieigen){
 	;
 
 	py::class_<VectorXr>("VectorX","Dynamic-sized float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a VectorX): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of X floats.",py::init<>())
-		.def(py::init<VectorXr>((py::arg("other"))))
 		.def("__init__",py::make_constructor(&VectorXr_fromList,py::default_call_policies(),(py::arg("vv"))))
+		.add_static_property("Ones",&VectorXr_Ones).add_static_property("Zero",&VectorXr_Zero)
+
+		.def(py::init<VectorXr>((py::arg("other"))))
 		.def_pickle(VectorXr_pickle())
 		// properties
-		.add_static_property("Ones",&VectorXr_Ones).add_static_property("Zero",&VectorXr_Zero)
 		// methods
 		.def("Random",&VectorXr_Random).staticmethod("Random")
-		.def("norm",&VectorXr::norm).def("squaredNorm",&VectorXr::squaredNorm).def("normalize",&VectorXr::normalize).def("normalized",&VectorXr::normalized)
-		.def("asDiagonal",&Vector_asDiagonal<VectorXr>)
-		.def("size",&VectorXr::size)
 		.def("resize",&VectorXr_resize)
-		.def("sum",&Matrix_sum<VectorXr>)
-		// operators
-		.def("__neg__",&VectorXr__neg__) // -v
-		.def("__add__",&VectorXr__add__VectorXr).def("__iadd__",&VectorXr__iadd__VectorXr) // +, +=
-		.def("__sub__",&VectorXr__sub__VectorXr).def("__isub__",&VectorXr__isub__VectorXr) // -, -=
-		.def("__mul__",&VectorXr__mul__Real).def("__rmul__",&VectorXr__rmul__Real) // f*v, v*f
-		.def("__div__",&VectorXr__div__Real).def("__idiv__",&VectorXr__idiv__Real) // v/f, v/=f
-		.def("__mul__",&VectorXr__mul__int).def("__rmul__",&VectorXr__rmul__int) // f*v, v*f
-		.def("__div__",&VectorXr__div__int).def("__idiv__",&VectorXr__idiv__int) // v/f, v/=f
-		.def(py::self != py::self).def(py::self == py::self)
-		// specials
-		.def("__abs__",&VectorXr::norm)
-		.def("__len__",&::VectorXr_len)
-		.def("__setitem__",&::VectorXr_set_item).def("__getitem__",&::VectorXr_get_item)
-		.def("__str__",&::VectorXr_str).def("__repr__",&::VectorXr_str)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<VectorXr>())
+			.def(VectorVisitor<VectorXr>())
+		#else
+			.def("norm",&VectorXr::norm).def("squaredNorm",&VectorXr::squaredNorm).def("normalize",&VectorXr::normalize).def("normalized",&VectorXr::normalized)
+			.def("asDiagonal",&Vector_asDiagonal<VectorXr>)
+			.def("size",&VectorXr::size)
+			.def("sum",&Matrix_sum<VectorXr>)
+			// operators
+			.def("__neg__",&VectorXr__neg__) // -v
+			.def("__add__",&VectorXr__add__VectorXr).def("__iadd__",&VectorXr__iadd__VectorXr) // +, +=
+			.def("__sub__",&VectorXr__sub__VectorXr).def("__isub__",&VectorXr__isub__VectorXr) // -, -=
+			.def("__mul__",&VectorXr__mul__Real).def("__rmul__",&VectorXr__rmul__Real) // f*v, v*f
+			.def("__div__",&VectorXr__div__Real).def("__idiv__",&VectorXr__idiv__Real) // v/f, v/=f
+			.def("__mul__",&VectorXr__mul__int).def("__rmul__",&VectorXr__rmul__int) // f*v, v*f
+			.def("__div__",&VectorXr__div__int).def("__idiv__",&VectorXr__idiv__int) // v/f, v/=f
+			.def(py::self != py::self).def(py::self == py::self)
+			// specials
+			.def("__abs__",&VectorXr::norm)
+			.def("__len__",&::VectorXr_len)
+			.def("__setitem__",&::VectorXr_set_item).def("__getitem__",&::VectorXr_get_item)
+			.def("__str__",&::VectorXr_str).def("__repr__",&::VectorXr_str)
+		#endif
 	;
 
 
@@ -864,34 +1149,39 @@ BOOST_PYTHON_MODULE(minieigen){
 
 
 	py::class_<Vector6r>("Vector6","6-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector6): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 6 floats.\n\nStatic attributes: ``Zero``, ``Ones``.",py::init<>())
-		.def(py::init<Vector6r>((py::arg("other"))))
 		.def("__init__",py::make_constructor(&Vector6r_fromElements,py::default_call_policies(),(py::arg("v0"),py::arg("v1"),py::arg("v2"),py::arg("v3"),py::arg("v4"),py::arg("v5"))))
 		.def("__init__",py::make_constructor(&Vector6r_fromHeadTail,py::default_call_policies(),(py::arg("head"),py::arg("tail"))))
-		.def_pickle(Vector6r_pickle())
-		// properties
-		.add_static_property("Ones",&Vector6r_Ones).add_static_property("Zero",&Vector6r_Zero)
-		//.add_static_property("UnitX",&Vector6r_UnitX).add_static_property("UnitY",&Vector6r_UnitY).add_static_property("UnitZ",&Vector6r_UnitZ)
-		// methods
-		//.def("dot",&Vector6r_dot).def("cross",&Vector6r_cross)
-		.def("Random",&Vector6r_Random).staticmethod("Random")
-		.def("norm",&Vector6r::norm).def("squaredNorm",&Vector6r::squaredNorm).def("normalize",&Vector6r::normalize).def("normalized",&Vector6r::normalized)
 		.def("head",&Vector6r_head).def("tail",&Vector6r_tail)
-		.def("asDiagonal",&Vector_asDiagonal<Vector6r>)
-		.def("sum",&Matrix_sum<Vector6r>)
-		// operators
-		.def("__neg__",&Vector6r__neg__) // -v
-		.def("__add__",&Vector6r__add__Vector6r).def("__iadd__",&Vector6r__iadd__Vector6r) // +, +=
-		.def("__sub__",&Vector6r__sub__Vector6r).def("__isub__",&Vector6r__isub__Vector6r) // -, -=
-		.def("__mul__",&Vector6r__mul__Real).def("__rmul__",&Vector6r__rmul__Real) // f*v, v*f
-		.def("__div__",&Vector6r__div__Real).def("__idiv__",&Vector6r__idiv__Real) // v/f, v/=f
-		.def("__mul__",&Vector6r__mul__int).def("__rmul__",&Vector6r__rmul__int) // f*v, v*f
-		.def("__div__",&Vector6r__div__int).def("__idiv__",&Vector6r__idiv__int) // v/f, v/=f
-		.def(py::self != py::self).def(py::self == py::self)
-		// specials
-		.def("__abs__",&Vector6r::norm)
-		.def("__len__",&::Vector6r_len).staticmethod("__len__")
-		.def("__setitem__",&::Vector6r_set_item).def("__getitem__",&::Vector6r_get_item)
-		.def("__str__",&::Vector6r_str).def("__repr__",&::Vector6r_str)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<Vector6r>())
+			.def(VectorVisitor<Vector6r>())
+		#else
+			.def(py::init<Vector6r>((py::arg("other"))))
+			.def_pickle(Vector6r_pickle())
+			// properties
+			.add_static_property("Ones",&Vector6r_Ones).add_static_property("Zero",&Vector6r_Zero)
+			//.add_static_property("UnitX",&Vector6r_UnitX).add_static_property("UnitY",&Vector6r_UnitY).add_static_property("UnitZ",&Vector6r_UnitZ)
+			// methods
+			//.def("dot",&Vector6r_dot).def("cross",&Vector6r_cross)
+			.def("Random",&Vector6r_Random).staticmethod("Random")
+			.def("norm",&Vector6r::norm).def("squaredNorm",&Vector6r::squaredNorm).def("normalize",&Vector6r::normalize).def("normalized",&Vector6r::normalized)
+			.def("asDiagonal",&Vector_asDiagonal<Vector6r>)
+			.def("sum",&Matrix_sum<Vector6r>)
+			// operators
+			.def("__neg__",&Vector6r__neg__) // -v
+			.def("__add__",&Vector6r__add__Vector6r).def("__iadd__",&Vector6r__iadd__Vector6r) // +, +=
+			.def("__sub__",&Vector6r__sub__Vector6r).def("__isub__",&Vector6r__isub__Vector6r) // -, -=
+			.def("__mul__",&Vector6r__mul__Real).def("__rmul__",&Vector6r__rmul__Real) // f*v, v*f
+			.def("__div__",&Vector6r__div__Real).def("__idiv__",&Vector6r__idiv__Real) // v/f, v/=f
+			.def("__mul__",&Vector6r__mul__int).def("__rmul__",&Vector6r__rmul__int) // f*v, v*f
+			.def("__div__",&Vector6r__div__int).def("__idiv__",&Vector6r__idiv__int) // v/f, v/=f
+			.def(py::self != py::self).def(py::self == py::self)
+			// specials
+			.def("__abs__",&Vector6r::norm)
+			.def("__len__",&::Vector6r_len).staticmethod("__len__")
+			.def("__setitem__",&::Vector6r_set_item).def("__getitem__",&::Vector6r_get_item)
+			.def("__str__",&::Vector6r_str).def("__repr__",&::Vector6r_str)
+		#endif
 		#if 0
 			// specials
 			.def("toSymmTensor",&Vector6r_toSymmTensor,(py::args("strain")=false),"Convert Vector6 in the Voigt notation to the corresponding 2nd order symmetric tensor (as Matrix3); if *strain* is ``True``, multiply non-diagonal components by .5")
@@ -901,194 +1191,228 @@ BOOST_PYTHON_MODULE(minieigen){
 	py::class_<Vector6i>("Vector6i","6-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector6): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 6 floats.\n\nStatic attributes: ``Zero``, ``Ones``.",py::init<>())
 		.def(py::init<Vector6i>((py::arg("other"))))
 		.def("__init__",py::make_constructor(&Vector6i_fromElements,py::default_call_policies(),(py::arg("v0"),py::arg("v1"),py::arg("v2"),py::arg("v3"),py::arg("v4"),py::arg("v5"))))
-		.def_pickle(Vector6i_pickle())
-		// properties
-		.add_static_property("Ones",&Vector6i_Ones).add_static_property("Zero",&Vector6i_Zero)
-		//.add_static_property("UnitX",&Vector6i_UnitX).add_static_property("UnitY",&Vector6i_UnitY).add_static_property("UnitZ",&Vector6i_UnitZ)
-		// methods
-		//.def("dot",&Vector6i_dot).def("cross",&Vector6i_cross)
-		//.def("norm",&Vector6i::norm).def("squaredNorm",&Vector6i::squaredNorm).def("normalize",&Vector6i::normalize).def("normalized",&Vector6i::normalized)
 		.def("head",&Vector6i_head).def("tail",&Vector6i_tail)
-		.def("sum",&Matrix_sum<Vector6i>)
-		// operators
-		.def("__neg__",&Vector6i__neg__) // -v
-		.def("__add__",&Vector6i__add__Vector6i).def("__iadd__",&Vector6i__iadd__Vector6i) // +, +=
-		.def("__sub__",&Vector6i__sub__Vector6i).def("__isub__",&Vector6i__isub__Vector6i) // -, -=
-		.def("__mul__",&Vector6i__mul__int).def("__rmul__",&Vector6i__rmul__int) // f*v, v*f
-		.def("__div__",&Vector6i__div__int).def("__idiv__",&Vector6i__idiv__int) // v/f, v/=f
-		.def(py::self != py::self).def(py::self == py::self)
-		// specials
-		// .def("__abs__",&Vector6i::norm)
-		.def("__len__",&::Vector6i_len).staticmethod("__len__")
-		.def("__setitem__",&::Vector6i_set_item).def("__getitem__",&::Vector6i_get_item)
-		.def("__str__",&::Vector6i_str).def("__repr__",&::Vector6i_str)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<Vector6i>())
+			.def(VectorVisitor<Vector6i>())
+		#else
+			.def_pickle(Vector6i_pickle())
+			// properties
+			.add_static_property("Ones",&Vector6i_Ones).add_static_property("Zero",&Vector6i_Zero)
+			//.add_static_property("UnitX",&Vector6i_UnitX).add_static_property("UnitY",&Vector6i_UnitY).add_static_property("UnitZ",&Vector6i_UnitZ)
+			// methods
+			//.def("dot",&Vector6i_dot).def("cross",&Vector6i_cross)
+			//.def("norm",&Vector6i::norm).def("squaredNorm",&Vector6i::squaredNorm).def("normalize",&Vector6i::normalize).def("normalized",&Vector6i::normalized)
+			.def("sum",&Matrix_sum<Vector6i>)
+			// operators
+			.def("__neg__",&Vector6i__neg__) // -v
+			.def("__add__",&Vector6i__add__Vector6i).def("__iadd__",&Vector6i__iadd__Vector6i) // +, +=
+			.def("__sub__",&Vector6i__sub__Vector6i).def("__isub__",&Vector6i__isub__Vector6i) // -, -=
+			.def("__mul__",&Vector6i__mul__int).def("__rmul__",&Vector6i__rmul__int) // f*v, v*f
+			.def("__div__",&Vector6i__div__int).def("__idiv__",&Vector6i__idiv__int) // v/f, v/=f
+			.def(py::self != py::self).def(py::self == py::self)
+			// specials
+			// .def("__abs__",&Vector6i::norm)
+			.def("__len__",&::Vector6i_len).staticmethod("__len__")
+			.def("__setitem__",&::Vector6i_set_item).def("__getitem__",&::Vector6i_get_item)
+			.def("__str__",&::Vector6i_str).def("__repr__",&::Vector6i_str)
+		#endif
 	;
 
 	py::class_<Vector3r>("Vector3","3-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``, plus operations with ``Matrix3`` and ``Quaternion``.\n\nImplicit conversion from sequence (list, tuple, ...) of 3 floats.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``, ``UnitZ``.",py::init<>())
-		.def(py::init<Vector3r>((py::arg("other"))))
 		.def(py::init<Real,Real,Real>((py::arg("x"),py::arg("y"),py::arg("z"))))
-		.def_pickle(Vector3r_pickle())
-		// properties
-		.add_static_property("Ones",&Vector3r_Ones).add_static_property("Zero",&Vector3r_Zero)
 		.add_static_property("UnitX",&Vector3r_UnitX).add_static_property("UnitY",&Vector3r_UnitY).add_static_property("UnitZ",&Vector3r_UnitZ)
-		// methods
-		.def("Random",&Vector3r_Random).staticmethod("Random")
-		.def("dot",&Vector3r_dot).def("cross",&Vector3r_cross)
-		.def("norm",&Vector3r::norm).def("squaredNorm",&Vector3r::squaredNorm).def("normalize",&Vector3r::normalize).def("normalized",&Vector3r::normalized)
-		.def("asDiagonal",&Vector_asDiagonal<Vector3r>)
-		.def("Unit",&Vector_Unit<Vector3r>).staticmethod("Unit")
-		.def("pruned",&Matrix_pruned<Vector3r>,py::arg("absTol")=1e-6)
-		.def("maxAbsCoeff",&Matrix_maxAbsCoeff<Vector3r>)
-		.def("sum",&Matrix_sum<Vector3r>)
-		.def("outer",&Vector_outer<Vector3r,Vector3r>)
 		// swizzles
 		.def("xy",&Vector3r_xy).def("yx",&Vector3r_yx).def("xz",&Vector3r_xz).def("zx",&Vector3r_zx).def("yz",&Vector3r_yz).def("zy",&Vector3r_zy)
-		// operators
-		.def("__neg__",&Vector3r__neg__) // -v
-		.def("__add__",&Vector3r__add__Vector3r).def("__iadd__",&Vector3r__iadd__Vector3r) // +, +=
-		.def("__sub__",&Vector3r__sub__Vector3r).def("__isub__",&Vector3r__isub__Vector3r) // -, -=
-		.def("__mul__",&Vector3r__mul__Real).def("__rmul__",&Vector3r__rmul__Real) // f*v, v*f
-		.def("__div__",&Vector3r__div__Real).def("__idiv__",&Vector3r__idiv__Real) // v/f, v/=f
-		.def("__mul__",&Vector3r__mul__int).def("__rmul__",&Vector3r__rmul__int) // f*v, v*f
-		.def("__div__",&Vector3r__div__int).def("__idiv__",&Vector3r__idiv__int) // v/f, v/=f
-		.def(py::self != py::self).def(py::self == py::self)
-		// specials
-		.def("__abs__",&Vector3r::norm)
-		.def("__len__",&::Vector3r_len).staticmethod("__len__")
-		.def("__setitem__",&::Vector3r_set_item).def("__getitem__",&::Vector3r_get_item)
-		.def("__str__",&::Vector3r_str).def("__repr__",&::Vector3r_str)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<Vector3r>())
+			.def(VectorVisitor<Vector3r>())
+		#else
+			.def_pickle(Vector3r_pickle())
+			.def(py::init<Vector3r>((py::arg("other"))))
+			// properties
+			.add_static_property("Ones",&Vector3r_Ones).add_static_property("Zero",&Vector3r_Zero)
+			// methods
+			.def("Random",&Vector3r_Random).staticmethod("Random")
+			.def("dot",&Vector3r_dot).def("cross",&Vector3r_cross)
+			.def("norm",&Vector3r::norm).def("squaredNorm",&Vector3r::squaredNorm).def("normalize",&Vector3r::normalize).def("normalized",&Vector3r::normalized)
+			.def("asDiagonal",&Vector_asDiagonal<Vector3r>)
+			.def("Unit",&Vector_Unit<Vector3r>).staticmethod("Unit")
+			.def("pruned",&Matrix_pruned<Vector3r>,py::arg("absTol")=1e-6)
+			.def("maxAbsCoeff",&Matrix_maxAbsCoeff<Vector3r>)
+			.def("sum",&Matrix_sum<Vector3r>)
+			.def("outer",&Vector_outer<Vector3r,Vector3r>)
+			// operators
+			.def("__neg__",&Vector3r__neg__) // -v
+			.def("__add__",&Vector3r__add__Vector3r).def("__iadd__",&Vector3r__iadd__Vector3r) // +, +=
+			.def("__sub__",&Vector3r__sub__Vector3r).def("__isub__",&Vector3r__isub__Vector3r) // -, -=
+			.def("__mul__",&Vector3r__mul__Real).def("__rmul__",&Vector3r__rmul__Real) // f*v, v*f
+			.def("__div__",&Vector3r__div__Real).def("__idiv__",&Vector3r__idiv__Real) // v/f, v/=f
+			.def("__mul__",&Vector3r__mul__int).def("__rmul__",&Vector3r__rmul__int) // f*v, v*f
+			.def("__div__",&Vector3r__div__int).def("__idiv__",&Vector3r__idiv__int) // v/f, v/=f
+			.def(py::self != py::self).def(py::self == py::self)
+			// specials
+			.def("__abs__",&Vector3r::norm)
+			.def("__len__",&::Vector3r_len).staticmethod("__len__")
+			.def("__setitem__",&::Vector3r_set_item).def("__getitem__",&::Vector3r_get_item)
+			.def("__str__",&::Vector3r_str).def("__repr__",&::Vector3r_str)
+		#endif
 	;	
 	py::class_<Vector3i>("Vector3i","3-dimensional integer vector.\n\nSupported operations (``i`` if an int, ``v`` is a Vector3i): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*i``, ``i*v``, ``v*=i``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence  (list, tuple, ...) of 3 integers.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``, ``UnitZ``.",py::init<>())
-		.def(py::init<Vector3i>((py::arg("other"))))
 		.def(py::init<int,int,int>((py::arg("x"),py::arg("y"),py::arg("z"))))
-		.def_pickle(Vector3i_pickle())
-		// properties
-		.add_static_property("Ones",&Vector3i_Ones).add_static_property("Zero",&Vector3i_Zero)
-		.add_static_property("UnitX",&Vector3i_UnitX).add_static_property("UnitY",&Vector3i_UnitY).add_static_property("UnitZ",&Vector3i_UnitZ)
-		// methods
 		.def("dot",&Vector3i_dot).def("cross",&Vector3i_cross)
-		.def("sum",&Matrix_sum<Vector3i>)
-		//.def("norm",&Vector3i::norm).def("squaredNorm",&Vector3i::squaredNorm)
-		.def("Unit",&Vector_Unit<Vector3i>).staticmethod("Unit")
-		// operators
-		.def("__neg__",&Vector3i__neg__) // -v
-		.def("__add__",&Vector3i__add__Vector3i).def("__iadd__",&Vector3i__iadd__Vector3i) // +, +=
-		.def("__sub__",&Vector3i__sub__Vector3i).def("__isub__",&Vector3i__isub__Vector3i) // -, -=
-		.def("__mul__",&Vector3i__mul__int).def("__rmul__",&Vector3i__rmul__int) // f*v, v*f
-		.def(py::self != py::self).def(py::self == py::self)
-		// specials
-		//.def("__abs__",&Vector3i::norm)
-		.def("__len__",&::Vector3i_len).staticmethod("__len__")
-		.def("__setitem__",&::Vector3i_set_item).def("__getitem__",&::Vector3i_get_item)
-		.def("__str__",&::Vector3i_str).def("__repr__",&::Vector3i_str)
+		.add_static_property("UnitX",&Vector3i_UnitX).add_static_property("UnitY",&Vector3i_UnitY).add_static_property("UnitZ",&Vector3i_UnitZ)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<Vector3i>())
+			.def(VectorVisitor<Vector3i>())
+		#else
+			.def(py::init<Vector3i>((py::arg("other"))))
+			.def_pickle(Vector3i_pickle())
+			// properties
+			.add_static_property("Ones",&Vector3i_Ones).add_static_property("Zero",&Vector3i_Zero)
+			.def("Unit",&Vector_Unit<Vector3i>).staticmethod("Unit")
+			// methods
+			.def("sum",&Matrix_sum<Vector3i>)
+			//.def("norm",&Vector3i::norm).def("squaredNorm",&Vector3i::squaredNorm)
+			// operators
+			.def("__neg__",&Vector3i__neg__) // -v
+			.def("__add__",&Vector3i__add__Vector3i).def("__iadd__",&Vector3i__iadd__Vector3i) // +, +=
+			.def("__sub__",&Vector3i__sub__Vector3i).def("__isub__",&Vector3i__isub__Vector3i) // -, -=
+			.def("__mul__",&Vector3i__mul__int).def("__rmul__",&Vector3i__rmul__int) // f*v, v*f
+			.def(py::self != py::self).def(py::self == py::self)
+			// specials
+			//.def("__abs__",&Vector3i::norm)
+			.def("__len__",&::Vector3i_len).staticmethod("__len__")
+			.def("__setitem__",&::Vector3i_set_item).def("__getitem__",&::Vector3i_get_item)
+			.def("__str__",&::Vector3i_str).def("__repr__",&::Vector3i_str)
+		#endif
 	;	
 	py::class_<Vector2r>("Vector2","3-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 2 floats.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``.",py::init<>())
-		.def(py::init<Vector2r>((py::arg("other"))))
 		.def(py::init<Real,Real>((py::arg("x"),py::arg("y"))))
-		.def_pickle(Vector2r_pickle())
-		// properties
-		.add_static_property("Ones",&Vector2r_Ones).add_static_property("Zero",&Vector2r_Zero)
+		// not yet implemented with visitors
 		.add_static_property("UnitX",&Vector2r_UnitX).add_static_property("UnitY",&Vector2r_UnitY)
-		// methods
 		.def("Random",&Vector2r_Random).staticmethod("Random")
 		.def("dot",&Vector2r_dot)
-		.def("norm",&Vector2r::norm).def("squaredNorm",&Vector2r::squaredNorm).def("normalize",&Vector2r::normalize).def("normalized",&Vector2r::normalized)
-		.def("sum",&Matrix_sum<Vector2r>)
-		.def("Unit",&Vector_Unit<Vector2r>).staticmethod("Unit")
-		// operators
-		.def("__neg__",&Vector2r__neg__) // -v
-		.def("__add__",&Vector2r__add__Vector2r).def("__iadd__",&Vector2r__iadd__Vector2r) // +, +=
-		.def("__sub__",&Vector2r__sub__Vector2r).def("__isub__",&Vector2r__isub__Vector2r) // -, -=
-		.def("__mul__",&Vector2r__mul__Real).def("__rmul__",&Vector2r__rmul__Real) // f*v, v*f
-		.def("__div__",&Vector2r__div__Real).def("__idiv__",&Vector2r__idiv__Real) // v/f, v/=f
-		.def("__mul__",&Vector2r__mul__int).def("__rmul__",&Vector2r__rmul__int) // f*v, v*f
-		.def("__div__",&Vector2r__div__int).def("__idiv__",&Vector2r__idiv__int) // v/f, v/=f
-		.def(py::self != py::self).def(py::self == py::self)
-		// specials
-		.def("__abs__",&Vector2r::norm)
-		.def("__len__",&::Vector2r_len).staticmethod("__len__")
-		.def("__setitem__",&::Vector2r_set_item).def("__getitem__",&::Vector2r_get_item)
-		.def("__str__",&::Vector2r_str).def("__repr__",&::Vector2r_str)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<Vector2r>())
+			.def(VectorVisitor<Vector2r>())
+		#else
+			.def("Unit",&Vector_Unit<Vector2r>).staticmethod("Unit")
+			.def(py::init<Vector2r>((py::arg("other"))))
+			.def_pickle(Vector2r_pickle())
+			// properties
+			.add_static_property("Ones",&Vector2r_Ones).add_static_property("Zero",&Vector2r_Zero)
+			// methods
+			.def("sum",&Matrix_sum<Vector2r>)
+			// operators
+			.def("__neg__",&Vector2r__neg__) // -v
+			.def("__add__",&Vector2r__add__Vector2r).def("__iadd__",&Vector2r__iadd__Vector2r) // +, +=
+			.def("__sub__",&Vector2r__sub__Vector2r).def("__isub__",&Vector2r__isub__Vector2r) // -, -=
+			.def("__mul__",&Vector2r__mul__Real).def("__rmul__",&Vector2r__rmul__Real) // f*v, v*f
+			.def("__div__",&Vector2r__div__Real).def("__idiv__",&Vector2r__idiv__Real) // v/f, v/=f
+			.def("__mul__",&Vector2r__mul__int).def("__rmul__",&Vector2r__rmul__int) // f*v, v*f
+			.def("__div__",&Vector2r__div__int).def("__idiv__",&Vector2r__idiv__int) // v/f, v/=f
+			.def(py::self != py::self).def(py::self == py::self)
+			// specials
+			.def("__len__",&::Vector2r_len).staticmethod("__len__")
+			.def("__setitem__",&::Vector2r_set_item).def("__getitem__",&::Vector2r_get_item)
+			.def("__str__",&::Vector2r_str).def("__repr__",&::Vector2r_str)
+			.def("norm",&Vector2r::norm).def("squaredNorm",&Vector2r::squaredNorm).def("normalize",&Vector2r::normalize).def("normalized",&Vector2r::normalized)
+			.def("__abs__",&Vector2r::norm)
+		#endif
 	;	
 	py::class_<Vector2i>("Vector2i","2-dimensional integer vector.\n\nSupported operations (``i`` if an int, ``v`` is a Vector2i): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*i``, ``i*v``, ``v*=i``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 2 integers.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``.",py::init<>())
-		.def(py::init<Vector2i>((py::arg("other"))))
 		.def(py::init<int,int>((py::arg("x"),py::arg("y"))))
-		.def_pickle(Vector2i_pickle())
-		// properties
-		.add_static_property("Ones",&Vector2i_Ones).add_static_property("Zero",&Vector2i_Zero)
 		.add_static_property("UnitX",&Vector2i_UnitX).add_static_property("UnitY",&Vector2i_UnitY)
-		// methods
-		.def("dot",&Vector2i_dot)
-		.def("sum",&Matrix_sum<Vector2i>)
-		//.def("norm",&Vector2i::norm).def("squaredNorm",&Vector2i::squaredNorm).def("normalize",&Vector2i::normalize)
-		.def("Unit",&Vector_Unit<Vector2i>).staticmethod("Unit")
-		// operators
-		.def("__neg__",&Vector2i__neg__) // -v
-		.def("__add__",&Vector2i__add__Vector2i).def("__iadd__",&Vector2i__iadd__Vector2i) // +, +=
-		.def("__sub__",&Vector2i__sub__Vector2i).def("__isub__",&Vector2i__isub__Vector2i) // -, -=
-		.def("__mul__",&Vector2i__mul__int).def("__rmul__",&Vector2i__rmul__int) // f*v, v*f
-		.def(py::self != py::self).def(py::self == py::self)
-		// specials
-		//.def("__abs__",&Vector2i::norm)
-		.def("__len__",&::Vector2i_len).staticmethod("__len__")
-		.def("__setitem__",&::Vector2i_set_item).def("__getitem__",&::Vector2i_get_item)
-		.def("__str__",&::Vector2i_str).def("__repr__",&::Vector2i_str)
+		#ifdef _NEW_VISITORS
+			.def(MatrixBaseVisitor<Vector2i>())
+			.def(VectorVisitor<Vector2i>())
+		#else
+			.def(py::init<Vector2i>((py::arg("other"))))
+			.def_pickle(Vector2i_pickle())
+			// properties
+			.add_static_property("Ones",&Vector2i_Ones).add_static_property("Zero",&Vector2i_Zero)
+			// methods
+			.def("dot",&Vector2i_dot)
+			.def("sum",&Matrix_sum<Vector2i>)
+			//.def("norm",&Vector2i::norm).def("squaredNorm",&Vector2i::squaredNorm).def("normalize",&Vector2i::normalize)
+			.def("Unit",&Vector_Unit<Vector2i>).staticmethod("Unit")
+			// operators
+			.def("__neg__",&Vector2i__neg__) // -v
+			.def("__add__",&Vector2i__add__Vector2i).def("__iadd__",&Vector2i__iadd__Vector2i) // +, +=
+			.def("__sub__",&Vector2i__sub__Vector2i).def("__isub__",&Vector2i__isub__Vector2i) // -, -=
+			.def("__mul__",&Vector2i__mul__int).def("__rmul__",&Vector2i__rmul__int) // f*v, v*f
+			.def(py::self != py::self).def(py::self == py::self)
+			// specials
+			//.def("__abs__",&Vector2i::norm)
+			.def("__len__",&::Vector2i_len).staticmethod("__len__")
+			.def("__setitem__",&::Vector2i_set_item).def("__getitem__",&::Vector2i_get_item)
+			.def("__str__",&::Vector2i_str).def("__repr__",&::Vector2i_str)
+		#endif
 	;	
 	
 
 	py::class_<AlignedBox3r>("AlignedBox3","Axis-aligned box object, defined by its minimum and maximum corners",py::init<>())
-		.def(py::init<AlignedBox3r>((py::arg("other"))))
-		.def(py::init<Vector3r,Vector3r>((py::arg("min"),py::arg("max"))))
-		.def_pickle(AlignedBox3r_pickle())
-		.def("volume",&AlignedBox3r::volume)
-		.def("empty",&::AlignedBox3r::isEmpty)
-		.def("center",&::AlignedBox3r_center)
-		.def("sizes",&::AlignedBox3r_size)
-		.def("contains",&::AlignedBox3r_containsPt)
-		.def("contains",&::AlignedBox3r_containsBox)
-		// for the "in" operator
-		.def("__contains__",&::AlignedBox3r_containsPt) 
-		.def("__contains__",&::AlignedBox3r_containsBox)
-		.def("extend",&::AlignedBox3r_extendPt)
-		.def("extend",&::AlignedBox3r_extendBox)
-		.def("clamp",&::AlignedBox3r_clamp)
-		// return new objects
-		.def("intersection",&AlignedBox3r::intersection)
-		.def("merged",&AlignedBox3r::merged)
-		// those return internal references, which is what we want
-		.add_property("min",&::AlignedBox3r_min) 
-		.add_property("max",&::AlignedBox3r_max)
-		.def("__len__",&::AlignedBox3r_len).staticmethod("__len__")
-		.def("__setitem__",&::AlignedBox3r_set_item).def("__getitem__",&::AlignedBox3r_get_item)
-		.def("__setitem__",&::AlignedBox3r_set_minmax).def("__getitem__",&::AlignedBox3r_get_minmax)
-		.def("__str__",&::AlignedBox3r_str).def("__repr__",&::AlignedBox3r_str)
+		#ifdef _NEW_VISITORS
+			.def(AabbVisitor<AlignedBox3r>())
+		#else
+			.def(py::init<AlignedBox3r>((py::arg("other"))))
+			.def(py::init<Vector3r,Vector3r>((py::arg("min"),py::arg("max"))))
+			.def_pickle(AlignedBox3r_pickle())
+			.def("volume",&AlignedBox3r::volume)
+			.def("empty",&::AlignedBox3r::isEmpty)
+			.def("center",&::AlignedBox3r_center)
+			.def("sizes",&::AlignedBox3r_size)
+			.def("contains",&::AlignedBox3r_containsPt)
+			.def("contains",&::AlignedBox3r_containsBox)
+			// for the "in" operator
+			.def("__contains__",&::AlignedBox3r_containsPt) 
+			.def("__contains__",&::AlignedBox3r_containsBox)
+			.def("extend",&::AlignedBox3r_extendPt)
+			.def("extend",&::AlignedBox3r_extendBox)
+			.def("clamp",&::AlignedBox3r_clamp)
+			// return new objects
+			.def("intersection",&AlignedBox3r::intersection)
+			.def("merged",&AlignedBox3r::merged)
+			// those return internal references, which is what we want
+			.add_property("min",&::AlignedBox3r_min) 
+			.add_property("max",&::AlignedBox3r_max)
+			.def("__len__",&::AlignedBox3r_len).staticmethod("__len__")
+			.def("__setitem__",&::AlignedBox3r_set_item).def("__getitem__",&::AlignedBox3r_get_item)
+			.def("__setitem__",&::AlignedBox3r_set_minmax).def("__getitem__",&::AlignedBox3r_get_minmax)
+			.def("__str__",&::AlignedBox3r_str).def("__repr__",&::AlignedBox3r_str)
+		#endif
 	;
 	py::class_<AlignedBox2r>("AlignedBox2","Axis-aligned box object in 2d, defined by its minimum and maximum corners",py::init<>())
-		.def(py::init<AlignedBox2r>((py::arg("other"))))
-		.def(py::init<Vector2r,Vector2r>((py::arg("min"),py::arg("max"))))
-		.def_pickle(AlignedBox2r_pickle())
-		.def("volume",&AlignedBox2r::volume)
-		.def("empty",&::AlignedBox2r::isEmpty)
-		.def("center",&::AlignedBox2r_center)
-		.def("sizes",&::AlignedBox2r_size)
-		.def("area",&AlignedBox2r::volume)
-		.def("contains",&::AlignedBox2r_containsPt)
-		.def("contains",&::AlignedBox2r_containsBox)
-		.def("extend",&::AlignedBox2r_extendPt)
-		.def("extend",&::AlignedBox2r_extendBox)
-		.def("clamp",&::AlignedBox2r_clamp)
-		// for the "in" operator
-		.def("__contains__",&::AlignedBox2r_containsPt) 
-		.def("__contains__",&::AlignedBox2r_containsBox)
-		.def("intersection",&AlignedBox2r::intersection)
-		.def("merged",&AlignedBox2r::merged)
-		// those return internal references, which is what we want
-		.add_property("min",&::AlignedBox2r_min) 
-		.add_property("max",&::AlignedBox2r_max)
-		.def("__len__",&::AlignedBox2r_len).staticmethod("__len__")
-		.def("__setitem__",&::AlignedBox2r_set_item).def("__getitem__",&::AlignedBox2r_get_item)
-		.def("__setitem__",&::AlignedBox2r_set_minmax).def("__getitem__",&::AlignedBox2r_get_minmax)
-		.def("__str__",&::AlignedBox2r_str).def("__repr__",&::AlignedBox2r_str)
+		#ifdef _NEW_VISITORS
+			.def(AabbVisitor<AlignedBox2r>())
+		#else
+			.def(py::init<AlignedBox2r>((py::arg("other"))))
+			.def(py::init<Vector2r,Vector2r>((py::arg("min"),py::arg("max"))))
+			.def_pickle(AlignedBox2r_pickle())
+			.def("volume",&AlignedBox2r::volume)
+			.def("empty",&::AlignedBox2r::isEmpty)
+			.def("center",&::AlignedBox2r_center)
+			.def("sizes",&::AlignedBox2r_size)
+			.def("area",&AlignedBox2r::volume)
+			.def("contains",&::AlignedBox2r_containsPt)
+			.def("contains",&::AlignedBox2r_containsBox)
+			.def("extend",&::AlignedBox2r_extendPt)
+			.def("extend",&::AlignedBox2r_extendBox)
+			.def("clamp",&::AlignedBox2r_clamp)
+			// for the "in" operator
+			.def("__contains__",&::AlignedBox2r_containsPt) 
+			.def("__contains__",&::AlignedBox2r_containsBox)
+			.def("intersection",&AlignedBox2r::intersection)
+			.def("merged",&AlignedBox2r::merged)
+			// those return internal references, which is what we want
+			.add_property("min",&::AlignedBox2r_min) 
+			.add_property("max",&::AlignedBox2r_max)
+			.def("__len__",&::AlignedBox2r_len).staticmethod("__len__")
+			.def("__setitem__",&::AlignedBox2r_set_item).def("__getitem__",&::AlignedBox2r_get_item)
+			.def("__setitem__",&::AlignedBox2r_set_minmax).def("__getitem__",&::AlignedBox2r_get_minmax)
+			.def("__str__",&::AlignedBox2r_str).def("__repr__",&::AlignedBox2r_str)
+		#endif
 	;
 };
 
