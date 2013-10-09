@@ -318,8 +318,8 @@ struct custom_Quaternionr_from_axisAngle_or_angleAxis{
 	static void construct(PyObject* obj_ptr, py::converter::rvalue_from_python_stage1_data* data){
 		void* storage=((py::converter::rvalue_from_python_storage<Quaternionr>*)(data))->storage.bytes;
 		PyObject *a(PySequence_GetItem(obj_ptr,0)), *b(PySequence_GetItem(obj_ptr,1));
-		if(py::extract<Vector3r>(a).check()) new (storage) Quaternionr(AngleAxisr(py::extract<Real>(b)(),py::extract<Vector3r>(a)()));
-		else new (storage) Quaternionr(AngleAxisr(py::extract<Real>(a)(),py::extract<Vector3r>(b)()));
+		if(py::extract<Vector3r>(a).check()) new (storage) Quaternionr(AngleAxisr(py::extract<Real>(b)(),py::extract<Vector3r>(a)().normalized()));
+		else new (storage) Quaternionr(AngleAxisr(py::extract<Real>(a)(),py::extract<Vector3r>(b)().normalized()));
 		data->convertible=storage;
 	}
 };
