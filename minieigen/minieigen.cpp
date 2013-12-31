@@ -1135,8 +1135,8 @@ BOOST_PYTHON_MODULE(minieigen){
 		py::class_<VectorXcr>("VectorXc","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<VectorXcr>()).def(VectorVisitor<VectorXcr>());
 
 		py::class_<Matrix3cr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Matrix3cr>()).def(MatrixVisitor<Matrix3cr>());
-		py::class_<Matrix3cr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Matrix3cr>()).def(MatrixVisitor<Matrix3cr>());
-		py::class_<Matrix3cr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Matrix3cr>()).def(MatrixVisitor<Matrix3cr>());
+		py::class_<Matrix6cr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Matrix6cr>()).def(MatrixVisitor<Matrix6cr>());
+		py::class_<MatrixXcr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<MatrixXcr>()).def(MatrixVisitor<MatrixXcr>());
 		;
 	#endif
 
