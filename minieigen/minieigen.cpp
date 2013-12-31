@@ -1,6 +1,21 @@
 // 2009-2012 © Václav Šmilauer <eu@doxos.eu>
 // licensed under the Lesser General Public License version 3 (LGPLv3)
 
+// if #defined, use visitors, which saves a lot of copied code and is necessary for complex numbers support
+// #define _NEW_VISITORS
+
+// if #defined, experimental complex support is enabled (requires _NEW_VISITORS)
+// #define _COMPLEX_SUPPORT
+
+/*
+visitors TODO:
+	* add constructors with elements like Vector3(x,y,z) so that they don't have to be defined by hand everywhere
+	* fix Ones, Zero, Random &c for dynamic vectors
+	* fix Unit{X,Y,Z} for vectors
+	* Quaternion via visitor?
+	* Vector6.{head.tail}, Vector3.{cross,xy,xz,zx,...}, Matrix6.{ul,ll,ur,lr}  inside visitors with enable_if methods
+*/
+
 /* change to float for single-precision */
 typedef double Real;
 
@@ -12,16 +27,11 @@ typedef double Real;
 #include<sys/stat.h>
 // END workaround
 
-
-// if #defined, use new code (more compact) using visitors (so far only AlingedBox* are implemented)
-// #define _NEW_VISITORS
-/*
-visitors TODO:
-	* fix Ones, Zero, Random &c for dynamic vectors
-	* fix Unit{X,Y,Z} for vectors
-	* Quaternion via visitor?
-	* Vector6.{head.tail}, Vector3.{cross,xy,xz,zx,...}, Matrix6.{ul,ll,ur,lr}  inside visitors with enable_if methods
-*/
+#ifdef _COMPLEX_SUPPORT
+	#ifndef _NEW_VISITORS
+		#error _COMPLEX_SUPPORT requires _NEW_VISITORS
+	#endif
+#endif
 
 
 #include<Eigen/Core>
@@ -46,6 +56,18 @@ typedef Eigen::Quaternion<Real> Quaternionr;
 typedef Eigen::AngleAxis<Real> AngleAxisr;
 typedef Eigen::AlignedBox<Real,3> AlignedBox3r;
 typedef Eigen::AlignedBox<Real,2> AlignedBox2r;
+
+#ifdef _COMPLEX_SUPPORT
+#include<complex>
+	using std::complex;
+	typedef Eigen::Matrix<complex<Real>,2,1> Vector2cr;
+	typedef Eigen::Matrix<complex<Real>,3,1> Vector3cr;
+	typedef Eigen::Matrix<complex<Real>,6,1> Vector6cr;
+	typedef Eigen::Matrix<complex<Real>,Eigen::Dynamic,1> VectorXcr;
+	typedef Eigen::Matrix<complex<Real>,3,3> Matrix3cr;
+	typedef Eigen::Matrix<complex<Real>,6,6> Matrix6cr;
+	typedef Eigen::Matrix<complex<Real>,Eigen::Dynamic,Eigen::Dynamic> MatrixXcr;
+#endif
 
 
 #include<string>
@@ -89,6 +111,37 @@ string doubleToShortest(double d, int pad=0){
 } 
 
 
+/* generic function to print numbers, via lexical_cast plus padding -- used for ints */
+template<typename T>
+string num_to_string(const T& num, int pad=0){
+	string ret(lexical_cast<string>(num));
+	if(pad==0 || (int)ret.size()>=pad) return ret;
+	return string(pad-ret.size(),' ')+ret; // left-pad with spaces
+}
+
+// for doubles, use the shortest representation
+string num_to_string(const double& num, int pad=0){ return doubleToShortest(num,pad); }
+
+#ifdef _COMPLEX_SUPPORT
+	// for complex numbers (with any scalar type, though only doubles are really used)
+	template<typename T>
+	string num_to_string(const complex<T>& num, int pad=0){
+		string ret;
+		// both components non-zero
+		if(num.real()!=0 && num.imag()!=0){
+			string ret=num_to_string(num.real(),/*pad*/0)+"+"+num_to_string(num.imag(),/*pad*/0)+"j";
+			if(pad==0 || (int)ret.size()>=pad) return ret;
+			return string(pad-ret.size(),' ')+ret; // left-pad with spaces
+		}
+		// only imaginary is non-zero: skip the real part, and decrease padding to accomoadate the trailing "j"
+		if(num.imag()!=0){
+			return num_to_string(num.imag(),/*pad*/pad>0?pad-1:0)+"j";
+		}
+		// non-complex (zero or not)
+		return num_to_string(num.real(),pad);
+	}
+#endif
+
 
 /*** getters and setters with bound guards ***/
 void IDX_CHECK(int i,int MAX){ if(i<0 || i>=MAX) { PyErr_SetString(PyExc_IndexError,("Index "+lexical_cast<string>(i)+" out of range 0.." + lexical_cast<string>(MAX-1)).c_str()); py::throw_error_already_set(); } }
@@ -102,6 +155,7 @@ int Quaternionr_len(){return 4;}
 struct Quaternionr_pickle: py::pickle_suite{static py::tuple getinitargs(const Quaternionr& x){ return py::make_tuple(x.w(),x.x(),x.y(),x.z());} };
 
 
+// this all goes away with visitors
 #ifndef _NEW_VISITORS
 	// vector getters
 	Real VectorXr_get_item(const VectorXr & self, int idx){ IDX_CHECK(idx,self.size()); return self[idx]; }
@@ -402,6 +456,7 @@ static bool Quaternionr__eq__(const Quaternionr& q1, const Quaternionr& q2){ ret
 static bool Quaternionr__neq__(const Quaternionr& q1, const Quaternionr& q2){ return q1!=q2; }
 static Quaternionr Quaternionr_Identity(){ return Quaternionr::Identity(); }
 
+// this all goes away with visitors
 #ifndef _NEW_VISITORS
 	static Vector3r Matrix3r_diagonal(const Matrix3r& m){ return Vector3r(m.diagonal()); }
 	static Vector6r Matrix6r_diagonal(const Matrix6r& m){ return Vector6r(m.diagonal()); }
@@ -500,7 +555,6 @@ static Quaternionr Quaternionr_Identity(){ return Quaternionr::Identity(); }
 
 #ifdef _NEW_VISITORS
 
-
 // methods common for vectors and matrices
 template<typename MatrixBaseT>
 class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >{
@@ -547,8 +601,8 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	}
 	template<typename Scalar, class PyClass> static	void visit_if_float(PyClass& cl, typename boost::enable_if<boost::is_integral<Scalar> >::type* dummy = 0){ /* do nothing */ }
 	template<typename Scalar, class PyClass> static void visit_if_float(PyClass& cl, typename boost::disable_if<boost::is_integral<Scalar> >::type* dummy = 0){
-		// operations with other scalars
 		cl.def("__mul__",&MatrixBaseVisitor::__mul__scalar<Real>)
+		// operations with other scalars
 		.def("__imul__",&MatrixBaseVisitor::__imul__scalar<Real>)
 		.def("__div__",&MatrixBaseVisitor::__div__scalar<int>)
 		.def("__idiv__",&MatrixBaseVisitor::__idiv__scalar<int>)
@@ -587,11 +641,14 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	template<typename Scalar2> static MatrixBaseT __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
 	template<typename Scalar2> static MatrixBaseT __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=scalar; return a; }
 
-	static MatrixBaseT pruned(const MatrixBaseT& a, typename MatrixBaseT::Scalar absTol=1e-6){
+	// we want to keep -0 (rather than replacing it by 0), but that does not work for complex numbers
+	// hence two versions
+	template<typename Scalar> static bool prune_element(const Scalar& num, double absTol, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol || num!=-0; }
+	template<typename Scalar> static bool prune_element(const Scalar& num, double absTol, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol; }
+	
+	static MatrixBaseT pruned(const MatrixBaseT& a, double absTol=1e-6){ // typename MatrixBaseT::Scalar absTol=1e-6){
 		MatrixBaseT ret(MatrixBaseT::Zero(a.rows(),a.cols()));
-		for(int c=0;c<a.cols();c++){
-			for(int r=0;r<a.rows();r++){ if(std::abs(a(c,r))>absTol && a(c,r)!=-0) ret(c,r)=a(c,r); }
-		}
+		for(int c=0;c<a.cols();c++){ for(int r=0;r<a.rows();r++){ if(!prune_element(a(c,r),absTol)) ret(c,r)=a(c,r); } }
 		return ret;
 	};
 };
@@ -680,15 +737,24 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 		oss<<(list?"])":")");
 		return oss.str();
 	};
-	template<typename VectorType>
-	static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, int pad=0, typename boost::disable_if<boost::is_integral<typename VectorType::Scalar> >::type* dummy = 0){
-		for(int i=0; i<self.size(); i++) oss<<(i==0?"":(((i%3)!=0 || pad>0)?",":", "))<<doubleToShortest(self.row(i/self.cols())[i%self.cols()],/*pad*/pad);
-	}
 
+	#if 1
+	// not sure why this must be templated now?!
 	template<typename VectorType>
-	static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, int pad=0, typename boost::enable_if<boost::is_integral<typename VectorType::Scalar> >::type* dummy = 0){
-		for(int i=0; i<self.size(); i++) oss<<(i==0?"":(((i%3)!=0 || pad>0)?",":", "))<<lexical_cast<string>(self.row(i/self.cols())[i%self.cols()]);
+	static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, int pad=0){
+		for(int i=0; i<self.size(); i++) oss<<(i==0?"":(((i%3)!=0 || pad>0)?",":", "))<<num_to_string(self.row(i/self.cols())[i%self.cols()],/*pad*/pad);
 	}
+	#else
+		template<typename VectorType>
+		static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, int pad=0, typename boost::disable_if<boost::is_integral<typename VectorType::Scalar> >::type* dummy = 0){
+			for(int i=0; i<self.size(); i++) oss<<(i==0?"":(((i%3)!=0 || pad>0)?",":", "))<<doubleToShortest(self.row(i/self.cols())[i%self.cols()],/*pad*/pad);
+		}
+
+		template<typename VectorType>
+		static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, int pad=0, typename boost::enable_if<boost::is_integral<typename VectorType::Scalar> >::type* dummy = 0){
+			for(int i=0; i<self.size(); i++) oss<<(i==0?"":(((i%3)!=0 || pad>0)?",":", "))<<lexical_cast<string>(self.row(i/self.cols())[i%self.cols()]);
+		}
+	#endif
 };
 
 template<typename MatrixT>
@@ -744,8 +810,15 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		cl
 		// matrix-matrix division?!
 		//.def("__div__",&MatrixBaseVisitor::__div__).def("__idiv__",&MatrixBaseVisitor::__idiv__)
-		.def("inverse",&MatrixT::inverse)
-		// decompositions
+		.def("inverse",&MatrixT::inverse);
+		// decompositions are only meaningful on non-complex numbers
+		visit_if_decompositions_meaningful<Scalar,PyClass>(cl);
+	}
+	// for complex numbers, do nothing
+	template<typename Scalar, class PyClass> static	void visit_if_decompositions_meaningful(PyClass& cl, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy = 0){ /* do nothing */ }
+	// for non-complex numbers, define decompositions
+	template<typename Scalar, class PyClass> static	void visit_if_decompositions_meaningful(PyClass& cl, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy = 0){
+		cl
 		.def("jacobiSVD",&MatrixVisitor::jacobiSVD,"Compute SVD decomposition of square matrix, retuns (U,S,V) such that self=U*S*V.transpose()")
 		.def("svd",&MatrixVisitor::jacobiSVD,"Alias for :obj:`jacobiSVD`.")
 		.def("computeUnitaryPositive",&MatrixVisitor::computeUnitaryPositive,"Compute polar decomposition (unitary matrix U and positive semi-definite symmetric matrix P such that self=U*P).")
@@ -754,6 +827,7 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		.def("spectralDecomposition",&MatrixVisitor::selfAdjointEigenDecomposition,"Alias for :obj:`selfAdjointEigenDecomposition`.")
 		;
 	}
+
 	static MatrixT dyn_Ones(int rows, int cols){ return MatrixT::Ones(rows,cols); }
 	static MatrixT dyn_Zero(int rows, int cols){ return MatrixT::Zero(rows,cols); }
 	static MatrixT dyn_Random(int rows, int cols){ return MatrixT::Random(rows,cols); }
@@ -1045,6 +1119,26 @@ BOOST_PYTHON_MODULE(minieigen){
 	custom_MatrixAnyAny_from_sequence<Matrix3r>();
 	custom_MatrixAnyAny_from_sequence<Matrix6r>();
 	custom_MatrixAnyAny_from_sequence<MatrixXr>();
+
+	#ifdef _COMPLEX_SUPPORT
+		custom_VectorAnyAny_from_sequence<Vector2cr>();
+		custom_VectorAnyAny_from_sequence<Vector3cr>();
+		custom_VectorAnyAny_from_sequence<Vector6cr>();
+		custom_VectorAnyAny_from_sequence<VectorXcr>();
+		custom_MatrixAnyAny_from_sequence<Matrix3cr>();
+		custom_MatrixAnyAny_from_sequence<Matrix6cr>();
+		custom_MatrixAnyAny_from_sequence<MatrixXcr>();
+
+		py::class_<Vector2cr>("Vector2c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Vector2cr>()).def(VectorVisitor<Vector2cr>());
+		py::class_<Vector3cr>("Vector3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Vector3cr>()).def(VectorVisitor<Vector3cr>());
+		py::class_<Vector6cr>("Vector6c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Vector6cr>()).def(VectorVisitor<Vector6cr>());
+		py::class_<VectorXcr>("VectorXc","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<VectorXcr>()).def(VectorVisitor<VectorXcr>());
+
+		py::class_<Matrix3cr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Matrix3cr>()).def(MatrixVisitor<Matrix3cr>());
+		py::class_<Matrix3cr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Matrix3cr>()).def(MatrixVisitor<Matrix3cr>());
+		py::class_<Matrix3cr>("Matrix3c","/*TODO*/",py::init<>()).def(MatrixBaseVisitor<Matrix3cr>()).def(MatrixVisitor<Matrix3cr>());
+		;
+	#endif
 
 	py::class_<Matrix3r>("Matrix3","3x3 float matrix.\n\nSupported operations (``m`` is a Matrix3, ``f`` if a float/int, ``v`` is a Vector3): ``-m``, ``m+m``, ``m+=m``, ``m-m``, ``m-=m``, ``m*f``, ``f*m``, ``m*=f``, ``m/f``, ``m/=f``, ``m*m``, ``m*=m``, ``m*v``, ``v*m``, ``m==m``, ``m!=m``.\n\nStatic attributes: ``Zero``, ``Ones``, ``Identity``.",py::init<>())
 		.def(py::init<Quaternionr const &>((py::arg("q"))))
