@@ -49,7 +49,7 @@ def fixSignature(app, what, name, obj, options, signature, return_annotation):
 		sig=boostFuncSignature(name,obj,removeSelf=True)[0]
 		return sig,None
 	elif isBoostStaticMethod(what,obj):
-		sig=boostFuncSignature(name,obj,removeSelf=True)[0]+' [STATIC]'
+		sig=boostFuncSignature(name,obj,removeSelf=False)[0]+' [STATIC]'
 		return sig,None
 
 def boostFuncSignature(name,obj,removeSelf=False):
@@ -127,7 +127,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'miniEigen'
+project = u'minieigen'
 copyright = u'2012, Václav Šmilauer'
 
 # The version info for the project you're documenting, acts as replacement for
