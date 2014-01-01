@@ -300,16 +300,16 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		.def("__mul__",&MatrixBaseVisitor::__mul__scalar<long>)
 		.def("__imul__",&MatrixBaseVisitor::__imul__scalar<long>)
 		.def("__rmul__",&MatrixBaseVisitor::__rmul__scalar<long>)
-		.def("rows",&MatrixBaseT::rows)
-		.def("cols",&MatrixBaseT::cols)
+		.def("rows",&MatrixBaseT::rows,"Number of rows.")
+		.def("cols",&MatrixBaseT::cols,"Number of columns.")
 		;
 		visit_if_float<Scalar,PyClass>(cl);
 		visit_fixed_or_dynamic<MatrixBaseT,PyClass>(cl);
 
 		// reductions
 		cl
-		.def("sum",&MatrixBaseT::sum)
-		.def("maxAbsCoeff",&MatrixBaseVisitor::maxAbsCoeff)
+		.def("sum",&MatrixBaseT::sum,"Sum of all elements.")
+		.def("maxAbsCoeff",&MatrixBaseVisitor::maxAbsCoeff,"Maximum absolute value over all elements.")
 		;
 	};
 	private:
@@ -325,7 +325,7 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		cl
 		.add_static_property("Ones",&MatrixBaseVisitor::Ones)
 		.add_static_property("Zero",&MatrixBaseVisitor::Zero)
-		.def("Random",&MatrixBaseVisitor::Random)
+		.def("Random",&MatrixBaseVisitor::Random,"Return an object where all elements are randomly set to values between 0 and 1.").staticmethod("Random")
 		.add_static_property("Identity",&MatrixBaseVisitor::Identity)
 		;
 	}
@@ -340,12 +340,12 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		.def("__div__",&MatrixBaseVisitor::__div__scalar<Scalar>)
 		.def("__idiv__",&MatrixBaseVisitor::__idiv__scalar<Scalar>)
 		//
-		.def("norm",&MatrixBaseT::norm)
+		.def("norm",&MatrixBaseT::norm,"Euclidean norm.")
 		.def("__abs__",&MatrixBaseT::norm)
-		.def("squaredNorm",&MatrixBaseT::squaredNorm)
-		.def("normalize",&MatrixBaseT::normalize)
-		.def("normalized",&MatrixBaseT::normalized)
-		.def("pruned",&MatrixBaseVisitor::pruned,py::arg("absTol")=1e-6)
+		.def("squaredNorm",&MatrixBaseT::squaredNorm,"Square of the Euclidean norm.")
+		.def("normalize",&MatrixBaseT::normalize,"Normalize this object in-place.")
+		.def("normalized",&MatrixBaseT::normalized,"Return normalized copy of this object")
+		.def("pruned",&MatrixBaseVisitor::pruned,py::arg("absTol")=1e-6,"Zero all elements which are greater than *absTol*. Negative zeros are not pruned.")
 		;
 	}
 	// for fixed-size matrices/vectors only
@@ -403,9 +403,9 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 		.def("__setitem__",&VectorVisitor::set_item)
 		.def("__getitem__",&VectorVisitor::get_item)
 		.def("__str__",&VectorVisitor::__str__).def("__repr__",&VectorVisitor::__str__)
-		.def("dot",&VectorVisitor::dot)
-		.def("outer",&VectorVisitor::outer)
-		.def("asDiagonal",&VectorVisitor::asDiagonal)
+		.def("dot",&VectorVisitor::dot,py::arg("other"),"Dot product with *other*.")
+		.def("outer",&VectorVisitor::outer,py::arg("other"),"Outer product with *other*.")
+		.def("asDiagonal",&VectorVisitor::asDiagonal,"Return diagonal matrix with this vector on the diagonal.")
 		;
 
 		visit_fixed_or_dynamic<VectorT,PyClass>(cl);
@@ -422,7 +422,7 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 		.def("Unit",&VectorVisitor::dyn_Unit).staticmethod("Unit")
 		.def("Ones",&VectorVisitor::dyn_Ones).staticmethod("Ones")
 		.def("Zero",&VectorVisitor::dyn_Zero).staticmethod("Zero")
-		.def("Random",&VectorVisitor::dyn_Random).staticmethod("Random")
+		.def("Random",&VectorVisitor::dyn_Random,py::arg("len"),"Return vector of given length with all elements set to values between 0 and 1 randomly.").staticmethod("Random")
 		;
 	}
 	// for fixed-size vectors
@@ -557,12 +557,12 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		.def_pickle(MatrixPickle())
 		.def("__init__",py::make_constructor(&MatrixVisitor::fromDiagonal,py::default_call_policies(),(py::arg("diag"))))
 
-		.def("determinant",&MatrixT::determinant)
-		.def("trace",&MatrixT::trace)
-		.def("transpose",&MatrixVisitor::transpose)
-		.def("diagonal",&MatrixVisitor::diagonal)
-		.def("row",&MatrixVisitor::row)
-		.def("col",&MatrixVisitor::col)
+		.def("determinant",&MatrixT::determinant,"Return matrix determinant.")
+		.def("trace",&MatrixT::trace,"Return sum of diagonal elements.")
+		.def("transpose",&MatrixVisitor::transpose,"Return transposed matrix.")
+		.def("diagonal",&MatrixVisitor::diagonal,"Return diagonal as vector.")
+		.def("row",&MatrixVisitor::row,py::arg("row"),"Return row as vector.")
+		.def("col",&MatrixVisitor::col,py::arg("col"),"Return column as vector.")
 		// matrix-matrix product
 		.def("__mul__",&MatrixVisitor::__mul__).def("__imul__",&MatrixVisitor::__imul__)
 		.def("__mul__",&MatrixVisitor::__mul__vec).def("__rmul__",&MatrixVisitor::__mul__vec)
@@ -582,11 +582,11 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 	template<typename MatrixT2, class PyClass> static void visit_fixed_or_dynamic(PyClass& cl, typename boost::enable_if_c<MatrixT2::RowsAtCompileTime==Eigen::Dynamic>::type* dummy = 0){
 		cl
 		.def("__len__",&MatrixVisitor::__len__)
-		.def("resize",&MatrixVisitor::resize)
-		.def("Ones",&MatrixVisitor::dyn_Ones).staticmethod("Ones")
-		.def("Zero",&MatrixVisitor::dyn_Zero).staticmethod("Zero")
-		.def("Random",&MatrixVisitor::dyn_Random).staticmethod("Random")
-		.def("Identity",&MatrixVisitor::dyn_Identity).staticmethod("Identity")
+		.def("resize",&MatrixVisitor::resize,"Change size of the matrix, keep values of elements which exist in the new matrix",(py::arg("rows"),py::arg("cols")))
+		.def("Ones",&MatrixVisitor::dyn_Ones,(py::arg("rows"),py::arg("cols")),"Create matrix of given dimensions where all elements are set to 1.").staticmethod("Ones")
+		.def("Zero",&MatrixVisitor::dyn_Zero,(py::arg("rows"),py::arg("cols")),"Create zero matrix of given dimensions").staticmethod("Zero")
+		.def("Random",&MatrixVisitor::dyn_Random,(py::arg("rows"),py::arg("cols")),"Create matrix with given dimensions where all elements are set to number between 0 and 1 (uniformly-distributed).").staticmethod("Random")
+		.def("Identity",&MatrixVisitor::dyn_Identity,(py::arg("rank")),"Create identity matrix with given rank (square).").staticmethod("Identity")
 		;
 	}
 	// for fixed-size matrices
@@ -600,7 +600,7 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		cl
 		// matrix-matrix division?!
 		//.def("__div__",&MatrixBaseVisitor::__div__).def("__idiv__",&MatrixBaseVisitor::__idiv__)
-		.def("inverse",&MatrixT::inverse);
+		.def("inverse",&MatrixT::inverse,"Return inverted matrix.");
 		// decompositions are only meaningful on non-complex numbers
 		visit_if_decompositions_meaningful<Scalar,PyClass>(cl);
 	}
@@ -635,10 +635,10 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		.def("__init__",py::make_constructor(&MatrixVisitor::Mat6_fromBlocks,py::default_call_policies(),(py::arg("ul"),py::arg("ur"),py::arg("ll"),py::arg("lr"))))
 		.def("__init__",py::make_constructor(&MatrixVisitor::Mat6_fromRows,py::default_call_policies(),(py::arg("l0"),py::arg("l1"),py::arg("l2"),py::arg("l3"),py::arg("l4"),py::arg("l5"),py::arg("cols")=false)))
 		/* 3x3 blocks */
-			.def("ul",&MatrixVisitor::Mat6_ul)
-			.def("ur",&MatrixVisitor::Mat6_ur)
-			.def("ll",&MatrixVisitor::Mat6_ll)
-			.def("lr",&MatrixVisitor::Mat6_lr)
+			.def("ul",&MatrixVisitor::Mat6_ul,"Return upper-left 3x3 block")
+			.def("ur",&MatrixVisitor::Mat6_ur,"Return upper-right 3x3 block")
+			.def("ll",&MatrixVisitor::Mat6_ll,"Return lower-left 3x3 block")
+			.def("lr",&MatrixVisitor::Mat6_lr,"Return lower-right 3x3 block")
 		;
 	}
 	static CompatMat6* Mat6_fromBlocks(const CompatMat3& ul, const CompatMat3& ur, const CompatMat3& ll, const CompatMat3& lr){ CompatMat6* m(new CompatMat6); (*m)<<ul,ur,ll,lr; return m; }
@@ -741,7 +741,7 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 			for(int r=0; r<m.rows(); r++){
 				oss<<(wrap?"\t":"")<<"(";
 				VectorVisitor<CompatVectorT>::template Vector_data_stream<CompatVectorT>(m.row(r),oss,/*pad=*/(wrap?7:0));
-				oss<<"),"<<(wrap?"\n":"");
+				oss<<")"<<(r<m.rows()-1?",":"")<<(wrap?"\n":"");
 			}
 		}
 		oss<<")";
