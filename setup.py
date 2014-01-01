@@ -24,7 +24,7 @@ setup(name='minieigen',
 	url='http://www.launchpad.net/minieigen',
 	description='Wrap parts of Eigen3, c++ library for basic math and geometry.',
 	long_description='''
-A small wrapper for core parts of EIgen, c++ library for linear algebra. It is mainly useful for inspecting c++ code which already uses eigen and boost::python. Supported types are Vectors (2,3,6 and dynamic-sized with integer and floating-point values), Matrices (3x3, 6x6 and dynamic-sized with floating-point values), Quaternions and 2d and 3d AlignedBox's. Numerous methods are wrapped and the original API of Eigen is followed. The code compiles with a c++99 compiler.
+A small wrapper for core parts of Eigen (http://eigen.tuxfamily.org), c++ library for linear algebra. It is mainly useful for inspecting c++ code which already uses eigen and boost::python. Supported types are Vectors (2,3,6 and dynamic-sized with integer, floating-point and complex values), Matrices (3x3, 6x6 and dynamic-sized with floating-point and complex values), Quaternions and 2d and 3d aligned boxes. Numerous methods are wrapped and the original API of Eigen is followed. The code compiles with a c++99 compiler. The documentation is at http://flux.doxos.eu/minieigen .
 ''',
 	classifiers=[
 		'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
