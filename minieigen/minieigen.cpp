@@ -325,7 +325,7 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		cl
 		.add_static_property("Ones",&MatrixBaseVisitor::Ones)
 		.add_static_property("Zero",&MatrixBaseVisitor::Zero)
-		.add_static_property("Random",&MatrixBaseVisitor::Random)
+		.def("Random",&MatrixBaseVisitor::Random)
 		.add_static_property("Identity",&MatrixBaseVisitor::Identity)
 		;
 	}
