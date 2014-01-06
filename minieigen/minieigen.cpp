@@ -353,10 +353,10 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	static MatrixBaseT __isub__(MatrixBaseT& a, const MatrixBaseT& b){ a-=b; return a; };
 
 	template<typename Scalar2> static MatrixBaseT __mul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
-	template<typename Scalar2> static void __imul__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=scalar; }
+	template<typename Scalar2> static MatrixBaseT __imul__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=scalar; return a; }
 	template<typename Scalar2> static MatrixBaseT __rmul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
 	template<typename Scalar2> static MatrixBaseT __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a/scalar; }
-	template<typename Scalar2> static void __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a/=scalar; }
+	template<typename Scalar2> static MatrixBaseT __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a/=scalar; return a; }
 
 	// we want to keep -0 (rather than replacing it by 0), but that does not work for complex numbers
 	// hence two versions
@@ -683,13 +683,13 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 	static Scalar get_item(const MatrixT& a, py::tuple _idx){ int idx[2]; int mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); return a(idx[0],idx[1]); }
 	static void set_item(MatrixT& a, py::tuple _idx, const Scalar& value){ int idx[2]; int mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); a(idx[0],idx[1])=value; }
 
-	static void __imul__(MatrixT& a, const MatrixT& b){ a*=b; };
+	static MatrixT __imul__(MatrixT& a, const MatrixT& b){ a*=b; return a; };
 	static MatrixT __mul__(const MatrixT& a, const MatrixT& b){ return a*b; }
 	static CompatVectorT __mul__vec(const MatrixT& m, const CompatVectorT& v){ return m*v; }
 	// float matrices only
 	static MatrixT inverse(const MatrixT& m){ return m.inverse(); }
 	static MatrixT __div__(const MatrixT& a, const MatrixT& b){ return a/b; }
-	static void __idiv__(MatrixT& a, const MatrixT& b){ a/=b; };
+	// static void __idiv__(MatrixT& a, const MatrixT& b){ a/=b; };
 	static CompatVectorT row(const MatrixT& m, int ix){ IDX_CHECK(ix,m.rows()); return m.row(ix); }
 	static CompatVectorT col(const MatrixT& m, int ix){ IDX_CHECK(ix,m.cols()); return m.col(ix); }
 
@@ -872,7 +872,7 @@ class QuaternionVisitor:  public py::def_visitor<QuaternionVisitor<QuaternionT> 
 	static py::tuple toAxisAngle(const QuaternionT& self){ AngleAxisT aa(self); return py::make_tuple(aa.axis(),aa.angle());}
 	static py::tuple toAngleAxis(const QuaternionT& self){ AngleAxisT aa(self); return py::make_tuple(aa.angle(),aa.axis());}
 	static CompatVec3 toRotationVector(const QuaternionT& self){ AngleAxisT aa(self); return aa.angle()*aa.axis();}
-	static void setFromTwoVectors(QuaternionT& self, const Vector3r& u, const Vector3r& v){ self.setFromTwoVectors(u,v); }
+	static void setFromTwoVectors(QuaternionT& self, const Vector3r& u, const Vector3r& v){ self.setFromTwoVectors(u,v); /*return self;*/ }
 
 	static bool __eq__(const QuaternionT& u, const QuaternionT& v){ return u.x()==v.x() && u.y()==v.y() && u.z()==v.z() && u.w()==v.w(); }
 	static bool __ne__(const QuaternionT& u, const QuaternionT& v){ return !__eq__(u,v); }
