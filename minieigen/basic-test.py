@@ -5,7 +5,10 @@ print Vector3(0,0,0)==Vector3.Zero
 print Vector3(0,0,0)!=Vector3.Zero
 print Vector3(0,0,0)!=Vector3(0,0,0)
 print Vector3(1,2,3).sum()
-sys.exit(0)
+print Vector3.Random()
+m=Matrix3.Random()
+m.inverse()
+
 
 box=AlignedBox3((1,2,3),(4,5,6))
 box2=AlignedBox3((0,0,0),(5,5,5))

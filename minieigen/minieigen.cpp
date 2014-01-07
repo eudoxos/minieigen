@@ -586,7 +586,7 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		cl
 		// matrix-matrix division?!
 		//.def("__div__",&MatrixBaseVisitor::__div__).def("__idiv__",&MatrixBaseVisitor::__idiv__)
-		.def("inverse",&MatrixT::inverse,"Return inverted matrix.");
+		.def("inverse",&MatrixVisitor::inverse,"Return inverted matrix.");
 		// decompositions are only meaningful on non-complex numbers
 		visit_if_decompositions_meaningful<Scalar,PyClass>(cl);
 	}
