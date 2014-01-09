@@ -25,6 +25,9 @@ typedef double Real;
 #include<Eigen/Eigenvalues>
 #include<Eigen/SVD>
 
+// integral type for indices, to avoid compiler warnings with int
+typedef Eigen::Matrix<int,1,1>::Index Index;
+
 /* exposed types */
 typedef Eigen::Matrix<int ,2,1> Vector2i;
 typedef Eigen::Matrix<Real,2,1> Vector2r;
@@ -133,8 +136,8 @@ string num_to_string(const double& num, int pad=0){ return doubleToShortest(num,
 
 
 /*** getters and setters with bound guards ***/
-void IDX_CHECK(int i,int MAX){ if(i<0 || i>=MAX) { PyErr_SetString(PyExc_IndexError,("Index "+lexical_cast<string>(i)+" out of range 0.." + lexical_cast<string>(MAX-1)).c_str()); py::throw_error_already_set(); } }
-void IDX2_CHECKED_TUPLE_INTS(py::tuple tuple,const int max2[2], int arr2[2]) {int l=py::len(tuple); if(l!=2) { PyErr_SetString(PyExc_IndexError,"Index must be integer or a 2-tuple"); py::throw_error_already_set(); } for(int _i=0; _i<2; _i++) { py::extract<int> val(tuple[_i]); if(!val.check()){ PyErr_SetString(PyExc_ValueError,("Unable to convert "+lexical_cast<string>(_i)+"-th index to int.").c_str()); py::throw_error_already_set(); } int v=val(); IDX_CHECK(v,max2[_i]); arr2[_i]=v; }  }
+void IDX_CHECK(Index i,Index MAX){ if(i<0 || i>=MAX) { PyErr_SetString(PyExc_IndexError,("Index "+lexical_cast<string>(i)+" out of range 0.." + lexical_cast<string>(MAX-1)).c_str()); py::throw_error_already_set(); } }
+void IDX2_CHECKED_TUPLE_INTS(py::tuple tuple,const Index max2[2], Index arr2[2]) {Index l=py::len(tuple); if(l!=2) { PyErr_SetString(PyExc_IndexError,"Index must be integer or a 2-tuple"); py::throw_error_already_set(); } for(int _i=0; _i<2; _i++) { py::extract<Index> val(tuple[_i]); if(!val.check()){ PyErr_SetString(PyExc_ValueError,("Unable to convert "+lexical_cast<string>(_i)+"-th index to integer.").c_str()); py::throw_error_already_set(); } Index v=val(); IDX_CHECK(v,max2[_i]); arr2[_i]=v; }  }
 
 
 /*** automatic conversions from non-eigen types (sequences) ***/
@@ -146,7 +149,12 @@ void IDX2_CHECKED_TUPLE_INTS(py::tuple tuple,const int max2[2], int arr2[2]) {in
 template<class VT>
 struct custom_VectorAnyAny_from_sequence{
 	custom_VectorAnyAny_from_sequence(){ py::converter::registry::push_back(&convertible,&construct,py::type_id<VT>()); }
-	static void* convertible(PyObject* obj_ptr){ if(!PySequence_Check(obj_ptr) || (VT::RowsAtCompileTime!=Eigen::Dynamic && (PySequence_Size(obj_ptr)!=VT::RowsAtCompileTime))) return 0; return obj_ptr; }
+	static void* convertible(PyObject* obj_ptr){ if(!PySequence_Check(obj_ptr) || (VT::RowsAtCompileTime!=Eigen::Dynamic && (PySequence_Size(obj_ptr)!=VT::RowsAtCompileTime))) return 0;
+		// check that sequence items are convertible to scalars (should be done in other converters as well?!); otherwise Matrix3 is convertible to Vector3, but then we fail in *construct* very unclearly (TypeError: No registered converter was able to produce a C++ rvalue of type double from this Python object of type Vector3)
+		size_t len=PySequence_Size(obj_ptr);
+		for(size_t i=0; i<len; i++) if(!py::extract<typename VT::Scalar>(PySequence_GetItem(obj_ptr,i)).check()) return 0;
+		return obj_ptr;
+	}
 	static void construct(PyObject* obj_ptr, py::converter::rvalue_from_python_stage1_data* data){
 		void* storage=((py::converter::rvalue_from_python_storage<VT>*)(data))->storage.bytes;
 		new (storage) VT; size_t len;
@@ -182,6 +190,8 @@ struct custom_MatrixAnyAny_from_sequence{
 		};
 		return obj_ptr;
 		// other checks done in the construct function
+		// FIXME: it may be too late to do it there, as overloads are chosen based on *convertible*
+		// (at least a clear message should be given when py::extract fails there)
 	}
 	static void construct(PyObject* obj_ptr, py::converter::rvalue_from_python_stage1_data* data){
 		void* storage=((py::converter::rvalue_from_python_storage<MT>*)(data))->storage.bytes;
@@ -211,12 +221,12 @@ struct custom_MatrixAnyAny_from_sequence{
 				mx(i/mx.rows(),i%mx.cols())=py::extract<typename MT::Scalar>(PySequence_GetItem(obj_ptr,i));
 			}
 		} else {
-			for(int row=0; row<mx.rows(); row++){
+			for(Index row=0; row<mx.rows(); row++){
 				if(row>=PySequence_Size(obj_ptr)) throw std::runtime_error("Sequence rows of size "+lexical_cast<string>(sz)+" too short for assigning matrix with "+lexical_cast<string>(mx.rows())+" rows.");
 				PyObject* rowSeq=PySequence_GetItem(obj_ptr,row);
 				if(!PySequence_Check(rowSeq)) throw std::runtime_error("Element of row sequence not a sequence.");
 				if(mx.cols()!=PySequence_Size(rowSeq)) throw std::runtime_error("Row "+lexical_cast<string>(row)+": should specify exactly "+lexical_cast<string>(mx.cols())+" numbers, has "+lexical_cast<string>(PySequence_Size(rowSeq)));
-				for(int col=0; col<mx.cols(); col++){
+				for(Index col=0; col<mx.cols(); col++){
 					mx(row,col)=py::extract<typename MT::Scalar>(PySequence_GetItem(rowSeq,col));
 				}
 			}
@@ -318,7 +328,8 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	template<typename Scalar, class PyClass> static	void visit_if_float(PyClass& cl, typename boost::enable_if<boost::is_integral<Scalar> >::type* dummy = 0){ /* do nothing */ }
 	template<typename Scalar, class PyClass> static void visit_if_float(PyClass& cl, typename boost::disable_if<boost::is_integral<Scalar> >::type* dummy = 0){
 		// operations with other scalars (Scalar is the floating type, long is the python integer type)
-		cl.def("__mul__",&MatrixBaseVisitor::__mul__scalar<Scalar>)
+		cl
+		.def("__mul__",&MatrixBaseVisitor::__mul__scalar<Scalar>)
 		.def("__rmul__",&MatrixBaseVisitor::__rmul__scalar<Scalar>)
 		.def("__imul__",&MatrixBaseVisitor::__imul__scalar<Scalar>)
 		.def("__div__",&MatrixBaseVisitor::__div__scalar<long>)
@@ -365,7 +376,7 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	
 	static MatrixBaseT pruned(const MatrixBaseT& a, double absTol=1e-6){ // typename MatrixBaseT::Scalar absTol=1e-6){
 		MatrixBaseT ret(MatrixBaseT::Zero(a.rows(),a.cols()));
-		for(int c=0;c<a.cols();c++){ for(int r=0;r<a.rows();r++){ if(!prune_element(a(c,r),absTol)) ret(c,r)=a(c,r); } }
+		for(Index c=0;c<a.cols();c++){ for(Index r=0;r<a.rows();r++){ if(!prune_element(a(c,r),absTol)) ret(c,r)=a(c,r); } }
 		return ret;
 	};
 };
@@ -479,25 +490,25 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 	static CompatVecX* VecX_fromList(const std::vector<Scalar>& ii){ CompatVecX* v(new CompatVecX(ii.size())); for(size_t i=0; i<ii.size(); i++) (*v)[i]=ii[i]; return v; }
 
 
-	static VectorT dyn_Ones(int size){ return VectorT::Ones(size); }
-	static VectorT dyn_Zero(int size){ return VectorT::Zero(size); }
-	static VectorT dyn_Random(int size){ return VectorT::Random(size); }
-	static VectorT Unit(int ix){ IDX_CHECK(ix,(int)Dim); return VectorT::Unit(ix); }
-	static VectorT dyn_Unit(int size,int ix){ IDX_CHECK(ix,size); return VectorT::Unit(size,ix); }
+	static VectorT dyn_Ones(Index size){ return VectorT::Ones(size); }
+	static VectorT dyn_Zero(Index size){ return VectorT::Zero(size); }
+	static VectorT dyn_Random(Index size){ return VectorT::Random(size); }
+	static VectorT Unit(Index ix){ IDX_CHECK(ix,(Index)Dim); return VectorT::Unit(ix); }
+	static VectorT dyn_Unit(Index size,Index ix){ IDX_CHECK(ix,size); return VectorT::Unit(size,ix); }
 	static bool dyn(){ return Dim==Eigen::Dynamic; }
-	static int __len__(){ assert(!dyn()); return Dim; }
-	static int dyn__len__(const VectorT& self){ return self.size(); }
-	static void resize(VectorT& self, int size){ self.resize(size); }
+	static Index __len__(){ assert(!dyn()); return Dim; }
+	static Index dyn__len__(const VectorT& self){ return self.size(); }
+	static void resize(VectorT& self, Index size){ self.resize(size); }
 	static Scalar dot(const VectorT& self, const VectorT& other){ return self.dot(other); }
 	static CompatMatrixT outer(const VectorT& self, const VectorT& other){ return self*other.transpose(); }
 	static CompatMatrixT asDiagonal(const VectorT& self){ return self.asDiagonal(); }
-	static Scalar get_item(const VectorT& self, int ix){ IDX_CHECK(ix,dyn()?(int)self.size():(int)Dim); return self[ix]; }
-	static void set_item(VectorT& self, int ix, Scalar value){ IDX_CHECK(ix,dyn()?(int)self.size():(int)Dim); self[ix]=value; }
+	static Scalar get_item(const VectorT& self, Index ix){ IDX_CHECK(ix,dyn()?(Index)self.size():(Index)Dim); return self[ix]; }
+	static void set_item(VectorT& self, Index ix, Scalar value){ IDX_CHECK(ix,dyn()?(Index)self.size():(Index)Dim); self[ix]=value; }
 	struct VectorPickle: py::pickle_suite{
 		static py::tuple getinitargs(const VectorT& x){
 			// if this fails, add supported size to the switch below
 			BOOST_STATIC_ASSERT(Dim==2 || Dim==3 || Dim==6 || Dim==Eigen::Dynamic);
-			switch((int)Dim){
+			switch((Index)Dim){
 				case 2: return py::make_tuple(x[0],x[1]);
 				case 3: return py::make_tuple(x[0],x[1],x[2]);
 				case 6: return py::make_tuple(x[0],x[1],x[2],x[3],x[4],x[5]);
@@ -519,7 +530,7 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 	// not sure why this must be templated now?!
 	template<typename VectorType>
 	static void Vector_data_stream(const VectorType& self, std::ostringstream& oss, int pad=0){
-		for(int i=0; i<self.size(); i++) oss<<(i==0?"":(((i%3)!=0 || pad>0)?",":", "))<<num_to_string(self.row(i/self.cols())[i%self.cols()],/*pad*/pad);
+		for(Index i=0; i<self.size(); i++) oss<<(i==0?"":(((i%3)!=0 || pad>0)?",":", "))<<num_to_string(self.row(i/self.cols())[i%self.cols()],/*pad*/pad);
 	}
 };
 
@@ -549,8 +560,9 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		.def("diagonal",&MatrixVisitor::diagonal,"Return diagonal as vector.")
 		.def("row",&MatrixVisitor::row,py::arg("row"),"Return row as vector.")
 		.def("col",&MatrixVisitor::col,py::arg("col"),"Return column as vector.")
-		// matrix-matrix product
+		// matrix*matrix product
 		.def("__mul__",&MatrixVisitor::__mul__).def("__imul__",&MatrixVisitor::__imul__)
+		// matrix*vector product
 		.def("__mul__",&MatrixVisitor::__mul__vec).def("__rmul__",&MatrixVisitor::__mul__vec)
 		.def("__setitem__",&MatrixVisitor::set_row).def("__getitem__",&MatrixVisitor::get_row)
 		.def("__setitem__",&MatrixVisitor::set_item).def("__getitem__",&MatrixVisitor::get_item)
@@ -668,21 +680,21 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 	};
 
 
-	static MatrixT dyn_Ones(int rows, int cols){ return MatrixT::Ones(rows,cols); }
-	static MatrixT dyn_Zero(int rows, int cols){ return MatrixT::Zero(rows,cols); }
-	static MatrixT dyn_Random(int rows, int cols){ return MatrixT::Random(rows,cols); }
-	static MatrixT dyn_Identity(int rows, int cols){ return MatrixT::Identity(rows,cols); }
+	static MatrixT dyn_Ones(Index rows, Index cols){ return MatrixT::Ones(rows,cols); }
+	static MatrixT dyn_Zero(Index rows, Index cols){ return MatrixT::Zero(rows,cols); }
+	static MatrixT dyn_Random(Index rows, Index cols){ return MatrixT::Random(rows,cols); }
+	static MatrixT dyn_Identity(Index rows, Index cols){ return MatrixT::Identity(rows,cols); }
 	static typename MatrixT::Index dyn__len__(MatrixT& a){ return a.rows(); }
 	static typename MatrixT::Index __len__(){ return MatrixT::RowsAtCompileTime; }
 	static MatrixT Identity(){ return MatrixT::Identity(); }
 	static MatrixT transpose(const MatrixT& m){ return m.transpose(); }
 	static CompatVectorT diagonal(const MatrixT& m){ return m.diagonal(); }
 	static MatrixT* fromDiagonal(const CompatVectorT& d){ MatrixT* m(new MatrixT); *m=d.asDiagonal(); return m; }
-	static void resize(MatrixT& self, int rows, int cols){ self.resize(rows,cols); }
-	static CompatVectorT get_row(const MatrixT& a, int ix){ IDX_CHECK(ix,a.rows()); return a.row(ix); }
-	static void set_row(MatrixT& a, int ix, const CompatVectorT& r){ IDX_CHECK(ix,a.rows()); a.row(ix)=r; }
-	static Scalar get_item(const MatrixT& a, py::tuple _idx){ int idx[2]; int mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); return a(idx[0],idx[1]); }
-	static void set_item(MatrixT& a, py::tuple _idx, const Scalar& value){ int idx[2]; int mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); a(idx[0],idx[1])=value; }
+	static void resize(MatrixT& self, Index rows, Index cols){ self.resize(rows,cols); }
+	static CompatVectorT get_row(const MatrixT& a, Index ix){ IDX_CHECK(ix,a.rows()); return a.row(ix); }
+	static void set_row(MatrixT& a, Index ix, const CompatVectorT& r){ IDX_CHECK(ix,a.rows()); a.row(ix)=r; }
+	static Scalar get_item(const MatrixT& a, py::tuple _idx){ Index idx[2]; Index mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); return a(idx[0],idx[1]); }
+	static void set_item(MatrixT& a, py::tuple _idx, const Scalar& value){ Index idx[2]; Index mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); a(idx[0],idx[1])=value; }
 
 	static MatrixT __imul__(MatrixT& a, const MatrixT& b){ a*=b; return a; };
 	static MatrixT __mul__(const MatrixT& a, const MatrixT& b){ return a*b; }
@@ -691,8 +703,8 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 	static MatrixT inverse(const MatrixT& m){ return m.inverse(); }
 	static MatrixT __div__(const MatrixT& a, const MatrixT& b){ return a/b; }
 	// static void __idiv__(MatrixT& a, const MatrixT& b){ a/=b; };
-	static CompatVectorT row(const MatrixT& m, int ix){ IDX_CHECK(ix,m.rows()); return m.row(ix); }
-	static CompatVectorT col(const MatrixT& m, int ix){ IDX_CHECK(ix,m.cols()); return m.col(ix); }
+	static CompatVectorT row(const MatrixT& m, Index ix){ IDX_CHECK(ix,m.rows()); return m.row(ix); }
+	static CompatVectorT col(const MatrixT& m, Index ix){ IDX_CHECK(ix,m.cols()); return m.col(ix); }
 
 	static void ensureSquare(const MatrixT& m){ if(m.rows()!=m.cols()) throw std::runtime_error("Matrix is not square."); }
 	static py::tuple jacobiSVD(const MatrixT& in) {
@@ -725,7 +737,7 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 			VectorVisitor<CompatVectorT>::template Vector_data_stream<MatrixT>(m,oss,/*pad=*/0);
 		} else {
 			if(wrap) oss<<"\n";
-			for(int r=0; r<m.rows(); r++){
+			for(Index r=0; r<m.rows(); r++){
 				oss<<(wrap?"\t":"")<<"(";
 				VectorVisitor<CompatVectorT>::template Vector_data_stream<CompatVectorT>(m.row(r),oss,/*pad=*/(wrap?7:0));
 				oss<<")"<<(r<m.rows()-1?",":"")<<(wrap?"\n":"");
@@ -738,7 +750,7 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		static py::tuple getinitargs(const MatrixT& x){
 			// if this fails, add supported size to the switch below
 			BOOST_STATIC_ASSERT(Dim==2 || Dim==3 || Dim==6 || Dim==Eigen::Dynamic);
-			switch((int)Dim){
+			switch((Index)Dim){
 				case 2: return py::make_tuple(x(0,0),x(0,1),x(1,0),x(1,1));
 				case 3: return py::make_tuple(x(0,0),x(0,1),x(0,2),x(1,0),x(1,1),x(1,2),x(2,0),x(2,1),x(2,2));
 				case 6: return py::make_tuple(x.row(0),x.row(1),x.row(2),x.row(3),x.row(4),x.row(5));
@@ -799,12 +811,12 @@ class AabbVisitor: public py::def_visitor<AabbVisitor<Box> >{
 	struct BoxPickle: py::pickle_suite{
 		static py::tuple getinitargs(const Box& x){ return py::make_tuple(x.min(),x.max()); }
 	};
-	static int len(){ return Box::AmbientDimAtCompileTime; }
+	static Index len(){ return Box::AmbientDimAtCompileTime; }
 	// getters and setters 
-	static Scalar get_item(const Box& self, py::tuple _idx){ int idx[2]; int mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
-	static void set_item(Box& self, py::tuple _idx, Scalar value){ int idx[2]; int mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
-	static VectorType get_minmax(const Box& self, int idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
-	static void set_minmax(Box& self, int idx, const VectorType& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
+	static Scalar get_item(const Box& self, py::tuple _idx){ Index idx[2]; Index mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
+	static void set_item(Box& self, py::tuple _idx, Scalar value){ Index idx[2]; Index mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
+	static VectorType get_minmax(const Box& self, Index idx){ IDX_CHECK(idx,2); if(idx==0) return self.min(); return self.max(); }
+	static void set_minmax(Box& self, Index idx, const VectorType& value){ IDX_CHECK(idx,2); if(idx==0) self.min()=value; else self.max()=value; }
 	static string __str__(const py::object& obj){
 		const Box& self=py::extract<Box>(obj)();
 		std::ostringstream oss; oss<<object_class_name(obj)<<"((";
@@ -879,14 +891,14 @@ class QuaternionVisitor:  public py::def_visitor<QuaternionVisitor<QuaternionT> 
 	static bool __ne__(const QuaternionT& u, const QuaternionT& v){ return !__eq__(u,v); }
 	static CompatVecX __sub__(const QuaternionT& a, const QuaternionT& b){ CompatVecX r(4); r<<a.w()-b.w(),a.x()-b.x(),a.y()-b.y(),a.z()-b.z(); return r; }
 
-	static Scalar __getitem__(const QuaternionT & self, int idx){ IDX_CHECK(idx,4); if(idx==0) return self.x(); if(idx==1) return self.y(); if(idx==2) return self.z(); return self.w(); }
-	static void __setitem__(QuaternionT& self, int idx, Real value){ IDX_CHECK(idx,4); if(idx==0) self.x()=value; else if(idx==1) self.y()=value; else if(idx==2) self.z()=value; else if(idx==3) self.w()=value; }
+	static Scalar __getitem__(const QuaternionT & self, Index idx){ IDX_CHECK(idx,4); if(idx==0) return self.x(); if(idx==1) return self.y(); if(idx==2) return self.z(); return self.w(); }
+	static void __setitem__(QuaternionT& self, Index idx, Real value){ IDX_CHECK(idx,4); if(idx==0) self.x()=value; else if(idx==1) self.y()=value; else if(idx==2) self.z()=value; else if(idx==3) self.w()=value; }
 	static string __str__(const py::object& obj){
 		const QuaternionT& self=py::extract<QuaternionT>(obj)();
 		AngleAxisT aa(self);
 		return string(object_class_name(obj)+"((")+num_to_string(aa.axis()[0])+","+num_to_string(aa.axis()[1])+","+num_to_string(aa.axis()[2])+"),"+num_to_string(aa.angle())+")";
 	}
-	static int __len__(){return 4;}
+	static Index __len__(){return 4;}
 };
 
 
