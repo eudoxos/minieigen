@@ -6,15 +6,18 @@ print Vector3(0,0,0)!=Vector3.Zero
 print Vector3(0,0,0)!=Vector3(0,0,0)
 print Vector3(1,2,3).sum()
 print Vector3.Random()
+print len(Vector3())
 m=Matrix3.Random()
 m.inverse()
-
+for r in m: print r
 
 box=AlignedBox3((1,2,3),(4,5,6))
 box2=AlignedBox3((0,0,0),(5,5,5))
 print box, box.volume()
 print box.intersection(box2)
 print box.contains((3,3,3))
+
+for i in Vector3.Random(): print i
 
 m3=Matrix3(0,1,2, 3,4,5, 6,7,8)
 v3=Vector3(1,2,3)

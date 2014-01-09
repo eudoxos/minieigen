@@ -567,7 +567,7 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 	// for dynamic matrices
 	template<typename MatrixT2, class PyClass> static void visit_fixed_or_dynamic(PyClass& cl, typename boost::enable_if_c<MatrixT2::RowsAtCompileTime==Eigen::Dynamic>::type* dummy = 0){
 		cl
-		.def("__len__",&MatrixVisitor::__len__)
+		.def("__len__",&MatrixVisitor::dyn__len__)
 		.def("resize",&MatrixVisitor::resize,"Change size of the matrix, keep values of elements which exist in the new matrix",(py::arg("rows"),py::arg("cols")))
 		.def("Ones",&MatrixVisitor::dyn_Ones,(py::arg("rows"),py::arg("cols")),"Create matrix of given dimensions where all elements are set to 1.").staticmethod("Ones")
 		.def("Zero",&MatrixVisitor::dyn_Zero,(py::arg("rows"),py::arg("cols")),"Create zero matrix of given dimensions").staticmethod("Zero")
@@ -672,14 +672,15 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 	static MatrixT dyn_Zero(int rows, int cols){ return MatrixT::Zero(rows,cols); }
 	static MatrixT dyn_Random(int rows, int cols){ return MatrixT::Random(rows,cols); }
 	static MatrixT dyn_Identity(int rows, int cols){ return MatrixT::Identity(rows,cols); }
+	static typename MatrixT::Index dyn__len__(MatrixT& a){ return a.rows(); }
+	static typename MatrixT::Index __len__(){ return MatrixT::RowsAtCompileTime; }
 	static MatrixT Identity(){ return MatrixT::Identity(); }
 	static MatrixT transpose(const MatrixT& m){ return m.transpose(); }
 	static CompatVectorT diagonal(const MatrixT& m){ return m.diagonal(); }
 	static MatrixT* fromDiagonal(const CompatVectorT& d){ MatrixT* m(new MatrixT); *m=d.asDiagonal(); return m; }
-	static typename MatrixT::Index __len__(MatrixT& a){ return a.rows(); }
 	static void resize(MatrixT& self, int rows, int cols){ self.resize(rows,cols); }
-	static CompatVectorT get_row(const MatrixT& a, int ix){ return a.row(ix); }
-	static void set_row(MatrixT& a, int ix, const CompatVectorT& r){ a.row(ix)=r; }
+	static CompatVectorT get_row(const MatrixT& a, int ix){ IDX_CHECK(ix,a.rows()); return a.row(ix); }
+	static void set_row(MatrixT& a, int ix, const CompatVectorT& r){ IDX_CHECK(ix,a.rows()); a.row(ix)=r; }
 	static Scalar get_item(const MatrixT& a, py::tuple _idx){ int idx[2]; int mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); return a(idx[0],idx[1]); }
 	static void set_item(MatrixT& a, py::tuple _idx, const Scalar& value){ int idx[2]; int mx[2]={a.rows(),a.cols()}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); a(idx[0],idx[1])=value; }
 
