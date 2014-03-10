@@ -18,7 +18,7 @@ else:
 	include_dirs=['/usr/include/eigen3','minieigen']
 
 setup(name='minieigen',
-	version='0.4-0',
+	version='0.4-1',
 	author='Václav Šmilauer',
 	author_email='eu@doxos.eu',
 	url='http://www.launchpad.net/minieigen',
@@ -37,6 +37,12 @@ A small wrapper for core parts of Eigen (http://eigen.tuxfamily.org), c++ librar
 	],
 	ext_modules=[Extension('minieigen',
 		sources=['minieigen/minieigen.cpp',
+			'minieigen/expose-boxes.cpp',
+			'minieigen/expose-complex.cpp',
+			'minieigen/expose-converters.cpp',
+			'minieigen/expose-matrices.cpp',
+			'minieigen/expose-quaternion.cpp',
+			'minieigen/expose-vectors.cpp',
 			'minieigen/double-conversion/bignum.cc',
 			'minieigen/double-conversion/bignum-dtoa.cc',
 			'minieigen/double-conversion/cached-powers.cc',

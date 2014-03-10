@@ -296,6 +296,9 @@ template <class Dest, class Source>
 inline Dest BitCast(const Source& source) {
   // Compile time assertion: sizeof(Dest) == sizeof(Source)
   // A compile error here means your Dest and Source have different sizes.
+  #if defined(__GNUC__) || defined(__clang__)
+    __attribute__((unused)) // avoid warning
+  #endif
   typedef char VerifySizesAreEqual[sizeof(Dest) == sizeof(Source) ? 1 : -1];
 
   Dest dest;
