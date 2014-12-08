@@ -18,6 +18,8 @@ typedef double Real;
 #include<Eigen/Eigenvalues>
 #include<Eigen/SVD>
 
+#include<unsupported/Eigen/AlignedVector3>
+
 // integral type for indices, to avoid compiler warnings with int
 typedef Eigen::Matrix<int,1,1>::Index Index;
 
@@ -26,6 +28,7 @@ typedef Eigen::Matrix<int ,2,1> Vector2i;
 typedef Eigen::Matrix<Real,2,1> Vector2r;
 typedef Eigen::Matrix<int ,3,1> Vector3i;
 typedef Eigen::Matrix<Real,3,1> Vector3r;
+typedef Eigen::AlignedVector3<Real> Vector3ra;
 typedef Eigen::Matrix<int ,6,1> Vector6i;
 typedef Eigen::Matrix<Real,6,1> Vector6r;
 typedef Eigen::Matrix<Real,3,3> Matrix3r;

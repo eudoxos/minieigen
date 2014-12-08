@@ -1,4 +1,4 @@
-import sys
+import sys,math
 sys.path=['.']+sys.path
 from minieigen import *
 print Vector3(0,0,0)==Vector3.Zero
@@ -46,3 +46,6 @@ print m.__mul__(m)
 print m*m
 #print Matrix3(q)
 #print q*m
+
+q2=Quaternion((1,0,0),math.pi/2)
+for t in (0,.5,1): print q.slerp(t,q2)

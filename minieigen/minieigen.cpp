@@ -31,6 +31,13 @@ BOOST_PYTHON_MODULE(minieigen){
 	expose_quaternion();
 	expose_boxes();
 
+	py::def("float2str",&doubleToShortest,(py::arg("f"),py::arg("pad")=0),"Return the shortest string representation of *f* which will is equal to *f* when converted back to float. This function is only useful in Python prior to 3.0; starting from that version, standard string conversion does just that.");
+
+	#ifdef EIGEN_DONT_ALIGN
+		py::scope().attr("vectorize")=false;
+	#else
+		py::scope().attr("vectorize")=true;
+	#endif
 };
 
 

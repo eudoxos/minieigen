@@ -27,6 +27,7 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		// reductions
 		cl
 		.def("sum",&MatrixBaseT::sum,"Sum of all elements.")
+		.def("prod",&MatrixBaseT::prod,"Product of all elements.")
 		.def("maxAbsCoeff",&MatrixBaseVisitor::maxAbsCoeff,"Maximum absolute value over all elements.")
 		;
 	};
@@ -533,7 +534,7 @@ class AabbVisitor: public py::def_visitor<AabbVisitor<Box> >{
 	struct BoxPickle: py::pickle_suite{
 		static py::tuple getinitargs(const Box& x){ return py::make_tuple(x.min(),x.max()); }
 	};
-	static Index len(){ return Box::AmbientDimAtCompileTime; }
+	static Index len(){ return 2; }
 	// getters and setters 
 	static Scalar get_item(const Box& self, py::tuple _idx){ Index idx[2]; Index mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) return self.min()[idx[1]]; return self.max()[idx[1]]; }
 	static void set_item(Box& self, py::tuple _idx, Scalar value){ Index idx[2]; Index mx[2]={2,Box::AmbientDimAtCompileTime}; IDX2_CHECKED_TUPLE_INTS(_idx,mx,idx); if(idx[0]==0) self.min()[idx[1]]=value; else self.max()[idx[1]]=value; }
@@ -572,6 +573,7 @@ class QuaternionVisitor:  public py::def_visitor<QuaternionVisitor<QuaternionT> 
 		.add_static_property("Identity",&QuaternionVisitor::Identity)
 		// methods
 		.def("setFromTwoVectors",&QuaternionVisitor::setFromTwoVectors,((py::arg("u"),py::arg("v"))))
+		.def("angularDistance",&QuaternionVisitor::angularDistance)
 		.def("conjugate",&QuaternionT::conjugate)
 		.def("toAxisAngle",&QuaternionVisitor::toAxisAngle)
 		.def("toAngleAxis",&QuaternionVisitor::toAngleAxis)
@@ -582,6 +584,7 @@ class QuaternionVisitor:  public py::def_visitor<QuaternionVisitor<QuaternionT> 
 		.def("norm",&QuaternionT::norm)
 		.def("normalize",&QuaternionT::normalize)
 		.def("normalized",&QuaternionT::normalized)
+		.def("slerp",&QuaternionVisitor::slerp,(py::arg("t"),py::arg("other")))
 		// .def("random",&QuaternionVisitor::random,"Assign random orientation to the quaternion.")
 		// operators
 		.def(py::self * py::self)
@@ -600,6 +603,10 @@ class QuaternionVisitor:  public py::def_visitor<QuaternionVisitor<QuaternionT> 
 	static QuaternionT* fromAxisAngle(const CompatVec3& axis, const Scalar& angle){ return new QuaternionT(AngleAxisT(angle,axis)); }
 	static QuaternionT* fromAngleAxis(const Scalar& angle, const CompatVec3& axis){ return new QuaternionT(AngleAxisT(angle,axis)); }
 	static QuaternionT* fromTwoVectors(const CompatVec3& u, const CompatVec3& v){ QuaternionT* q(new QuaternionT); q->setFromTwoVectors(u,v); return q; }
+
+	// those must be wrapped since "other" is declared as QuaternionBase<OtherDerived>; the type is then not inferred when using .def
+	static QuaternionT slerp(const QuaternionT& self, const Real& t, const QuaternionT& other){ return self.slerp(t,other); }
+	static Real angularDistance(const QuaternionT& self, const QuaternionT& other){ return self.angularDistance(other); }
 
 	struct QuaternionPickle: py::pickle_suite{static py::tuple getinitargs(const QuaternionT& x){ return py::make_tuple(x.w(),x.x(),x.y(),x.z());} };
 	static QuaternionT Identity(){ return QuaternionT::Identity(); }

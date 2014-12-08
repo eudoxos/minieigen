@@ -2,18 +2,25 @@
 from distutils.core import setup,Extension
 import sys, glob
 
-define_macros=[('EIGEN_DONT_ALIGN',None)]
+# vectorization is currently broken and experimental ONLY
+vectorize=False
+
+if vectorize: define_macros=[]
+else: define_macros=[('EIGEN_DONT_ALIGN',None)]
+
 if sys.platform=='win32':
 	libraries=['boost_python-mgw47-mt-1_51']
 	library_dirs=[r'c:\src\boost_1_51_0\stage\lib']
 	include_dirs=[r'c:\src\boost_1_51_0',r'c:\src\eigen-3.1.1']
+	if not vectorize:
 	# SSE2 might cause DLL load error (ImportError: DLL load failed with error code -1073741795).
 	# Until it is determined for sure, disable vectorization here. See also:
 	# * http://matplotlib.1069221.n5.nabble.com/Problem-with-Basemap-and-Python-2-6-under-Windows-XP-td777.html
 	# * https://bugs.launchpad.net/panda3d/+bug/919237
-	define_macros+=[('EIGEN_DONT_VECTORIZE',None)]
+		define_macros+=[('EIGEN_DONT_VECTORIZE',None)]
 else:
-	libraries=['boost_python']
+	py3k=(sys.version_info[0]==3)
+	libraries=['boost_python-py34' if py3k else 'boost_python']
 	library_dirs=[]
 	include_dirs=['/usr/include/eigen3','minieigen']
 
@@ -35,7 +42,7 @@ A small wrapper for core parts of Eigen (http://eigen.tuxfamily.org), c++ librar
 		'Intended Audience :: Science/Research',
 		'Development Status :: 4 - Beta'
 	],
-	ext_modules=[Extension('minieigen',
+	ext_modules=[Extension('minieigen'+('_vectorized' if vectorize else ''),
 		sources=['minieigen/minieigen.cpp',
 			'minieigen/expose-boxes.cpp',
 			'minieigen/expose-complex.cpp',
