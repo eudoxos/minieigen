@@ -600,8 +600,8 @@ class QuaternionVisitor:  public py::def_visitor<QuaternionVisitor<QuaternionT> 
 		;
 	}
 	private:
-	static QuaternionT* fromAxisAngle(const CompatVec3& axis, const Scalar& angle){ return new QuaternionT(AngleAxisT(angle,axis)); }
-	static QuaternionT* fromAngleAxis(const Scalar& angle, const CompatVec3& axis){ return new QuaternionT(AngleAxisT(angle,axis)); }
+	static QuaternionT* fromAxisAngle(const CompatVec3& axis, const Scalar& angle){ QuaternionT* ret=new QuaternionT(AngleAxisT(angle,axis)); ret->normalize();  return ret; }
+	static QuaternionT* fromAngleAxis(const Scalar& angle, const CompatVec3& axis){ QuaternionT* ret=new QuaternionT(AngleAxisT(angle,axis)); ret->normalize(); return ret; }
 	static QuaternionT* fromTwoVectors(const CompatVec3& u, const CompatVec3& v){ QuaternionT* q(new QuaternionT); q->setFromTwoVectors(u,v); return q; }
 
 	// those must be wrapped since "other" is declared as QuaternionBase<OtherDerived>; the type is then not inferred when using .def
