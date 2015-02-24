@@ -19,7 +19,11 @@ import sys, os, re, glob
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 #sys.path.insert(0, os.path.abspath('../../src'))
-sys.path.insert(0,glob.glob(os.path.abspath('../../build/lib.*'))[0])
+
+# possible locations
+for p in ('../../build/lib.*','../../debian/python-minieigen/usr/lib/python*/dist-packages','../../debian/python3-minieigen/usr/lib/python*/dist-packages'):
+	pp=glob.glob(os.path.abspath(p))
+	if pp: sys.path.insert(0,pp[0])
 print sys.path
 
 
