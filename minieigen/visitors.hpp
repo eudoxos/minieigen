@@ -51,14 +51,19 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	template<typename Scalar, class PyClass> static	void visit_if_float(PyClass& cl, typename boost::enable_if<boost::is_integral<Scalar> >::type* dummy = 0){ /* do nothing */ }
 	template<typename Scalar, class PyClass> static void visit_if_float(PyClass& cl, typename boost::disable_if<boost::is_integral<Scalar> >::type* dummy = 0){
 		// operations with other scalars (Scalar is the floating type, long is the python integer type)
+		// __trudiv__ is for py3k
 		cl
 		.def("__mul__",&MatrixBaseVisitor::__mul__scalar<Scalar>)
 		.def("__rmul__",&MatrixBaseVisitor::__rmul__scalar<Scalar>)
 		.def("__imul__",&MatrixBaseVisitor::__imul__scalar<Scalar>)
 		.def("__div__",&MatrixBaseVisitor::__div__scalar<long>)
+		.def("__truediv__",&MatrixBaseVisitor::__div__scalar<long>)
 		.def("__idiv__",&MatrixBaseVisitor::__idiv__scalar<long>)
+		.def("__itruediv__",&MatrixBaseVisitor::__div__scalar<long>)
 		.def("__div__",&MatrixBaseVisitor::__div__scalar<Scalar>)
+		.def("__truediv__",&MatrixBaseVisitor::__div__scalar<Scalar>)
 		.def("__idiv__",&MatrixBaseVisitor::__idiv__scalar<Scalar>)
+		.def("__itruediv__",&MatrixBaseVisitor::__idiv__scalar<Scalar>)
 		//
 		.def("norm",&MatrixBaseT::norm,"Euclidean norm.")
 		.def("__abs__",&MatrixBaseT::norm)
@@ -190,6 +195,13 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 	static CompatVec2 Vec3_yz(const CompatVec3& v){ return CompatVec2(v[1],v[2]); }
 	static CompatVec2 Vec3_zy(const CompatVec3& v){ return CompatVec2(v[2],v[1]); }
 	
+	// 4-vector
+	template<typename VectorT2, class PyClass> static void visit_special_sizes(PyClass& cl, typename boost::enable_if_c<VectorT2::RowsAtCompileTime==4>::type* dummy=0){
+		cl
+		.def(py::init<typename VectorT2::Scalar,typename VectorT2::Scalar,typename VectorT2::Scalar>((py::arg("v0"),py::arg("v1"),py::arg("v2"),py::arg("v3"))))
+		;
+	}
+
 	// 6-vector
 	template<typename VectorT2, class PyClass> static void visit_special_sizes(PyClass& cl, typename boost::enable_if_c<VectorT2::RowsAtCompileTime==6>::type* dummy=0){
 		cl
@@ -230,10 +242,11 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 	struct VectorPickle: py::pickle_suite{
 		static py::tuple getinitargs(const VectorT& x){
 			// if this fails, add supported size to the switch below
-			BOOST_STATIC_ASSERT(Dim==2 || Dim==3 || Dim==6 || Dim==Eigen::Dynamic);
+			BOOST_STATIC_ASSERT(Dim==2 || Dim==3 || Dim==4 || Dim==6 || Dim==Eigen::Dynamic);
 			switch((Index)Dim){
 				case 2: return py::make_tuple(x[0],x[1]);
 				case 3: return py::make_tuple(x[0],x[1],x[2]);
+				case 4: return py::make_tuple(x[0],x[1],x[2],x[3]);
 				case 6: return py::make_tuple(x[0],x[1],x[2],x[3],x[4],x[5]);
 				default: return py::make_tuple(py::list(x));
 			}

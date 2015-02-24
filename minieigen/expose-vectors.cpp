@@ -13,6 +13,13 @@ void expose_vectors(){
 		.def(VectorVisitor<Vector6i>())
 	;
 
+	// broken
+	#if 0
+		py::class_<Vector4r>("Vector4","4-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``.\n\nImplicit conversion from sequence (list, tuple, ...) of 4 floats.\n\nStatic attributes: ``Zero``, ``Ones``.",py::init<>())
+			.def(VectorVisitor<Vector4r>())
+		;
+	#endif
+
 	py::class_<Vector3r>("Vector3","3-dimensional float vector.\n\nSupported operations (``f`` if a float/int, ``v`` is a Vector3): ``-v``, ``v+v``, ``v+=v``, ``v-v``, ``v-=v``, ``v*f``, ``f*v``, ``v*=f``, ``v/f``, ``v/=f``, ``v==v``, ``v!=v``, plus operations with ``Matrix3`` and ``Quaternion``.\n\nImplicit conversion from sequence (list, tuple, ...) of 3 floats.\n\nStatic attributes: ``Zero``, ``Ones``, ``UnitX``, ``UnitY``, ``UnitZ``.",py::init<>())
 		.def(VectorVisitor<Vector3r>())
 	;

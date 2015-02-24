@@ -20,7 +20,7 @@ if sys.platform=='win32':
 		define_macros+=[('EIGEN_DONT_VECTORIZE',None)]
 else:
 	py3k=(sys.version_info[0]==3)
-	libraries=['boost_python-py34' if py3k else 'boost_python']
+	libraries=['boost_python-py3%d'%sys.version_info[1] if py3k else 'boost_python']
 	library_dirs=[]
 	include_dirs=['/usr/include/eigen3','minieigen']
 
