@@ -5,7 +5,8 @@
 // methods common for vectors and matrices
 template<typename MatrixBaseT>
 class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >{
-	typedef typename MatrixBaseT::Scalar Scalar;
+	typedef typename MatrixBaseT::Scalar Scalar; // could be complex number
+	typedef typename MatrixBaseT::RealScalar RealScalar; // this is the "real" (math) scalar
 	public:
 	template<class PyClass>
 	void visit(PyClass& cl) const {
@@ -18,6 +19,7 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		.def("__mul__",&MatrixBaseVisitor::__mul__scalar<long>)
 		.def("__imul__",&MatrixBaseVisitor::__imul__scalar<long>)
 		.def("__rmul__",&MatrixBaseVisitor::__rmul__scalar<long>)
+		.def("isApprox",&MatrixBaseVisitor::isApprox,(py::arg("other"),py::arg("prec")=Eigen::NumTraits<Scalar>::dummy_precision()),"Approximate comparison with precision *prec*.")
 		.def("rows",&MatrixBaseT::rows,"Number of rows.")
 		.def("cols",&MatrixBaseT::cols,"Number of columns.")
 		;
@@ -74,7 +76,7 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		;
 	}
 	// for fixed-size matrices/vectors only
-	static Scalar maxAbsCoeff(const MatrixBaseT& m){ return m.array().abs().maxCoeff(); }
+	static RealScalar maxAbsCoeff(const MatrixBaseT& m){ return m.array().abs().maxCoeff(); }
 	static MatrixBaseT Ones(){ return MatrixBaseT::Ones(); }
 	static MatrixBaseT Zero(){ return MatrixBaseT::Zero(); }
 	static MatrixBaseT Random(){ return MatrixBaseT::Random(); }
@@ -84,6 +86,7 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		if(a.rows()!=b.rows() || a.cols()!=b.cols()) return false;
 		return a.cwiseEqual(b).all();
 	}
+	static bool isApprox(const MatrixBaseT& a, const MatrixBaseT& b, const RealScalar& prec){ return a.isApprox(b,prec); }
 	static bool __ne__(const MatrixBaseT& a, const MatrixBaseT& b){ return !__eq__(a,b); }
 	static MatrixBaseT __neg__(const MatrixBaseT& a){ return -a; };
 	static MatrixBaseT __add__(const MatrixBaseT& a, const MatrixBaseT& b){ return a+b; }
@@ -99,8 +102,8 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 
 	// we want to keep -0 (rather than replacing it by 0), but that does not work for complex numbers
 	// hence two versions
-	template<typename Scalar> static bool prune_element(const Scalar& num, double absTol, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol || num!=-0; }
-	template<typename Scalar> static bool prune_element(const Scalar& num, double absTol, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol; }
+	template<typename Scalar> static bool prune_element(const Scalar& num, RealScalar absTol, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol || num!=-0; }
+	template<typename Scalar> static bool prune_element(const Scalar& num, RealScalar absTol, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol; }
 	
 	static MatrixBaseT pruned(const MatrixBaseT& a, double absTol=1e-6){ // typename MatrixBaseT::Scalar absTol=1e-6){
 		MatrixBaseT ret(MatrixBaseT::Zero(a.rows(),a.cols()));

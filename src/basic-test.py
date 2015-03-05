@@ -49,3 +49,5 @@ print m*m
 
 q2=Quaternion((1,0,0),math.pi/2)
 for t in (0,.5,1): print q.slerp(t,q2)
+
+print Vector3(1,2,3).isApprox((1,2,3.000000001)), Vector3(1,2,3).isApprox((1,2,3.1),prec=.2)
