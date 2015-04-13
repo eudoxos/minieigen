@@ -2,6 +2,8 @@ This is miniEigen, small wrapper for the http://eigen.tuxfamily.org library.
 Home of this project is at http://www.launchpad.net/minieigen/. The code is
 licensed under the LGPLv3. The author is Václav Šmilauer <eu@doxos.eu>.
 
+Documentation is uploaded to http://eudoxos.github.io/minieigen.
+
 Run `python setup.py install` to build & install this module. You will need the
 boost_python library to be installed, and Eigen (in /usr/include/eigen3, or
 somewhere where the compiler finds it).
