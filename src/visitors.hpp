@@ -30,8 +30,12 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 		cl
 		.def("sum",&MatrixBaseT::sum,"Sum of all elements.")
 		.def("prod",&MatrixBaseT::prod,"Product of all elements.")
+		.def("mean",&MatrixBaseT::mean,"Mean value over all elements.")
 		.def("maxAbsCoeff",&MatrixBaseVisitor::maxAbsCoeff,"Maximum absolute value over all elements.")
 		;
+		// reductions only meaningful for non-complex matrices (e.g. maxCoeff, minCoeff)
+		visit_reductions_noncomplex<Scalar,PyClass>(cl);
+		
 	};
 	private:
 	template<class PyClass> static string name(PyClass& cl){ return py::extract<string>(cl.attr("__name__"))(); }
@@ -99,6 +103,18 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	template<typename Scalar2> static MatrixBaseT __rmul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
 	template<typename Scalar2> static MatrixBaseT __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a/scalar; }
 	template<typename Scalar2> static MatrixBaseT __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a/=scalar; return a; }
+
+	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy = 0){ /* do nothing*/ }
+	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy = 0){
+		// must be wrapped since there are overloads:
+		//   maxCoeff(), maxCoeff(IndexType*), maxCoeff(IndexType*,IndexType*)
+		cl
+		.def("maxCoeff",&MatrixBaseVisitor::maxCoeff0,"Maximum value over all elements.")
+		.def("minCoeff",&MatrixBaseVisitor::minCoeff0,"Minimum value over all elements.")
+		;
+	}
+	static Scalar maxCoeff0(const MatrixBaseT& m){ return m.array().maxCoeff(); }
+	static Scalar minCoeff0(const MatrixBaseT& m){ return m.array().minCoeff(); }
 
 	// we want to keep -0 (rather than replacing it by 0), but that does not work for complex numbers
 	// hence two versions

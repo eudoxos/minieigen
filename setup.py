@@ -25,7 +25,7 @@ else:
 	include_dirs=['/usr/include/eigen3','minieigen']
 
 setup(name='minieigen',
-	version='0.4-2',
+	version='0.5',
 	author='Václav Šmilauer',
 	author_email='eu@doxos.eu',
 	url='https://github.com/eudoxos/minieigen',
