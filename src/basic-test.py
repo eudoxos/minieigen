@@ -17,6 +17,9 @@ print 'v*m',v*m
 box=AlignedBox3((1,2,3),(4,5,6))
 box2=AlignedBox3((0,0,0),(5,5,5))
 print box, box.volume()
+box.min[2]*=2
+box.max[0]*=2
+print box
 print box.intersection(box2)
 print box.contains((3,3,3))
 

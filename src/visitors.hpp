@@ -544,9 +544,9 @@ class AabbVisitor: public py::def_visitor<AabbVisitor<Box> >{
 		// return new objects
 		.def("intersection",&Box::intersection)
 		.def("merged",&Box::merged)
-		// those return internal references, which is what we want (FIXME: this is not true, they return copies!!)
-		.add_property("min",&AabbVisitor::min) 
-		.add_property("max",&AabbVisitor::max)
+		// those return internal references, which is what we want
+		.add_property("min",py::make_function(&AabbVisitor::min,py::return_internal_reference<>())) 
+		.add_property("max",py::make_function(&AabbVisitor::max,py::return_internal_reference<>()))
 		.def("__len__",&AabbVisitor::len).staticmethod("__len__")
 		.def("__setitem__",&AabbVisitor::set_item).def("__getitem__",&AabbVisitor::get_item)
 		.def("__setitem__",&AabbVisitor::set_minmax).def("__getitem__",&AabbVisitor::get_minmax)
@@ -559,8 +559,8 @@ class AabbVisitor: public py::def_visitor<AabbVisitor<Box> >{
 	static void extendPt(Box& self, const VectorType& pt){ self.extend(pt); }
 	static void extendBox(Box& self, const Box& other){ self.extend(other); }
 	static void clamp(Box& self, const Box& other){ self.clamp(other); }
-	static VectorType min(const Box& self){ return self.min(); }
-	static VectorType max(const Box& self){ return self.max(); }
+	static VectorType& min(Box& self){ return self.min(); }
+	static VectorType& max(Box& self){ return self.max(); }
 	static VectorType center(const Box& self){ return self.center(); }
 	static VectorType sizes(const Box& self){ return self.sizes(); }
 	struct BoxPickle: py::pickle_suite{
