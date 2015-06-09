@@ -1,2 +1,2 @@
-recursive-include src/*.hpp
+include src/*.hpp
 include src/double-conversion/*.h
