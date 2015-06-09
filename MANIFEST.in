@@ -1,1 +1,2 @@
-recursive-include minieigen/double-conversion *.h
+recursive-include src/*.hpp
+include src/double-conversion/*.h

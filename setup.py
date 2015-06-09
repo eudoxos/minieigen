@@ -25,7 +25,7 @@ else:
 	include_dirs=['/usr/include/eigen3','minieigen']
 
 setup(name='minieigen',
-	version='0.5',
+	version='0.5.1',
 	author='Václav Šmilauer',
 	author_email='eu@doxos.eu',
 	url='https://github.com/eudoxos/minieigen',
@@ -43,7 +43,9 @@ A small wrapper for core parts of Eigen (http://eigen.tuxfamily.org), c++ librar
 		'Development Status :: 4 - Beta'
 	],
 	ext_modules=[Extension('minieigen'+('_vectorized' if vectorize else ''),
-		sources=['src/minieigen.cpp',
+		# headers are in MANIFEST.in
+		sources=[
+			'src/minieigen.cpp',
 			'src/expose-boxes.cpp',
 			'src/expose-complex.cpp',
 			'src/expose-converters.cpp',
@@ -57,7 +59,7 @@ A small wrapper for core parts of Eigen (http://eigen.tuxfamily.org), c++ librar
 			'src/double-conversion/double-conversion.cc',
 			'src/double-conversion/fast-dtoa.cc',
 			'src/double-conversion/fixed-dtoa.cc',
-			'src/double-conversion/strtod.cc'
+			'src/double-conversion/strtod.cc',
 		],
 		libraries=libraries,
 		library_dirs=library_dirs,
