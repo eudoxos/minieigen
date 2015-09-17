@@ -22,7 +22,7 @@ else:
 	py3k=(sys.version_info[0]==3)
 	libraries=['boost_python-py3%d'%sys.version_info[1] if py3k else 'boost_python']
 	library_dirs=[]
-	include_dirs=['/usr/include/eigen3','minieigen']
+	include_dirs=['/usr/include/eigen3','/usr/local/include/eigen3','minieigen']
 
 setup(name='minieigen',
 	version='0.5.2',
