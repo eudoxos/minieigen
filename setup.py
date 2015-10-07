@@ -19,8 +19,7 @@ if sys.platform=='win32':
 	# * https://bugs.launchpad.net/panda3d/+bug/919237
 		define_macros+=[('EIGEN_DONT_VECTORIZE',None)]
 else:
-	py3k=(sys.version_info[0]==3)
-	libraries=['boost_python-py3%d'%sys.version_info[1] if py3k else 'boost_python']
+	libraries=['boost_python-py%d%d'%(sys.version_info[0],sys.version_info[1])]
 	library_dirs=[]
 	include_dirs=['/usr/include/eigen3','/usr/local/include/eigen3','minieigen']
 
