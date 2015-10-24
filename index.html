@@ -23,6 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="minieigen 0.53 documentation" href="#" /> 
   </head>
   <body role="document">
@@ -2128,7 +2129,7 @@
 <p>Static attributes: <code class="docutils literal"><span class="pre">Identity</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Quaternion is represented as axis-angle when printed (e.g. <code class="docutils literal"><span class="pre">Identity</span></code> is <code class="docutils literal"><span class="pre">Quaternion((1,0,0),0)</span></code>, and can also be constructed from the axis-angle representation. This is however different from the data stored inside, which can be accessed by indices <code class="docutils literal"><span class="pre">[0]</span></code> (<img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>), <code class="docutils literal"><span class="pre">[1]</span></code> (<img class="math" src="_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>), <code class="docutils literal"><span class="pre">[2]</span></code> (<img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>), <code class="docutils literal"><span class="pre">[3]</span></code> (<img class="math" src="_images/math/8659700e6646cd91bc02c32affaa5ec046ee9935.png" alt="w"/>). To obtain axis-angle programatically, use <a class="reference internal" href="#minieigen.Quaternion.toAxisAngle" title="minieigen.Quaternion.toAxisAngle"><code class="xref py py-obj docutils literal"><span class="pre">Quaternion.toAxisAngle</span></code></a> which returns the tuple.</p>
+<p class="last">Quaternion is represented as axis-angle when printed (e.g. <code class="docutils literal"><span class="pre">Identity</span></code> is <code class="docutils literal"><span class="pre">Quaternion((1,0,0),0)</span></code>, and can also be constructed from the axis-angle representation. This is however different from the data stored inside, which can be accessed by indices <code class="docutils literal"><span class="pre">[0]</span></code> (<span class="math">\(x\)</span>), <code class="docutils literal"><span class="pre">[1]</span></code> (<span class="math">\(y\)</span>), <code class="docutils literal"><span class="pre">[2]</span></code> (<span class="math">\(z\)</span>), <code class="docutils literal"><span class="pre">[3]</span></code> (<span class="math">\(w\)</span>). To obtain axis-angle programatically, use <a class="reference internal" href="#minieigen.Quaternion.toAxisAngle" title="minieigen.Quaternion.toAxisAngle"><code class="xref py py-obj docutils literal"><span class="pre">Quaternion.toAxisAngle</span></code></a> which returns the tuple.</p>
 </div>
 <dl class="attribute">
 <dt id="minieigen.Quaternion.Identity">
