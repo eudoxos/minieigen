@@ -69,4 +69,7 @@ Documentation
 
 .. automodule:: minieigen
   :members:
+  :special-members:
+  :private-members:
   :undoc-members:
+  :exclude-members: __safe_for_unpickling__, __instance_size__, __reduce__, __module__, __getinitargs__
