@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>minieigen documentation &mdash; minieigen 0.4-1 documentation</title>
+    <title>minieigen documentation &mdash; minieigen 0.53 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4-1',
+        VERSION:     '0.53',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="minieigen 0.4-1 documentation" href="#" /> 
+    <link rel="top" title="minieigen 0.53 documentation" href="#" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,7 +32,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="#">minieigen 0.4-1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">minieigen 0.53 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -125,6 +125,46 @@
 <em class="property">class </em><code class="descclassname">minieigen.</code><code class="descname">AlignedBox2</code><a class="headerlink" href="#minieigen.AlignedBox2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Axis-aligned box object in 2d, defined by its minimum and maximum corners</p>
 <dl class="method">
+<dt id="minieigen.AlignedBox2.__contains__">
+<code class="descname">__contains__</code><span class="sig-paren">(</span><em>(Vector2)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.AlignedBox2.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__contains__( (AlignedBox2)arg1, (AlignedBox2)arg2) → bool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox2.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(tuple)arg2</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.AlignedBox2.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (AlignedBox2)arg1, (int)arg2) → Vector2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox2.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.AlignedBox2.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((AlignedBox2)other) → None</p>
+<p>__init__((Vector2)min, (Vector2)max) → None</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.AlignedBox2.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.AlignedBox2.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox2.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.AlignedBox2.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox2.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(tuple)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.AlignedBox2.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (AlignedBox2)arg1, (int)arg2, (Vector2)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox2.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.AlignedBox2.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="minieigen.AlignedBox2.center">
 <code class="descname">center</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.AlignedBox2.center" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -187,6 +227,46 @@
 <dt id="minieigen.AlignedBox3">
 <em class="property">class </em><code class="descclassname">minieigen.</code><code class="descname">AlignedBox3</code><a class="headerlink" href="#minieigen.AlignedBox3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Axis-aligned box object, defined by its minimum and maximum corners</p>
+<dl class="method">
+<dt id="minieigen.AlignedBox3.__contains__">
+<code class="descname">__contains__</code><span class="sig-paren">(</span><em>(Vector3)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.AlignedBox3.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__contains__( (AlignedBox3)arg1, (AlignedBox3)arg2) → bool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox3.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(tuple)arg2</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.AlignedBox3.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (AlignedBox3)arg1, (int)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox3.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.AlignedBox3.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((AlignedBox3)other) → None</p>
+<p>__init__((Vector3)min, (Vector3)max) → None</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.AlignedBox3.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.AlignedBox3.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox3.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.AlignedBox3.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox3.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(tuple)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.AlignedBox3.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (AlignedBox3)arg1, (int)arg2, (Vector3)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.AlignedBox3.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.AlignedBox3.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="minieigen.AlignedBox3.center">
 <code class="descname">center</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.AlignedBox3.center" title="Permalink to this definition">¶</a></dt>
@@ -272,6 +352,129 @@
 <dt id="minieigen.Matrix3.Zero">
 <code class="descname">Zero</code><em class="property"> = Matrix3(0,0,0, 0,0,0, 0,0,0)</em><a class="headerlink" href="#minieigen.Matrix3.Zero" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Matrix3.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Matrix3)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Matrix3)arg1, (float)arg2) → Matrix3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Matrix3)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix3.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Matrix3.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (Matrix3)arg1, (tuple)arg2) → float</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Matrix3)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Matrix3)arg1, (float)arg2) → Matrix3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Matrix3)arg1, (float)arg2) → Matrix3</p>
+<p>__imul__( (Matrix3)arg1, (Matrix3)arg2) → Matrix3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix3.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Quaternion)q) → None</p>
+<p>__init__((Matrix3)other) → None</p>
+<p>__init__((Vector3)diag) → object</p>
+<p>__init__((float)m00, (float)m01, (float)m02, (float)m10, (float)m11, (float)m12, (float)m20, (float)m21, (float)m22) → object</p>
+<p>__init__((Vector3)r0, (Vector3)r1, (Vector3)r2 [, (bool)cols=False]) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Matrix3)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Matrix3)arg1, (float)arg2) → Matrix3</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Matrix3.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Matrix3.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Matrix3)arg1, (float)arg2) → Matrix3</p>
+<p>__mul__( (Matrix3)arg1, (Matrix3)arg2) → Matrix3</p>
+<p>__mul__( (Matrix3)arg1, (Vector3)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Matrix3)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix3.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix3.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Matrix3)arg1, (float)arg2) → Matrix3</p>
+<p>__rmul__( (Matrix3)arg1, (Vector3)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(Vector3)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix3.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (Matrix3)arg1, (tuple)arg2, (float)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix3.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Matrix3)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3<a class="headerlink" href="#minieigen.Matrix3.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Matrix3)arg1, (float)arg2) → Matrix3</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="minieigen.Matrix3.col">
@@ -463,6 +666,128 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Matrix3c.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Matrix3c.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Matrix3c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Matrix3c)arg1, (complex)arg2) → Matrix3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Matrix3c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix3c.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Matrix3c.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (Matrix3c)arg1, (tuple)arg2) → complex</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Matrix3c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Matrix3c)arg1, (complex)arg2) → Matrix3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Matrix3c)arg1, (complex)arg2) → Matrix3c</p>
+<p>__imul__( (Matrix3c)arg1, (Matrix3c)arg2) → Matrix3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix3c.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Matrix3c)other) → None</p>
+<p>__init__((Vector3c)diag) → object</p>
+<p>__init__((complex)m00, (complex)m01, (complex)m02, (complex)m10, (complex)m11, (complex)m12, (complex)m20, (complex)m21, (complex)m22) → object</p>
+<p>__init__((Vector3c)r0, (Vector3c)r1, (Vector3c)r2 [, (bool)cols=False]) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Matrix3c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Matrix3c)arg1, (complex)arg2) → Matrix3c</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Matrix3c.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Matrix3c.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Matrix3c)arg1, (complex)arg2) → Matrix3c</p>
+<p>__mul__( (Matrix3c)arg1, (Matrix3c)arg2) → Matrix3c</p>
+<p>__mul__( (Matrix3c)arg1, (Vector3c)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Matrix3c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix3c.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix3c.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Matrix3c)arg1, (complex)arg2) → Matrix3c</p>
+<p>__rmul__( (Matrix3c)arg1, (Vector3c)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(Vector3c)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix3c.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (Matrix3c)arg1, (tuple)arg2, (complex)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix3c.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Matrix3c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix3c.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Matrix3c.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Matrix3c)arg1, (complex)arg2) → Matrix3c</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Matrix3c.col">
 <code class="descname">col</code><span class="sig-paren">(</span><em>(int)col</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Matrix3c.col" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return column as vector.</p>
@@ -604,6 +929,128 @@
 <dt id="minieigen.Matrix6.Zero">
 <code class="descname">Zero</code><em class="property"> = Matrix6( 	(      0,      0,      0,      0,      0,      0), 	(      0,      0,      0,      0,      0,      0), 	(      0,      0,      0,      0,      0,      0), 	(      0,      0,      0,      0,      0,      0), 	(      0,      0,      0,      0,      0,      0), 	(      0,      0,      0,      0,      0,      0) )</em><a class="headerlink" href="#minieigen.Matrix6.Zero" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Matrix6.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Matrix6)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Matrix6)arg1, (float)arg2) → Matrix6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Matrix6)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix6.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Matrix6.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (Matrix6)arg1, (tuple)arg2) → float</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Matrix6)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Matrix6)arg1, (float)arg2) → Matrix6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Matrix6)arg1, (float)arg2) → Matrix6</p>
+<p>__imul__( (Matrix6)arg1, (Matrix6)arg2) → Matrix6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix6.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Matrix6)other) → None</p>
+<p>__init__((Vector6)diag) → object</p>
+<p>__init__((Matrix3)ul, (Matrix3)ur, (Matrix3)ll, (Matrix3)lr) → object</p>
+<p>__init__((Vector6)l0, (Vector6)l1, (Vector6)l2, (Vector6)l3, (Vector6)l4, (Vector6)l5 [, (bool)cols=False]) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Matrix6)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Matrix6)arg1, (float)arg2) → Matrix6</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Matrix6.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Matrix6.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Matrix6)arg1, (float)arg2) → Matrix6</p>
+<p>__mul__( (Matrix6)arg1, (Matrix6)arg2) → Matrix6</p>
+<p>__mul__( (Matrix6)arg1, (Vector6)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Matrix6)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix6.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix6.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Matrix6)arg1, (float)arg2) → Matrix6</p>
+<p>__rmul__( (Matrix6)arg1, (Vector6)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(Vector6)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix6.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (Matrix6)arg1, (tuple)arg2, (float)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix6.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Matrix6)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6<a class="headerlink" href="#minieigen.Matrix6.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Matrix6)arg1, (float)arg2) → Matrix6</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="minieigen.Matrix6.col">
@@ -819,6 +1266,128 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Matrix6c.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Matrix6c.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Matrix6c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Matrix6c)arg1, (complex)arg2) → Matrix6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Matrix6c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix6c.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Matrix6c.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (Matrix6c)arg1, (tuple)arg2) → complex</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Matrix6c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Matrix6c)arg1, (complex)arg2) → Matrix6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Matrix6c)arg1, (complex)arg2) → Matrix6c</p>
+<p>__imul__( (Matrix6c)arg1, (Matrix6c)arg2) → Matrix6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix6c.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Matrix6c)other) → None</p>
+<p>__init__((Vector6c)diag) → object</p>
+<p>__init__((Matrix3c)ul, (Matrix3c)ur, (Matrix3c)ll, (Matrix3c)lr) → object</p>
+<p>__init__((Vector6c)l0, (Vector6c)l1, (Vector6c)l2, (Vector6c)l3, (Vector6c)l4, (Vector6c)l5 [, (bool)cols=False]) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Matrix6c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Matrix6c)arg1, (complex)arg2) → Matrix6c</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Matrix6c.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Matrix6c.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Matrix6c)arg1, (complex)arg2) → Matrix6c</p>
+<p>__mul__( (Matrix6c)arg1, (Matrix6c)arg2) → Matrix6c</p>
+<p>__mul__( (Matrix6c)arg1, (Vector6c)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Matrix6c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Matrix6c.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix6c.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Matrix6c)arg1, (complex)arg2) → Matrix6c</p>
+<p>__rmul__( (Matrix6c)arg1, (Vector6c)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(Vector6c)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Matrix6c.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (Matrix6c)arg1, (tuple)arg2, (complex)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Matrix6c.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Matrix6c)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Matrix6c.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Matrix6c.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Matrix6c)arg1, (complex)arg2) → Matrix6c</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Matrix6c.col">
 <code class="descname">col</code><span class="sig-paren">(</span><em>(int)col</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Matrix6c.col" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return column as vector.</p>
@@ -985,6 +1554,128 @@
 <dt id="minieigen.MatrixX.Zero">
 <em class="property">static </em><code class="descname">Zero</code><span class="sig-paren">(</span><em>(int)rows</em>, <em>(int)cols</em><span class="sig-paren">)</span> &rarr; MatrixX  [STATIC]<a class="headerlink" href="#minieigen.MatrixX.Zero" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create zero matrix of given dimensions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.MatrixX.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(MatrixX)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (MatrixX)arg1, (float)arg2) → MatrixX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(MatrixX)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.MatrixX.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.MatrixX.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (MatrixX)arg1, (tuple)arg2) → float</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(MatrixX)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (MatrixX)arg1, (float)arg2) → MatrixX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (MatrixX)arg1, (float)arg2) → MatrixX</p>
+<p>__imul__( (MatrixX)arg1, (MatrixX)arg2) → MatrixX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.MatrixX.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((MatrixX)other) → None</p>
+<p>__init__((VectorX)diag) → object</p>
+<p>__init__( [, (VectorX)r0=VectorX() [, (VectorX)r1=VectorX() [, (VectorX)r2=VectorX() [, (VectorX)r3=VectorX() [, (VectorX)r4=VectorX() [, (VectorX)r5=VectorX() [, (VectorX)r6=VectorX() [, (VectorX)r7=VectorX() [, (VectorX)r8=VectorX() [, (VectorX)r9=VectorX() [, (bool)cols=False]]]]]]]]]]]) → object</p>
+<p>__init__((object)rows [, (bool)cols=False]) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(MatrixX)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (MatrixX)arg1, (float)arg2) → MatrixX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__len__">
+<code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#minieigen.MatrixX.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (MatrixX)arg1, (float)arg2) → MatrixX</p>
+<p>__mul__( (MatrixX)arg1, (MatrixX)arg2) → MatrixX</p>
+<p>__mul__( (MatrixX)arg1, (VectorX)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(MatrixX)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.MatrixX.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.MatrixX.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (MatrixX)arg1, (float)arg2) → MatrixX</p>
+<p>__rmul__( (MatrixX)arg1, (VectorX)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(VectorX)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.MatrixX.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (MatrixX)arg1, (tuple)arg2, (float)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.MatrixX.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(MatrixX)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixX.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixX<a class="headerlink" href="#minieigen.MatrixX.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (MatrixX)arg1, (float)arg2) → MatrixX</p>
 </dd></dl>
 
 <dl class="method">
@@ -1186,6 +1877,128 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="minieigen.MatrixXc.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.MatrixXc.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(MatrixXc)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (MatrixXc)arg1, (complex)arg2) → MatrixXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(MatrixXc)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.MatrixXc.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.MatrixXc.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__getitem__( (MatrixXc)arg1, (tuple)arg2) → complex</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(MatrixXc)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (MatrixXc)arg1, (complex)arg2) → MatrixXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (MatrixXc)arg1, (complex)arg2) → MatrixXc</p>
+<p>__imul__( (MatrixXc)arg1, (MatrixXc)arg2) → MatrixXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.MatrixXc.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((MatrixXc)other) → None</p>
+<p>__init__((VectorXc)diag) → object</p>
+<p>__init__( [, (VectorXc)r0=VectorXc() [, (VectorXc)r1=VectorXc() [, (VectorXc)r2=VectorXc() [, (VectorXc)r3=VectorXc() [, (VectorXc)r4=VectorXc() [, (VectorXc)r5=VectorXc() [, (VectorXc)r6=VectorXc() [, (VectorXc)r7=VectorXc() [, (VectorXc)r8=VectorXc() [, (VectorXc)r9=VectorXc() [, (bool)cols=False]]]]]]]]]]]) → object</p>
+<p>__init__((object)rows [, (bool)cols=False]) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(MatrixXc)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (MatrixXc)arg1, (complex)arg2) → MatrixXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__len__">
+<code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#minieigen.MatrixXc.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (MatrixXc)arg1, (complex)arg2) → MatrixXc</p>
+<p>__mul__( (MatrixXc)arg1, (MatrixXc)arg2) → MatrixXc</p>
+<p>__mul__( (MatrixXc)arg1, (VectorXc)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(MatrixXc)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.MatrixXc.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.MatrixXc.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (MatrixXc)arg1, (complex)arg2) → MatrixXc</p>
+<p>__rmul__( (MatrixXc)arg1, (VectorXc)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(VectorXc)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.MatrixXc.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__setitem__( (MatrixXc)arg1, (tuple)arg2, (complex)arg3) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.MatrixXc.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(MatrixXc)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.MatrixXc.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; MatrixXc<a class="headerlink" href="#minieigen.MatrixXc.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (MatrixXc)arg1, (complex)arg2) → MatrixXc</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="minieigen.MatrixXc.col">
 <code class="descname">col</code><span class="sig-paren">(</span><em>(int)col</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.MatrixXc.col" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return column as vector.</p>
@@ -1313,6 +2126,10 @@
 <dd><p>Quaternion representing rotation.</p>
 <p>Supported operations (<code class="docutils literal"><span class="pre">q</span></code> is a Quaternion, <code class="docutils literal"><span class="pre">v</span></code> is a Vector3): <code class="docutils literal"><span class="pre">q*q</span></code> (rotation composition), <code class="docutils literal"><span class="pre">q*=q</span></code>, <code class="docutils literal"><span class="pre">q*v</span></code> (rotating <code class="docutils literal"><span class="pre">v</span></code> by <code class="docutils literal"><span class="pre">q</span></code>), <code class="docutils literal"><span class="pre">q==q</span></code>, <code class="docutils literal"><span class="pre">q!=q</span></code>.</p>
 <p>Static attributes: <code class="docutils literal"><span class="pre">Identity</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Quaternion is represented as axis-angle when printed (e.g. <code class="docutils literal"><span class="pre">Identity</span></code> is <code class="docutils literal"><span class="pre">Quaternion((1,0,0),0)</span></code>, and can also be constructed from the axis-angle representation. This is however different from the data stored inside, which can be accessed by indices <code class="docutils literal"><span class="pre">[0]</span></code> (<img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>), <code class="docutils literal"><span class="pre">[1]</span></code> (<img class="math" src="_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>), <code class="docutils literal"><span class="pre">[2]</span></code> (<img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>), <code class="docutils literal"><span class="pre">[3]</span></code> (<img class="math" src="_images/math/8659700e6646cd91bc02c32affaa5ec046ee9935.png" alt="w"/>). To obtain axis-angle programatically, use <a class="reference internal" href="#minieigen.Quaternion.toAxisAngle" title="minieigen.Quaternion.toAxisAngle"><code class="xref py py-obj docutils literal"><span class="pre">Quaternion.toAxisAngle</span></code></a> which returns the tuple.</p>
+</div>
 <dl class="attribute">
 <dt id="minieigen.Quaternion.Identity">
 <code class="descname">Identity</code><em class="property"> = Quaternion((1,0,0),0)</em><a class="headerlink" href="#minieigen.Quaternion.Identity" title="Permalink to this definition">¶</a></dt>
@@ -1321,6 +2138,81 @@
 <dl class="method">
 <dt id="minieigen.Quaternion.Rotate">
 <code class="descname">Rotate</code><span class="sig-paren">(</span><em>(Vector3)v</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Quaternion.Rotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Quaternion.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Quaternion)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Quaternion.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Quaternion.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(Quaternion)arg2</em><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#minieigen.Quaternion.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Quaternion.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector3)axis, (float)angle) → object</p>
+<p>__init__((float)angle, (Vector3)axis) → object</p>
+<p>__init__((Vector3)u, (Vector3)v) → object</p>
+<dl class="docutils">
+<dt>__init__((float)w, (float)x, (float)y, (float)z) → None :</dt>
+<dd><p class="first">Initialize from coefficients.</p>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The order of coefficients is <em>w</em>, <em>x</em>, <em>y</em>, <em>z</em>. The [] operator numbers them differently, 0...4 for <em>x</em> <em>y</em> <em>z</em> <em>w</em>!</p>
+</div>
+</dd>
+</dl>
+<p>__init__((Matrix3)rotMatrix) → None</p>
+<p>__init__((Quaternion)other) → None</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Quaternion.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Quaternion.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(Quaternion)arg2</em><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#minieigen.Quaternion.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Quaternion)arg1, (Vector3)arg2) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Quaternion)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Quaternion.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Quaternion.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Quaternion.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Quaternion.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Quaternion.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Quaternion)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.Quaternion.__sub__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1427,6 +2319,120 @@
 <dt id="minieigen.Vector2.Zero">
 <code class="descname">Zero</code><em class="property"> = Vector2(0,0)</em><a class="headerlink" href="#minieigen.Vector2.Zero" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector2.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector2)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Vector2)arg1, (float)arg2) → Vector2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector2)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector2.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector2.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector2)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Vector2)arg1, (float)arg2) → Vector2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Vector2)arg1, (float)arg2) → Vector2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector2.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector2)other) → None</p>
+<p>__init__((float)x, (float)y) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector2)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Vector2)arg1, (float)arg2) → Vector2</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector2.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector2.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Vector2)arg1, (float)arg2) → Vector2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector2)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector2.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector2.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Vector2)arg1, (float)arg2) → Vector2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector2.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector2.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector2)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2<a class="headerlink" href="#minieigen.Vector2.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Vector2)arg1, (float)arg2) → Vector2</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="minieigen.Vector2.asDiagonal">
@@ -1573,6 +2579,120 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Vector2c.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector2c.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector2c)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Vector2c)arg1, (complex)arg2) → Vector2c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector2c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector2c.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; complex<a class="headerlink" href="#minieigen.Vector2c.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector2c)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Vector2c)arg1, (complex)arg2) → Vector2c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Vector2c)arg1, (complex)arg2) → Vector2c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector2c.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector2c)other) → None</p>
+<p>__init__((complex)x, (complex)y) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector2c)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Vector2c)arg1, (complex)arg2) → Vector2c</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector2c.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector2c.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Vector2c)arg1, (complex)arg2) → Vector2c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector2c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector2c.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector2c.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Vector2c)arg1, (complex)arg2) → Vector2c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(complex)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector2c.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector2c.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector2c)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2c.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2c<a class="headerlink" href="#minieigen.Vector2c.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Vector2c)arg1, (complex)arg2) → Vector2c</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Vector2c.asDiagonal">
 <code class="descname">asDiagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#minieigen.Vector2c.asDiagonal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return diagonal matrix with this vector on the diagonal.</p>
@@ -1708,6 +2828,88 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Vector2i.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector2i)arg2</em><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector2i)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector2i.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#minieigen.Vector2i.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector2i)arg2</em><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector2i.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector2i)other) → None</p>
+<p>__init__((int)x, (int)y) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector2i)arg2</em><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector2i.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector2i.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector2i)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector2i.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector2i.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector2i.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector2i.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector2i.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector2i)arg2</em><span class="sig-paren">)</span> &rarr; Vector2i<a class="headerlink" href="#minieigen.Vector2i.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Vector2i.asDiagonal">
 <code class="descname">asDiagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#minieigen.Vector2i.asDiagonal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return diagonal matrix with this vector on the diagonal.</p>
@@ -1828,6 +3030,120 @@
 <dt id="minieigen.Vector3.Zero">
 <code class="descname">Zero</code><em class="property"> = Vector3(0,0,0)</em><a class="headerlink" href="#minieigen.Vector3.Zero" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector3.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector3)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Vector3)arg1, (float)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector3)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector3.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector3.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector3)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Vector3)arg1, (float)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Vector3)arg1, (float)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector3.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector3)other) → None</p>
+<p>__init__((float)x, (float)y, (float)z) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector3)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Vector3)arg1, (float)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector3.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector3.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Vector3)arg1, (float)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector3)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector3.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector3.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Vector3)arg1, (float)arg2) → Vector3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector3.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector3.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector3)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3<a class="headerlink" href="#minieigen.Vector3.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Vector3)arg1, (float)arg2) → Vector3</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="minieigen.Vector3.asDiagonal">
@@ -2014,6 +3330,120 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Vector3c.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector3c.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector3c)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Vector3c)arg1, (complex)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector3c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector3c.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; complex<a class="headerlink" href="#minieigen.Vector3c.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector3c)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Vector3c)arg1, (complex)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Vector3c)arg1, (complex)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector3c.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector3c)other) → None</p>
+<p>__init__((complex)x, (complex)y, (complex)z) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector3c)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Vector3c)arg1, (complex)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector3c.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector3c.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Vector3c)arg1, (complex)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector3c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector3c.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector3c.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Vector3c)arg1, (complex)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(complex)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector3c.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector3c.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector3c)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3c.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3c<a class="headerlink" href="#minieigen.Vector3c.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Vector3c)arg1, (complex)arg2) → Vector3c</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Vector3c.asDiagonal">
 <code class="descname">asDiagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Matrix3c<a class="headerlink" href="#minieigen.Vector3c.asDiagonal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return diagonal matrix with this vector on the diagonal.</p>
@@ -2189,6 +3619,88 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Vector3i.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector3i)arg2</em><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector3i)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector3i.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#minieigen.Vector3i.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector3i)arg2</em><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector3i.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector3i)other) → None</p>
+<p>__init__((int)x, (int)y, (int)z) → None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector3i)arg2</em><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector3i.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector3i.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector3i)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector3i.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector3i.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector3i.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector3i.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector3i.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector3i)arg2</em><span class="sig-paren">)</span> &rarr; Vector3i<a class="headerlink" href="#minieigen.Vector3i.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Vector3i.asDiagonal">
 <code class="descname">asDiagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#minieigen.Vector3i.asDiagonal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return diagonal matrix with this vector on the diagonal.</p>
@@ -2329,6 +3841,121 @@
 <dt id="minieigen.Vector6.Zero">
 <code class="descname">Zero</code><em class="property"> = Vector6(0,0,0, 0,0,0)</em><a class="headerlink" href="#minieigen.Vector6.Zero" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector6.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector6)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Vector6)arg1, (float)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector6)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector6.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector6.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector6)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Vector6)arg1, (float)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Vector6)arg1, (float)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector6.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector6)other) → None</p>
+<p>__init__((float)v0, (float)v1, (float)v2, (float)v3, (float)v4, (float)v5) → object</p>
+<p>__init__((Vector3)head, (Vector3)tail) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector6)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Vector6)arg1, (float)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector6.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector6.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Vector6)arg1, (float)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector6)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector6.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector6.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Vector6)arg1, (float)arg2) → Vector6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector6.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector6.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector6)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6<a class="headerlink" href="#minieigen.Vector6.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Vector6)arg1, (float)arg2) → Vector6</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="minieigen.Vector6.asDiagonal">
@@ -2475,6 +4102,121 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Vector6c.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.Vector6c.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector6c)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (Vector6c)arg1, (complex)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector6c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector6c.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; complex<a class="headerlink" href="#minieigen.Vector6c.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector6c)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (Vector6c)arg1, (complex)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (Vector6c)arg1, (complex)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector6c.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector6c)other) → None</p>
+<p>__init__((complex)v0, (complex)v1, (complex)v2, (complex)v3, (complex)v4, (complex)v5) → object</p>
+<p>__init__((Vector3c)head, (Vector3c)tail) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector6c)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (Vector6c)arg1, (complex)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector6c.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector6c.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (Vector6c)arg1, (complex)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector6c)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector6c.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector6c.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (Vector6c)arg1, (complex)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(complex)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector6c.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector6c.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector6c)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6c.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6c<a class="headerlink" href="#minieigen.Vector6c.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (Vector6c)arg1, (complex)arg2) → Vector6c</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Vector6c.asDiagonal">
 <code class="descname">asDiagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Matrix6c<a class="headerlink" href="#minieigen.Vector6c.asDiagonal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return diagonal matrix with this vector on the diagonal.</p>
@@ -2610,6 +4352,89 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="minieigen.Vector6i.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(Vector6i)arg2</em><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(Vector6i)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector6i.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#minieigen.Vector6i.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(Vector6i)arg2</em><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector6i.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((Vector6i)other) → None</p>
+<p>__init__((int)v0, (int)v1, (int)v2, (int)v3, (int)v4, (int)v5) → object</p>
+<p>__init__((Vector3i)head, (Vector3i)tail) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(Vector6i)arg2</em><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="minieigen.Vector6i.__len__">
+<em class="property">static </em><code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int [STATIC]<a class="headerlink" href="#minieigen.Vector6i.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(Vector6i)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.Vector6i.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector6i.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.Vector6i.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.Vector6i.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.Vector6i.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(Vector6i)arg2</em><span class="sig-paren">)</span> &rarr; Vector6i<a class="headerlink" href="#minieigen.Vector6i.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="minieigen.Vector6i.asDiagonal">
 <code class="descname">asDiagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#minieigen.Vector6i.asDiagonal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return diagonal matrix with this vector on the diagonal.</p>
@@ -2719,6 +4544,120 @@
 <dt id="minieigen.VectorX.Zero">
 <em class="property">static </em><code class="descname">Zero</code><span class="sig-paren">(</span><em>(int)arg1</em><span class="sig-paren">)</span> &rarr; VectorX [STATIC]<a class="headerlink" href="#minieigen.VectorX.Zero" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.VectorX.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(VectorX)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (VectorX)arg1, (float)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(VectorX)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.VectorX.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.VectorX.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(VectorX)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (VectorX)arg1, (float)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (VectorX)arg1, (float)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.VectorX.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((VectorX)other) → None</p>
+<p>__init__((object)vv) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(VectorX)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (VectorX)arg1, (float)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__len__">
+<code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#minieigen.VectorX.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (VectorX)arg1, (float)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(VectorX)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.VectorX.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.VectorX.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (VectorX)arg1, (float)arg2) → VectorX</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.VectorX.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.VectorX.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(VectorX)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorX.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorX<a class="headerlink" href="#minieigen.VectorX.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (VectorX)arg1, (float)arg2) → VectorX</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="minieigen.VectorX.asDiagonal">
@@ -2853,6 +4792,120 @@
 <dt id="minieigen.VectorXc.Zero">
 <em class="property">static </em><code class="descname">Zero</code><span class="sig-paren">(</span><em>(int)arg1</em><span class="sig-paren">)</span> &rarr; VectorXc [STATIC]<a class="headerlink" href="#minieigen.VectorXc.Zero" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__abs__">
+<code class="descname">__abs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; float<a class="headerlink" href="#minieigen.VectorXc.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>(VectorXc)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__div__">
+<code class="descname">__div__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__div__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__div__( (VectorXc)arg1, (complex)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>(VectorXc)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.VectorXc.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; complex<a class="headerlink" href="#minieigen.VectorXc.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>(VectorXc)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__idiv__">
+<code class="descname">__idiv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__idiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__idiv__( (VectorXc)arg1, (complex)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__imul__">
+<code class="descname">__imul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__imul__( (VectorXc)arg1, (complex)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.VectorXc.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__((VectorXc)other) → None</p>
+<p>__init__((object)vv) → object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__isub__">
+<code class="descname">__isub__</code><span class="sig-paren">(</span><em>(VectorXc)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__itruediv__">
+<code class="descname">__itruediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__itruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__itruediv__( (VectorXc)arg1, (complex)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__len__">
+<code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#minieigen.VectorXc.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__mul__( (VectorXc)arg1, (complex)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>(VectorXc)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#minieigen.VectorXc.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__neg__">
+<code class="descname">__neg__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.VectorXc.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__rmul__">
+<code class="descname">__rmul__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__rmul__( (VectorXc)arg1, (complex)arg2) → VectorXc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__setitem__">
+<code class="descname">__setitem__</code><span class="sig-paren">(</span><em>(int)arg2</em>, <em>(complex)arg3</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#minieigen.VectorXc.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; str<a class="headerlink" href="#minieigen.VectorXc.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>(VectorXc)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="minieigen.VectorXc.__truediv__">
+<code class="descname">__truediv__</code><span class="sig-paren">(</span><em>(int)arg2</em><span class="sig-paren">)</span> &rarr; VectorXc<a class="headerlink" href="#minieigen.VectorXc.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__truediv__( (VectorXc)arg1, (complex)arg2) → VectorXc</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="minieigen.VectorXc.asDiagonal">
@@ -3002,7 +5055,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="#">minieigen 0.4-1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">minieigen 0.53 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
