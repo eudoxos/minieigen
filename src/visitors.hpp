@@ -104,8 +104,8 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	template<typename Scalar2> static MatrixBaseT __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a/scalar; }
 	template<typename Scalar2> static MatrixBaseT __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a/=scalar; return a; }
 
-	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy = 0){ /* do nothing*/ }
-	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy = 0){
+	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::enable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy = 0){ /* do nothing*/ }
+	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::disable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy = 0){
 		// must be wrapped since there are overloads:
 		//   maxCoeff(), maxCoeff(IndexType*), maxCoeff(IndexType*,IndexType*)
 		cl
@@ -118,8 +118,8 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 
 	// we want to keep -0 (rather than replacing it by 0), but that does not work for complex numbers
 	// hence two versions
-	template<typename Scalar> static bool prune_element(const Scalar& num, RealScalar absTol, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol || num!=-0; }
-	template<typename Scalar> static bool prune_element(const Scalar& num, RealScalar absTol, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy=0){ return std::abs(num)<=absTol; }
+	template<typename Scalar> static bool prune_element(const Scalar& num, RealScalar absTol, typename boost::disable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy=0){using namespace std; return abs(num)<=absTol || num!=-0; }
+	template<typename Scalar> static bool prune_element(const Scalar& num, RealScalar absTol, typename boost::enable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy=0){using namespace std; return abs(num)<=absTol; }
 	
 	static MatrixBaseT pruned(const MatrixBaseT& a, double absTol=1e-6){ // typename MatrixBaseT::Scalar absTol=1e-6){
 		MatrixBaseT ret(MatrixBaseT::Zero(a.rows(),a.cols()));
@@ -358,9 +358,9 @@ class MatrixVisitor: public py::def_visitor<MatrixVisitor<MatrixT> >{
 		visit_if_decompositions_meaningful<Scalar,PyClass>(cl);
 	}
 	// for complex numbers, do nothing
-	template<typename Scalar, class PyClass> static	void visit_if_decompositions_meaningful(PyClass& cl, typename boost::enable_if<boost::is_complex<Scalar> >::type* dummy = 0){ /* do nothing */ }
+	template<typename Scalar, class PyClass> static	void visit_if_decompositions_meaningful(PyClass& cl, typename boost::enable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy = 0){ /* do nothing */ }
 	// for non-complex numbers, define decompositions
-	template<typename Scalar, class PyClass> static	void visit_if_decompositions_meaningful(PyClass& cl, typename boost::disable_if<boost::is_complex<Scalar> >::type* dummy = 0){
+	template<typename Scalar, class PyClass> static	void visit_if_decompositions_meaningful(PyClass& cl, typename boost::disable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy = 0){
 		cl
 		.def("jacobiSVD",&MatrixVisitor::jacobiSVD,"Compute SVD decomposition of square matrix, retuns (U,S,V) such that self=U*S*V.transpose()")
 		.def("svd",&MatrixVisitor::jacobiSVD,"Alias for :obj:`jacobiSVD`.")
