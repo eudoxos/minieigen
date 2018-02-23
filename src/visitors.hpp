@@ -145,7 +145,7 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 		cl
 		.def_pickle(VectorPickle())
 		.def("__setitem__",&VectorVisitor::set_item)
-		.def("__getitem__",&VectorVisitor::get_item)
+		.def("__getitem__",&VectorVisitor::get_item,return_internal_reference<>())
 		.def("__str__",&VectorVisitor::__str__).def("__repr__",&VectorVisitor::__str__)
 		.def("dot",&VectorVisitor::dot,py::arg("other"),"Dot product with *other*.")
 		.def("outer",&VectorVisitor::outer,py::arg("other"),"Outer product with *other*.")
@@ -256,7 +256,7 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 	static Scalar dot(const VectorT& self, const VectorT& other){ return self.dot(other); }
 	static CompatMatrixT outer(const VectorT& self, const VectorT& other){ return self*other.transpose(); }
 	static CompatMatrixT asDiagonal(const VectorT& self){ return self.asDiagonal(); }
-	static Scalar get_item(const VectorT& self, Index ix){ IDX_CHECK(ix,dyn()?(Index)self.size():(Index)Dim); return self[ix]; }
+	static Scalar& get_item(VectorT& self, Index ix){ IDX_CHECK(ix,dyn()?(Index)self.size():(Index)Dim); return self[ix]; }
 	static void set_item(VectorT& self, Index ix, Scalar value){ IDX_CHECK(ix,dyn()?(Index)self.size():(Index)Dim); self[ix]=value; }
 	struct VectorPickle: py::pickle_suite{
 		static py::tuple getinitargs(const VectorT& x){
