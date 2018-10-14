@@ -145,7 +145,7 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 		cl
 		.def_pickle(VectorPickle())
 		.def("__setitem__",&VectorVisitor::set_item)
-		.def("__getitem__",&VectorVisitor::get_item,return_internal_reference<>())
+		.def("__getitem__",&VectorVisitor::get_item,py::return_internal_reference<>())
 		.def("__str__",&VectorVisitor::__str__).def("__repr__",&VectorVisitor::__str__)
 		.def("dot",&VectorVisitor::dot,py::arg("other"),"Dot product with *other*.")
 		.def("outer",&VectorVisitor::outer,py::arg("other"),"Outer product with *other*.")
