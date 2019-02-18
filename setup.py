@@ -1,6 +1,7 @@
 # encoding: utf-8
 from distutils.core import setup,Extension
 import sys, glob
+import platform
 
 # vectorization is currently broken and experimental ONLY
 vectorize=False
@@ -19,7 +20,11 @@ if sys.platform=='win32':
     # * https://bugs.launchpad.net/panda3d/+bug/919237
         define_macros+=[('EIGEN_DONT_VECTORIZE',None)]
 else:
-    libraries=['boost_python-py%d%d'%(sys.version_info[0],sys.version_info[1])]
+    if ('Fedora' == platform.linux_distribution()[0] or
+        'CentOS' in platform.linux_distribution()[0]):
+        libraries=['boost_python%s'%('' if sys.version_info[0] == 2 else '3')]
+    else:
+        libraries=['boost_python-py%d%d'%(sys.version_info[0],sys.version_info[1])]
     library_dirs=[]
     include_dirs=['/usr/include/eigen3','/usr/local/include/eigen3','minieigen']
 
@@ -66,4 +71,3 @@ A small wrapper for core parts of Eigen (http://eigen.tuxfamily.org), c++ librar
         define_macros=define_macros
     )],
 )
-
