@@ -98,11 +98,16 @@ class MatrixBaseVisitor: public py::def_visitor<MatrixBaseVisitor<MatrixBaseT> >
 	static MatrixBaseT __iadd__(MatrixBaseT& a, const MatrixBaseT& b){ a+=b; return a; };
 	static MatrixBaseT __isub__(MatrixBaseT& a, const MatrixBaseT& b){ a-=b; return a; };
 
-	template<typename Scalar2> static MatrixBaseT __mul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
-	template<typename Scalar2> static MatrixBaseT __imul__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=scalar; return a; }
-	template<typename Scalar2> static MatrixBaseT __rmul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
-	template<typename Scalar2> static MatrixBaseT __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a/scalar; }
-	template<typename Scalar2> static MatrixBaseT __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a/=scalar; return a; }
+	template<typename Scalar2> static typename boost::enable_if <std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __mul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
+	template<typename Scalar2> static typename boost::disable_if<std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __mul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*static_cast<Scalar>(scalar); }
+	template<typename Scalar2> static typename boost::enable_if <std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __imul__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=scalar; return a; }
+	template<typename Scalar2> static typename boost::disable_if<std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __imul__scalar(MatrixBaseT& a, const Scalar2& scalar){ a*=static_cast<Scalar>(scalar); return a; }
+	template<typename Scalar2> static typename boost::enable_if <std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __rmul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*scalar; }
+	template<typename Scalar2> static typename boost::disable_if<std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __rmul__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a*static_cast<Scalar>(scalar); }
+	template<typename Scalar2> static typename boost::enable_if <std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a/scalar; }
+	template<typename Scalar2> static typename boost::disable_if<std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __div__scalar(const MatrixBaseT& a, const Scalar2& scalar){ return a/static_cast<Scalar>(scalar); }
+	template<typename Scalar2> static typename boost::enable_if <std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a/=scalar; return a; }
+	template<typename Scalar2> static typename boost::disable_if<std::is_convertible<Scalar2,const Scalar&>,MatrixBaseT>::type __idiv__scalar(MatrixBaseT& a, const Scalar2& scalar){ a/=static_cast<Scalar>(scalar); return a; }
 
 	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::enable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy = 0){ /* do nothing*/ }
 	template<typename Scalar, class PyClass> static	void visit_reductions_noncomplex(PyClass& cl, typename boost::disable_if_c<Eigen::NumTraits<Scalar>::IsComplex >::type* dummy = 0){
