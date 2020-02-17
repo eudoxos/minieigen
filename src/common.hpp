@@ -1,8 +1,10 @@
 #pragma once
 // common types, funcs, includes; should be included by all other files
 
+#ifndef _HIGH_PRECISION_SUPPORT
 /* change to float for single-precision */
 typedef double Real;
+#endif
 
 // BEGIN workaround for
 // * http://eigen.tuxfamily.org/bz/show_bug.cgi?id=528
@@ -20,6 +22,7 @@ typedef double Real;
 
 #include<unsupported/Eigen/AlignedVector3>
 
+#ifndef _HIGH_PRECISION_SUPPORT
 // integral type for indices, to avoid compiler warnings with int
 typedef Eigen::Matrix<int,1,1>::Index Index;
 
@@ -57,6 +60,7 @@ typedef Eigen::AlignedBox<Real,2> AlignedBox2r;
 	typedef Eigen::Matrix<complex<Real>,Eigen::Dynamic,Eigen::Dynamic> MatrixXcr;
 #endif
 
+#endif
 
 #include<string>
 using std::string;
@@ -71,6 +75,7 @@ namespace py=boost::python;
 using boost::lexical_cast;
 #include<boost/static_assert.hpp>
 
+#ifndef _HIGH_PRECISION_SUPPORT
 /**** double-conversion helpers *****/
 #include"double-conversion/double-conversion.h"
 
@@ -131,6 +136,7 @@ static inline string num_to_string(const double& num, int pad=0){ return doubleT
 	}
 #endif
 
+#endif
 
 /*** getters and setters with bound guards ***/
 static inline void IDX_CHECK(Index i,Index MAX){ if(i<0 || i>=MAX) { PyErr_SetString(PyExc_IndexError,("Index "+lexical_cast<string>(i)+" out of range 0.." + lexical_cast<string>(MAX-1)).c_str()); py::throw_error_already_set(); } }
