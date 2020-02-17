@@ -217,7 +217,7 @@ class VectorVisitor: public py::def_visitor<VectorVisitor<VectorT> >{
 	// 4-vector
 	template<typename VectorT2, class PyClass> static void visit_special_sizes(PyClass& cl, typename boost::enable_if_c<VectorT2::RowsAtCompileTime==4>::type* dummy=0){
 		cl
-		.def(py::init<typename VectorT2::Scalar,typename VectorT2::Scalar,typename VectorT2::Scalar>((py::arg("v0"),py::arg("v1"),py::arg("v2"),py::arg("v3"))))
+		.def(py::init<typename VectorT2::Scalar,typename VectorT2::Scalar,typename VectorT2::Scalar,typename VectorT2::Scalar>((py::arg("v0"),py::arg("v1"),py::arg("v2"),py::arg("v3"))))
 		;
 	}
 
