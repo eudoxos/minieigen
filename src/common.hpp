@@ -1,7 +1,7 @@
 #pragma once
 // common types, funcs, includes; should be included by all other files
 
-#ifndef MINIEIGEN_OVERRIDE
+#ifndef _HIGH_PRECISION_SUPPORT
 /* change to float for single-precision */
 typedef double Real;
 #endif
@@ -22,7 +22,7 @@ typedef double Real;
 
 #include<unsupported/Eigen/AlignedVector3>
 
-#ifndef MINIEIGEN_OVERRIDE
+#ifndef _HIGH_PRECISION_SUPPORT
 // integral type for indices, to avoid compiler warnings with int
 typedef Eigen::Matrix<int,1,1>::Index Index;
 
@@ -75,7 +75,7 @@ namespace py=boost::python;
 using boost::lexical_cast;
 #include<boost/static_assert.hpp>
 
-#ifndef MINIEIGEN_OVERRIDE
+#ifndef _HIGH_PRECISION_SUPPORT
 /**** double-conversion helpers *****/
 #include"double-conversion/double-conversion.h"
 
