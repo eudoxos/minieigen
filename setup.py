@@ -1,7 +1,7 @@
 # encoding: utf-8
 from distutils.core import setup,Extension
 import sys, glob
-import platform
+import distro
 
 # vectorization is currently broken and experimental ONLY
 vectorize=False
@@ -20,8 +20,7 @@ if sys.platform=='win32':
     # * https://bugs.launchpad.net/panda3d/+bug/919237
         define_macros+=[('EIGEN_DONT_VECTORIZE',None)]
 else:
-    if ('Fedora' == platform.linux_distribution()[0] or
-        'CentOS' in platform.linux_distribution()[0]):
+    if distro.id() in {'fedora','centos','arch'}:
         libraries=['boost_python%s'%('' if sys.version_info[0] == 2 else '3')]
     else:
         libraries=['boost_python-py%d%d'%(sys.version_info[0],sys.version_info[1])]
