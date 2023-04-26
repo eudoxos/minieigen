@@ -1,0 +1,5 @@
+
+*.Plo
+*.o
+*.lo
+.dirstamp
